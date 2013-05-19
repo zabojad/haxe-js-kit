@@ -120,11 +120,7 @@ private typedef Pack = {
 		if( required != null ){
 			var pos = Context.currentPos();
 			
-			var clName = cl.pack.join(".");
-
-			if( !requirePackage ){
-				clName += "."+cl.name;
-			}
+			var clName = cl.pack.join("__") + "__"+cl.name;
 
 			if( Lambda.has( initPack, clName ) ){
 				return fields;
@@ -134,24 +130,18 @@ private typedef Pack = {
 
 			var init = [];
 
-			for( i in 1...clName.split(".").length ){
-				var splPack = cl.pack.slice(0,i);
-				var pack = splPack.join(".");
-				var packExpr = Context.parse( pack , pos );
-				if( i==1 ){
-					init.push(Context.parse("untyped __js__('var "+pack+"="+pack + "||{}')", pos));
-				}else{
-					init.push( macro untyped $packExpr=$packExpr||{} );
-				}
-				initPack.push( pack );
-			}
-
 			var requiredName = Context.makeExpr( required.name , pos );
 			var requiredVersion = Context.makeExpr( required.version , pos );
 			
-			init.push( macro untyped $clExpr = npm.Package.require( $requiredName , $requiredVersion ) );
-			//var code = "untyped __js__(\"var "+clName+" = require( '"+required.name+"', '"+required.version+"' );\")";
-			//init.push(Context.parse(code,pos));
+			var initCode = 'var $clName = require(\'${required.name}\')';
+			if( requirePackage ){
+				initCode += '.${cl.name}';
+			}
+			var initCode = 'untyped __js__("$initCode")';
+			init.push( Context.parse(initCode, pos) );
+
+			cl.meta.add(":native",[macro '$clName'], pos);
+			
 			initPack.push(clName);
 			
 			var injected = false;
