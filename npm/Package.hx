@@ -144,11 +144,11 @@ private typedef Pack = {
 			
 			initPack.push(clName);
 			
-			var injected = false;
-			
 			if( init.length == 0 ){
 				return fields;
 			}
+
+			var injected = false;
 
 			for( f in fields ){
 				if( f.name == "__init__" ){
