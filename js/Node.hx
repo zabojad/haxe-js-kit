@@ -20,8 +20,8 @@ class Node {
   public static var __dirname(default,null) : js.node.Process = untyped __js__('__dirname');
 
   public static var require(default,null): String->Dynamic = untyped __js__("require");
-  public static var setTimeout(default,null): Dynamic->Int->?Array<String>->Int = untyped __js__("setTimeout");
-  public static var setInterval(default,null): Dynamic->Int->?Array<String>->Int = untyped __js__("setInterval");
+  public static var setTimeout(default,null): (Void->Void)->Int->?Array<String>->Int = untyped __js__("setTimeout");
+  public static var setInterval(default,null): (Void->Void)->Int->?Array<String>->Int = untyped __js__("setInterval");
   public static var clearTimeout(default,null): Int->Void = untyped __js__("clearTimeout");
   public static var clearInterval(default,null): Int->Void = untyped __js__("clearInterval");
 
