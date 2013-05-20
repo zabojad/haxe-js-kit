@@ -126,19 +126,13 @@ private typedef Pack = {
 				return fields;
 			}
 
-			var clExpr = Context.parse( clName , pos );
-
 			var init = [];
 
-			var requiredName = Context.makeExpr( required.name , pos );
-			var requiredVersion = Context.makeExpr( required.version , pos );
-			
-			var initCode = 'var $clName = require(\'${required.name}\')';
 			if( requirePackage ){
-				initCode += '.${cl.name}';
+				init.push( macro var $clName = untyped npm.Package.require( '${required.name}','${required.version}' )['${cl.name}'] );
+			}else{
+				init.push( macro var $clName = untyped npm.Package.require( '${required.name}','${required.version}' ) );
 			}
-			var initCode = 'untyped __js__("$initCode")';
-			init.push( Context.parse(initCode, pos) );
 
 			cl.meta.add(":native",[macro '$clName'], pos);
 			
