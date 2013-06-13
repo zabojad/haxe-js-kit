@@ -121,7 +121,7 @@ private typedef Pack = {
 			var pos = Context.currentPos();
 			
 			var clName = cl.pack.join("__") + "__"+cl.name;
-
+			
 			if( Lambda.has( initPack, clName ) ){
 				return fields;
 			}
