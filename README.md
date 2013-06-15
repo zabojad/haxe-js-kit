@@ -97,4 +97,5 @@ Please also note that the dependency system currently doesn't manage package ver
 * More libraries (Mongoose, ...)
 * Complete the node API
 * Improve NPM integration (SemVer, less intrusive dependency export)
+* Try to fix issues with compiler cache...
 * Publish to haxelib
