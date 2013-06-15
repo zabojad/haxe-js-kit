@@ -1,4 +1,3 @@
-
 hx-node provides haxe type signatures to Node.js 0.6x.
 
 The base Node API is in js/Node.hx.
