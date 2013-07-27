@@ -1,6 +1,7 @@
 package js.npm.express;
 
 import js.node.http.ServerResponse;
+import js.support.Callback;
 
 extern class Response 
 extends ServerResponse {
@@ -10,14 +11,15 @@ extends ServerResponse {
 
 	public function redirect(?status : Int , url : String) : Void;
   	
-  	@:overload( function( value : Dynamic ) : Void {} )
-	function send(?code:Int , value : Dynamic) : Void;
-	@:overload( function( value : Dynamic ) : Void {} )
-	function json(?code:Int , value : Dynamic) : Void;
-	@:overload( function( value : Dynamic ) : Void {} )
-	function jsonp(?code:Int , value : Dynamic) : Void;
+  	@:overload( function( code:Int , value : Dynamic ) : Void {} )
+	function send( value : Dynamic) : Void;
+	@:overload( function( code:Int , value : Dynamic ) : Void {} )
+	function json( value : Dynamic) : Void;
+	@:overload( function( code:Int , value : Dynamic ) : Void {} )
+	function jsonp( value : Dynamic) : Void;
 
 	function status( code : Int ) : Response;
+	
 	@:overload( function( values : Dynamic<String> ) : Response {} )
 	function set( field : String , value : String ) : Response;
 
@@ -40,6 +42,7 @@ extends ServerResponse {
 
 	function links( links : Dynamic<String> ) : Response;
 
-	function render( path : String , ?locals : Dynamic , callback : js.Node.NodeError -> String -> Void ) : Void;
+	@:overload( function ( path : String , locals : {} , callback : Callback<String> ) : Void {} )
+	function render( path : String , callback : Callback<String> ) : Void;
 
 }

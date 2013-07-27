@@ -1,7 +1,7 @@
 package js.node;
 
 import js.node.Buffer;
-import js.Node;
+import js.support.Callback;
 
 /* CRYPTO ..................................... */
   
@@ -81,7 +81,7 @@ implements npm.Package.Require<"crypto","*">
   @:overload(function(prime_length:Int):CryptoDiffieHellman {})
   static function createDiffieHellman(prime:String,?enc:String):CryptoDiffieHellman;
   static function getDiffieHellman(groupName:String):CryptoDiffieHellman;
-  static function pbkdf2(password:String,salt:String,iterations:Int,keylen:Int,cb:NodeError->String):Void;
-  static function randomBytes(size:Int,cb:NodeError->Buffer):Void;
+  static function pbkdf2(password:String,salt:String,iterations:Int,keylen:Int,cb:Callback<String>):Void;
+  static function randomBytes(size:Int,cb:Callback<Buffer>):Void;
 
 }

@@ -1,14 +1,16 @@
 package js.node;
 
-/* UDP ........................................ */
+import haxe.io.Bytes;
+import js.node.events.EventEmitter;
+import js.support.Callback;
 
-typedef DgramCallback = NodeErr->haxe.io.Bytes->Void;
+/* UDP ........................................ */
 
 /* 
    Emits: message,listening,close
 */
-typedef DgramSocket = { > NodeEventEmitter,
-  function send(buf:NodeBuffer,offset:Int,length:Int,port:Int,address:String,cb:NodeUDPCallback):Void;
+typedef DgramSocket = { > EventEmitter,
+  function send(buf:Buffer,offset:Int,length:Int,port:Int,address:String,cb:Callback<Void>):Void;
   function bind(port:Int,?address:String):Void;
   function close():Void;
   function address():Dynamic;
@@ -23,5 +25,5 @@ typedef DgramSocket = { > NodeEventEmitter,
 extern class Dgram
 implements npm.Package.Require<"dgram","*"> {
   // Valid types: udp6, and unix_dgram.
-  public static function createSocket(type:String,cb:DgramCallback):DgramSocket;
+  public static function createSocket(type:String,cb:Callback<Bytes>):DgramSocket;
 }

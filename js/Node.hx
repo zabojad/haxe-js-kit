@@ -9,8 +9,6 @@
 
 package js;
 
-typedef NodeError = Null<String>;
-
 class Node {  
 
   public static var console(default,null) : js.node.stdio.Console = untyped __js__('console');
