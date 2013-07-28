@@ -1,7 +1,7 @@
 package js.npm.express;
 
 import js.npm.connect.Middleware;
-import js.native.RegExp;
+import js.support.RegExp;
 import js.support.Callback;
 
 extern class Application 
