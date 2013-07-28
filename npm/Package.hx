@@ -15,7 +15,8 @@ private typedef Pack = {
 	?version : String
 }
 
-#if !macro extern #end class Package {
+#if !macro extern #end
+class Package {
 
 	static var dependencies : #if haxe3 Map<String,String> #else Hash<String> #end;
 
@@ -49,14 +50,25 @@ private typedef Pack = {
 	}
 	#end
 	
-	#if haxe3 macro #else @:macro #end public static function require( name : String , ?version : String = "*" ) {
+	#if haxe3 macro #else @:macro #end public static function require( name : String , ?version : String = "*" , ?native : String = null ) {
 		if( dependencies == null ){
 			dependencies = new #if haxe3 Map #else Hash #end();
 		}
 		
 		var nameExpr = Context.makeExpr( name , Context.currentPos() );
 		dependencies.set( name , version );
-		return macro untyped __js__("require")( $nameExpr );
+
+		var outp = macro __js__("require")( $nameExpr );
+		
+		if( native != null ){
+			for( p in native.split(".") ){
+				var pExpr = Context.makeExpr( p , Context.currentPos() );
+				outp = macro $outp[$pExpr];
+			}
+
+		}
+
+		return macro untyped $outp;
 		
 	}
 	
@@ -71,6 +83,7 @@ private typedef Pack = {
 
 	#if haxe3 macro #else @:macro #end public static function build() : Array<Field>{
 		var error = "Usage: 'implements npm.Module<\"module-name\",\"module-version\">'";
+		var invalidNative = "Invalid :native";
 		var cl = Context.getLocalClass().get();
 		var fields = Context.getBuildFields();
 		var required : Pack = null;
@@ -119,6 +132,28 @@ private typedef Pack = {
 
 		if( required != null ){
 			var pos = Context.currentPos();
+
+			var native = cl.name;
+			if( cl.meta.has(":native") ){
+				for(meta in cl.meta.get() ){
+					if( meta.name == ":native" ){
+						if( meta.params.length != 1 )
+							throw invalidNative;
+						
+						switch( meta.params[0].expr ){
+							case EConst( c ) : 
+								switch( c ) {
+									case CString( s ) :
+										native = s;
+									default : 
+										throw invalidNative;
+								}
+							default :
+								throw invalidNative;
+						}
+					}
+				}
+			}
 			
 			var clName = cl.pack.join("__") + "__"+cl.name;
 			
@@ -129,7 +164,7 @@ private typedef Pack = {
 			var init = [];
 
 			if( requirePackage ){
-				init.push( macro var $clName = untyped npm.Package.require( '${required.name}','${required.version}' )['${cl.name}'] );
+				init.push( macro var $clName = untyped npm.Package.require( '${required.name}','${required.version}' , '${native}' ) );
 			}else{
 				init.push( macro var $clName = untyped npm.Package.require( '${required.name}','${required.version}' ) );
 			}
