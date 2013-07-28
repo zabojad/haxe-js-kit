@@ -51,6 +51,7 @@ class Package {
 	#end
 	
 	#if haxe3 macro #else @:macro #end public static function require( name : String , ?version : String = "*" , ?native : String = null ) {
+		
 		if( dependencies == null ){
 			dependencies = new #if haxe3 Map #else Hash #end();
 		}
@@ -79,6 +80,7 @@ class Package {
 	#if macro
 	static var initPack = [];
 	static var requiredPack = [];
+	static var requireId = 0;
 	#end
 
 	#if haxe3 macro #else @:macro #end public static function build() : Array<Field>{
@@ -87,14 +89,20 @@ class Package {
 		var cl = Context.getLocalClass().get();
 		var fields = Context.getBuildFields();
 		var required : Pack = null;
-		var requirePackage = false;
+		var requireNS = false;
+		var pos = Context.currentPos();
+
+		// self awareness
+		if( cl.meta.has(":npm_done") )
+			return fields;
+		cl.meta.add( ':npm_done' , [] , pos );
 		
 		for( i in cl.interfaces ){
 			var t = i.t.get();
 			if( t.module == "npm.Package" 
 				&& ( t.name == "Require" || t.name == "RequireNamespace" ) ) {
 				if( t.name == "RequireNamespace" ) 
-					requirePackage = true;
+					requireNS = true;
 				for( n in 0...i.params.length ){
 					switch(i.params[n]){
 						case TInst(name,_) :
@@ -131,9 +139,8 @@ class Package {
 		}
 
 		if( required != null ){
-			var pos = Context.currentPos();
-
 			var native = cl.name;
+
 			if( cl.meta.has(":native") ){
 				for(meta in cl.meta.get() ){
 					if( meta.name == ":native" ){
@@ -156,6 +163,9 @@ class Package {
 			}
 			
 			var clName = cl.pack.join("__") + "__"+cl.name;
+			if( Context.defined('npm_minify') ){
+				clName = '__r'+(requireId++);
+			}
 			
 			if( Lambda.has( initPack, clName ) ){
 				return fields;
@@ -163,7 +173,8 @@ class Package {
 
 			var init = [];
 
-			if( requirePackage ){
+			if( requireNS ){
+				trace(required.name,required.version,native);
 				init.push( macro var $clName = untyped npm.Package.require( '${required.name}','${required.version}' , '${native}' ) );
 			}else{
 				init.push( macro var $clName = untyped npm.Package.require( '${required.name}','${required.version}' ) );
