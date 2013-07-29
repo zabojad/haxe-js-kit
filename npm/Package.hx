@@ -72,15 +72,24 @@ class Package {
 		return macro untyped $outp;
 		
 	}
+
+	#if haxe3 macro #else @:macro #end public static function resolve( expr , path : String ) {
+		for( p in path.split(".") ){
+			var pExpr = Context.makeExpr( p , Context.currentPos() );
+			expr = macro $expr[$pExpr];
+		}
+
+		return macro $expr;
+	}
+	
 	
 }
 
 #if !macro extern #end class Include {
 
 	#if macro
-	static var initPack = [];
-	static var requiredPack = [];
 	static var requireId = 0;
+	static inline var doneMeta = ':npm_done';
 	#end
 
 	#if haxe3 macro #else @:macro #end public static function build() : Array<Field>{
@@ -92,11 +101,14 @@ class Package {
 		var requireNS = false;
 		var pos = Context.currentPos();
 
-		// self awareness
-		if( cl.meta.has(":npm_done") )
+		// see if the type has already been processed
+		if( cl.meta.has(doneMeta) )
 			return fields;
-		cl.meta.add( ':npm_done' , [] , pos );
 		
+		// mark the type as processed
+		cl.meta.add( doneMeta , [] , pos );
+		
+		// extract infos from the implemented interfaces
 		for( i in cl.interfaces ){
 			var t = i.t.get();
 			if( t.module == "npm.Package" 
@@ -139,62 +151,65 @@ class Package {
 		}
 
 		if( required != null ){
-			var native = cl.name;
+			
+			// set the generated class name 
+			var clName = if( !Context.defined('npm_full_paths') )
+				// if minified
+				cl.name+'__'+(requireId++);
+			else
+				// if not, use the class' full path
+				cl.pack.join("__") + "__"+cl.name;
 
-			if( cl.meta.has(":native") ){
-				for(meta in cl.meta.get() ){
-					if( meta.name == ":native" ){
-						if( meta.params.length != 1 )
-							throw invalidNative;
-						
-						switch( meta.params[0].expr ){
-							case EConst( c ) : 
-								switch( c ) {
-									case CString( s ) :
-										native = s;
-									default : 
-										throw invalidNative;
-								}
-							default :
+			// initialization expressions
+			var init = [];
+
+			// use the type name by default
+			var nativeClass = cl.name;
+
+			if( requireNS ){
+				// if the package is a namespace
+				
+				// check for :native class name
+				if( cl.meta.has(":native") ){
+					for(meta in cl.meta.get() ){
+						if( meta.name == ":native" ){
+							if( meta.params.length != 1 )
 								throw invalidNative;
+							
+							switch( meta.params[0].expr ){
+								case EConst( c ) : 
+									switch( c ) {
+										case CString( s ) :
+											nativeClass = s;
+										default : 
+											throw invalidNative;
+									}
+								default :
+									throw invalidNative;
+							}
 						}
 					}
 				}
 			}
-			
-			var clName = cl.pack.join("__") + "__"+cl.name;
-			if( Context.defined('npm_minify') ){
-				clName = '__r'+(requireId++);
-			}
-			
-			if( Lambda.has( initPack, clName ) ){
-				return fields;
-			}
 
-			var init = [];
+			if( requireNS )
+				init.push( macro var $clName = untyped npm.Package.resolve( npm.Package.require( '${required.name}','${required.version}') , '${nativeClass}' ) );
+			else
+				init.push( macro var $clName = untyped npm.Package.require( '${required.name}','${required.version}') );
 
-			if( requireNS ){
-				trace(required.name,required.version,native);
-				init.push( macro var $clName = untyped npm.Package.require( '${required.name}','${required.version}' , '${native}' ) );
-			}else{
-				init.push( macro var $clName = untyped npm.Package.require( '${required.name}','${required.version}' ) );
-			}
-
+			// change the class' native name
 			cl.meta.add(":native",[macro '$clName'], pos);
-			
-			initPack.push(clName);
-			
-			if( init.length == 0 ){
-				return fields;
-			}
 
+			// inject the initiatization code in __init__
 			var injected = false;
 
+			// check that __init__ method already exists
 			for( f in fields ){
 				if( f.name == "__init__" ){
 					switch( f.kind ){
 						case FFun( fun ) :
 							injected = true;
+							// add the existing __init__ body in the end of the generated init expression
 							init.push( { expr : fun.expr.expr , pos : fun.expr.pos } );
 							var newExpr = {
 								pos : fun.expr.pos,
@@ -206,6 +221,7 @@ class Package {
 				}
 			}
 
+			// if __init__ doesn't exist, just add the whole method
 			if( !injected ){
 				var f = {
 					name : "__init__",
@@ -231,6 +247,7 @@ class Package {
 			}
 			
 		}
+
 		return fields;
 	}
 	
