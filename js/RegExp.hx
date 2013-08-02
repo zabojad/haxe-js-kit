@@ -1,4 +1,4 @@
-package js.native;
+package js;
 
 @:native("RegExp")
 extern class RegExp {
