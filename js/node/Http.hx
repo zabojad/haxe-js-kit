@@ -62,6 +62,7 @@ typedef HttpReqOpt = {
 extern class Http 
 implements npm.Package.Require<"http","*"> 
 {
+  @:overload( function( app : Dynamic ) : Server {} )
   static function createServer(listener:HttpServerReq->ServerResponse->Void):Server;
   static function createClient(port:Int,host:String):HttpClient;
   @:overload(function(parsedUrl:UrlObj,res:HttpClientResp->Void):ClientRequest {})

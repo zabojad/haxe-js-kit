@@ -79,8 +79,8 @@ implements npm.Package.Require<"fs","*">
   static function truncate(fd:Int,len:Int,cb:Callback<Void>):Void;
   static function truncateSync(fd:Int,len:Int):Error;
   
-  @:overload(function(path:String,enc:String,cb:Callback<String>):Void {})
-  static function readFile(path:String,cb:Callback<String>):Void;
+  @:overload(function(path:String,options:FsReadFileOpt,cb:Callback<String>):Void {})
+  static function readFile(path:String,cb:Callback<Buffer>):Void;
   static function readFileSync(path:String,?enc:String):String;
 
   @:overload(function(fileName:String,data:Buffer,cb:Callback<Void>):Void {})
@@ -125,6 +125,11 @@ typedef FsReadStreamOpt = {
     bufferSize:Int,
     ?start:Int,
     ?end:Int
+}
+
+typedef FsReadFileOpt = {
+  ?encoding : String,
+  ?flag : String
 }
 
 
