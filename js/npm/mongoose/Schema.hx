@@ -8,6 +8,7 @@ implements npm.Package.RequireNamespace<"mongoose","*"> {
 
 	public var tree : Dynamic;
 	public var paths : Dynamic<Class<SchemaType>>;
+	public var methods (default,null) : Dynamic<Dynamic->Dynamic>;
 	public function new( definition : {} , ?options : SchemaOptions ) : Void;
 	public function defaultOptions( ?options : SchemaOptions ) : SchemaOptions;
 	public function add( obj : {} , ?prefix : String ) : Schema;
@@ -19,7 +20,7 @@ implements npm.Package.RequireNamespace<"mongoose","*"> {
 	public function post( method : String , fn : ( Void->Void )->Void ) : Schema;
 	public function plugin( fn : Schema->?{}->Void , ?opts : {} ) : Schema;
 	@:overload( function( methods : Dynamic<Dynamic<Dynamic->Dynamic>> ) : Schema {} )
-	public function method( name : String , fn : Dynamic<Dynamic->Dynamic> ) : Schema;
+	public function method( name : String , fn : Dynamic->Dynamic ) : Schema;
 	@:overload( function( methods : Dynamic<Dynamic<Dynamic->Dynamic>> ) : Schema {} )
 	public inline function static_( name : String , fn : Dynamic<Dynamic->Dynamic> ) : Schema 
 		return untyped this['static'](arguments);

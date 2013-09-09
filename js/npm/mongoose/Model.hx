@@ -28,17 +28,18 @@ extern class Models<M:Model<Dynamic>> {
 	public function ensureIndexes( ?fn : Callback<Void> ) : Void;
 	public function remove( conditions : {} , callback : Callback<Void> ) : Void;
 
-	@:overload( function ( conditions : {} , fields : String , options : {} , ?callback : Callback<Array<M>> ): Query<M> {} )
-	@:overload( function ( conditions : {} , fields : Null<{}> , options : {} , ?callback : Callback<Array<M>> ): Query<M> {} )
-	public function find( conditions : {} , ?callback : Callback<Array<M>> ): Query<M>; // Query<M>
+	@:overload( function ( conditions : {} , fields : String , options : {} , ?callback : Callback<Array<M>> ): Query<Array<M>> {} )
+	@:overload( function ( conditions : {} , fields : Null<{}> , options : {} , ?callback : Callback<Array<M>> ): Query<Array<M>> {} )
+	public function find( ?conditions : {} , ?callback : Callback<Array<M>> ): Query<Array<M>>; // Query<M>
 
 	@:overload( function ( id : Dynamic , fields : String , options : {} , ?callback : Callback<Null<M>> ): Query<M> {} )
 	@:overload( function ( id : Dynamic , fields : Null<{}> , options : {} , ?callback : Callback<Null<M>> ): Query<M> {} )
 	public function findById( id : Dynamic , ?callback : Callback<Null<M>> ): Query<M>; // Query<M>
 
+	@:overload( function( conditions : {} , callback : Callback<Null<M>> ) : Void {} )
 	@:overload( function ( conditions : {}  , fields : String , options : {} , ?callback : Callback<Null<M>> ): Query<M> {} )
 	@:overload( function ( conditions : {} , fields : Null<{}> , options : {} , ?callback : Callback<Null<M>> ): Query<M> {} )
-	public function findOne( conditions : {} , ?callback : Callback<Null<M>> ): Query<M>; // Query<M>
+	public function findOne( ?conditions : {} ): Query<M>; // Query<M>
 
 	@:overload( function ( conditions : {} , ?callback : Callback<Int> ): Query<M> {} )// Query<M>
 	public function count( callback : Callback<Int> ): Query<M>; // Query<M>
@@ -95,8 +96,7 @@ extern class Models<M:Model<Dynamic>> {
 
 typedef ModelMapReduce = {
 	map : Void->Void,
-	// TODO : args are k, vals
-	reduce : Dynamic->Array<Dynamic>->Void,
+	reduce : String->Array<Dynamic>->Void,
 	?query : {},
 	?limit : Int,
 	?keeptemp : Bool,
