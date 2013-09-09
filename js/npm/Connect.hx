@@ -3,19 +3,19 @@ package js.npm;
 import js.node.Http;
 import js.node.http.*;
 
-import js.npm.connect.Middleware;
+import js.npm.connect.support.Middleware;
 
-private typedef MiddlewareFunction = ClientRequest->ServerResponse->Null<(Void->Void)>->Void;
+//private typedef MiddlewareFunction = ClientRequest->ServerResponse->Null<(Void->Void)>->Void;
 
 extern class Connect 
 implements npm.Package.Require<"connect","*">
 {
 	public function new() : Void;
 
-	@:overload( function ( middleware : Middleware ) : Connect {} )
-	@:overload( function ( mount : String , middleware : MiddlewareFunction ) : Connect {} )
-	@:overload( function ( mount : String , middleware : Middleware ) : Connect {} )
-	public function use ( middleware : MiddlewareFunction ) : Connect ;
+	//@:overload( function ( middleware : Middleware ) : Connect {} )
+	//@:overload( function ( mount : String , middleware : MiddlewareFunction ) : Connect {} )
+	@:overload( function ( mount : String , middleware : Middleware<ClientRequest,ServerResponse> ) : Connect {} )
+	public function use ( middleware : Middleware<ClientRequest,ServerResponse> ) : Connect ;
 
 	@:overload(function( port :Int, ready : Void -> Void ): Server { } )
 	public function listen (port :Int, ?address :String) : Server;
