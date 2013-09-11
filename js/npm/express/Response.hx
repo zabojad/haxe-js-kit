@@ -43,6 +43,8 @@ extends ServerResponse {
 	function links( links : Dynamic<String> ) : Response;
 
 	@:overload( function ( path : String , locals : {} , callback : Callback<String> ) : Void {} )
+	@:overload( function ( path : String , locals : {} ) : Void {} )
+	@:overload( function ( path : String ) : Void {} )
 	function render( path : String , callback : Callback<String> ) : Void;
 
 }
