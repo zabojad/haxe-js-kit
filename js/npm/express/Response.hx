@@ -25,7 +25,7 @@ extends ServerResponse {
 
 	function get( field : String ) : Null<String>;
 
-	function cookie( name : String , value : Dynamic , options : Dynamic ) : Response;
+	function cookie( name : String , value : Dynamic , ?options : {} ) : Response;
 
 	function clearCookie( name : String, options : Dynamic ) : Response;
 

@@ -9,8 +9,11 @@ import js.npm.connect.support.Middleware;
 extern class Application 
 {
 
+	public var locals : Dynamic;
+
 	@:overload( function ( mount : String , middleware : Middleware<Request,Response> ) : Connect {} )
 	@:overload( function ( mount : String , middleware : Middleware<Request,Response> ) : Connect {} )
+	@:overload( function ( errorHandler : Dynamic -> Request -> Response -> Callback<Void> -> Void  ) : Connect {} )
 	public function use ( middleware : Middleware<Request,Response> ) : Connect ;
 
 	@:overload(function( port :Int, ready : Void -> Void ): Application { } )
