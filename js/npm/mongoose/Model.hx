@@ -28,6 +28,7 @@ extern class Models<M:Model<Dynamic>> {
 	public function ensureIndexes( ?fn : Callback<Void> ) : Void;
 	public function remove( conditions : {} , callback : Callback<Void> ) : Void;
 
+	@:overload( function ( conditions : {} , fields : String , callback : Callback<Array<M>> ): Query<Array<M>> {} )
 	@:overload( function ( conditions : {} , fields : String , options : {} , ?callback : Callback<Array<M>> ): Query<Array<M>> {} )
 	@:overload( function ( conditions : {} , fields : Null<{}> , options : {} , ?callback : Callback<Array<M>> ): Query<Array<M>> {} )
 	public function find( ?conditions : {} , ?callback : Callback<Array<M>> ): Query<Array<M>>; // Query<M>
