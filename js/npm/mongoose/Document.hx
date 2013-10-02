@@ -5,7 +5,8 @@ import js.support.Error;
 
 extern class Document<S:Schema>
 extends js.node.events.EventEmitter #if !haxe3 , #end
-implements npm.Package.RequireNamespace<"mongoose","*"> {
+implements npm.Package.RequireNamespace<"mongoose","*">
+implements Dynamic {
 	public static var schema : Schema;
 	public var isNew : Bool;
 	public var id : Dynamic;
