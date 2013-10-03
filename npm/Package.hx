@@ -50,14 +50,16 @@ class Package {
 	}
 	#end
 	
-	#if haxe3 macro #else @:macro #end public static function require( name : String , ?version : String = "*" , ?native : String = null ) {
+	#if haxe3 macro #else @:macro #end public static function require( name : String , ?version : String = "*" , ?isNpm : Bool = true , ?native : String = null ) {
 		
 		if( dependencies == null ){
 			dependencies = new #if haxe3 Map #else Hash #end();
 		}
 		
 		var nameExpr = Context.makeExpr( name , Context.currentPos() );
-		dependencies.set( name , version );
+		
+		if( isNpm )
+			dependencies.set( name , version );
 
 		var outp = macro __js__("require")( $nameExpr );
 		
@@ -100,10 +102,12 @@ class Package {
 		var required : Pack = null;
 		var requireNS = false;
 		var pos = Context.currentPos();
+		var isNpm = !( cl.pack.slice(0,2).join('.') == 'js.node' );
 
 		// see if the type has already been processed
 		if( cl.meta.has(doneMeta) )
 			return fields;
+
 		
 		// mark the type as processed
 		cl.meta.add( doneMeta , [] , pos );
@@ -193,12 +197,13 @@ class Package {
 			}
 
 			if( requireNS )
-				init.push( macro var $clName = untyped npm.Package.resolve( npm.Package.require( '${required.name}','${required.version}') , '${nativeClass}' ) );
+				init.push( macro var $clName = untyped npm.Package.resolve( npm.Package.require( '${required.name}','${required.version}' , $v{isNpm} ) , '${nativeClass}' ) );
 			else
-				init.push( macro var $clName = untyped npm.Package.require( '${required.name}','${required.version}') );
+				init.push( macro var $clName = untyped npm.Package.require( '${required.name}','${required.version}' , $v{isNpm} ) );
 
 			// change the class' native name
-			cl.meta.add(":native",[macro '$clName'], pos);
+//			cl.meta.add(":native",[macro '$clName'], pos);
+			cl.meta.add(":native",[macro '($clName||require("${required.name}"))'], pos);
 
 			// inject the initiatization code in __init__
 			var injected = false;
