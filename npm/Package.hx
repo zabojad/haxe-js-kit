@@ -202,8 +202,13 @@ class Package {
 				init.push( macro var $clName = untyped npm.Package.require( '${required.name}','${required.version}' , $v{isNpm} ) );
 
 			// change the class' native name
-//			cl.meta.add(":native",[macro '$clName'], pos);
-			cl.meta.add(":native",[macro '($clName||require("${required.name}"))'], pos);
+			var native = 'require("${required.name}")';
+			if( requireNS ){
+				native = native + '.${nativeClass}';
+			}
+			native = '($clName||' + native + ')';
+			
+			cl.meta.add(":native",[macro $v{native}], pos);
 
 			// inject the initiatization code in __init__
 			var injected = false;
