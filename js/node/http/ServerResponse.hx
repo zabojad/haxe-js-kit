@@ -6,7 +6,8 @@ extern class ServerResponse
 extends js.node.stream.Writable 
 implements npm.Package.RequireNamespace<"http","*">
 {
-	public static inline var EVENT_CLOSE = "close";
+    public static inline var EVENT_CLOSE  = "close";
+	public static inline var EVENT_FINISH = "finish";
 
 	var statusCode:Int;
 	function writeContinue():Void;
