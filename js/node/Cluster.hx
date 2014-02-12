@@ -4,6 +4,7 @@ typedef ClusterSettings = {
     var exec:String;
     var args:Array<String>;
     var silent:Bool;
+    @:optional var execArgv: Array<String>;
 }
 
 
@@ -39,6 +40,7 @@ implements npm.Package.Require<"cluster","*"> {
     static var isWorker:Bool;
     static var worker: ClusterWorker;
     static var workers:Array<ClusterWorker>;
+    static var settings: ClusterSettings;
     static function fork(?env:Dynamic):ClusterWorker;
     static function send(o:Dynamic):Void;
     static function setupMaster(?settings:ClusterSettings):Void;
