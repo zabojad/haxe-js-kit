@@ -46,7 +46,7 @@ implements npm.Package.Require<"cluster","*"> {
     function disconnect(?cb:Void->Void):Void;
 
     // Needed to use events on master Cluster
-    public static var self : Cluster;
+    public static var cluster : Cluster;
     static function __init__() : Void 
-      self = untyped Cluster;
+      cluster = untyped Cluster;
 }
