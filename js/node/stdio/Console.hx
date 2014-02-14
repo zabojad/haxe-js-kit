@@ -9,6 +9,6 @@ typedef Console = {
   function time(label:String):Void;
   function timeEnd(label:String):Void;
   function dir(obj:Dynamic):Void;
-  function trace():Void;
-  function assert():Void;
+  function trace(label: String):Void;
+  function assert(expression: Dynamic, ?message: String):Void;
 }

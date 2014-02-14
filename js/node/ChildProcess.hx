@@ -19,13 +19,19 @@ extends js.node.events.EventEmitter
 implements npm.Package.Require<"child_process","*"> { 
 
   public static inline var EVENT_EXIT = "exit";
+  public static inline var EVENT_ERROR = "error";
+  public static inline var EVENT_CLOSE = "close";
+  public static inline var EVENT_DISCONNECT = "disconnect";
+  public static inline var EVENT_MESSAGE = "message";
 
 	var stdin:Writable;
   var stdout:Readable;
   var stderr:Readable;
   var pid:Int;
+  var connected: Bool;
   
   function kill(?signal:String):Void;
+  function disconnect(): Void;
 
 	static function spawn(command: String,args: Array<String>,?options: Dynamic ) : ChildProcess;
 	static function exec(command: String,?options:Dynamic,cb: {code:Int}->String->String->Void ): ChildProcess;
