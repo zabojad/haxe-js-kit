@@ -5,10 +5,16 @@ import js.support.Callback;
 
 extern class Mongoose
 implements npm.Package.Require<"mongoose","*"> {
-	public static var _ : js.npm.mongoose.Mongoose;
+
+	/**
+	
+	Default mongoose instance, ie return value of `require("mongoose")`
+
+	**/
+	public static var mongoose : js.npm.mongoose.Mongoose;
 
 	static function __init__() : Void 
-		_ = untyped Mongoose;
+		mongoose = untyped Mongoose;
 	
 	// public static var connection (default,null) : Connection;
 	// public static var modelNames (default,null) : Array<String>;

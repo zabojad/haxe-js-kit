@@ -1,4 +1,4 @@
-package js.browser.facebook;
+package js.browser.fb;
 
 @:native("FB.Event")
 extern class Event {
