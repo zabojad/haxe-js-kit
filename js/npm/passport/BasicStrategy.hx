@@ -2,7 +2,6 @@ package js.npm.passport;
 
 import js.support.Callback;
 
-@:native('Strategy')
 extern class BasicStrategy
 implements js.npm.passport.Strategy
 implements npm.Package.RequireNamespace<"passport-http","*">
