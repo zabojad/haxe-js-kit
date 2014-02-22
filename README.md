@@ -10,10 +10,13 @@ A collection of externs and tools to quickly get started with [Haxe](http://www.
 
 The library contains type signatures for :
 
-* **The base [node.js API](http://nodejs.org/api/)**
+* **The core [node.js API](http://nodejs.org/api/)**
 * **Common NPM libraries** such as :
-	* **[Connect.js](http://www.senchalabs.org/connect/)** middleware framework for node
-	* **[Express.js](http://expressjs.com/)** web application framework for node
+	* **[Connect.js](http://www.senchalabs.org/connect/)** middleware framework
+	* **[Express.js](http://expressjs.com/)** web application framework
+	* **[Mongoose](http://mongoosejs.com/)** elegant mongodb object modeling
+	* **[Socket.io](http://socket.io/)** cross-browser websockets for realtime apps
+	* **[Passport.js](http://passportjs.org/)** simple, unobtrusive authentication
 	* and more to come ;)
 	
 We try to keep the externs as close as possible to their native APIs, 
@@ -31,7 +34,7 @@ This means :
 
 ### NPM integration
 
-The library provides an easy way to manage [NPM](https://npmjs.org/) dependecies.
+The library provides an easy way to manage [NPM](https://npmjs.org/) dependencies.
 
 #### Including NPM packages
 
@@ -68,7 +71,10 @@ implements npm.Package.RequireNamespace<"http","*">
 var js_node_http_Server = require('http').Server;
 ```
 
-#### Exporting your projects' dependencies
+The `@:native` metadata is supported with `RequireNamespace`
+
+
+#### Exporting your project dependencies
 
 All NPM packages included this way can be exported by the Haxe compiler, typically to a ``package.json`` file, 
 so they can be automatically installed using ``npm install``
@@ -94,7 +100,7 @@ Please also note that the dependency system currently doesn't manage package ver
 ## Todo
 
 * Continue integrating / cleaning / completing externs, mainly from [nodejs_externs](https://github.com/dionjwa/nodejs_externs)
-* More libraries (Mongoose, ...)
+* Better mongoose integration (schema => typedefs, etc)
 * Complete the node API
 * Improve NPM integration (SemVer, less intrusive dependency export)
 * Try to fix issues with compiler cache...
