@@ -107,8 +107,7 @@ class Package {
 		// see if the type has already been processed
 		if( cl.meta.has(doneMeta) )
 			return fields;
-
-		
+	
 		// mark the type as processed
 		cl.meta.add( doneMeta , [] , pos );
 		
@@ -155,6 +154,9 @@ class Package {
 		}
 
 		if( required != null ){
+
+			// exclude local files
+			isNpm = isNpm && !( StringTools.startsWith(required.name,'/') || StringTools.startsWith(required.name,'./') );
 			
 			// set the generated class name 
 			var clName = if( !Context.defined('npm_full_paths') )
