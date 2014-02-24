@@ -91,80 +91,59 @@ class Package {
 
 	#if macro
 	static var requireId = 0;
-	static inline var doneMeta = ':npm_done';
+	static inline var NPM_DONE_META = ':npm_done';
+	static inline var USAGE = "Usage: 'implements npm.Require<\"module-name\",\"module-version\">'";
+	static inline var NPM_REQUIRE = "npm.Package.Require";
+	static inline var NPM_REQUIRE_NAMESPACE = "npm.Package.RequireNamespace";
+	static inline var NPM_OPTION_FULL_PATH = "npm_full_path";
+	static inline var JS_NODE_PACKAGE  = 'js.node';
+	static inline var SEP = "__";
+	static inline var INIT = "__init__";
 	#end
 
 	#if haxe3 macro #else @:macro #end public static function build() : Array<Field>{
-		var error = "Usage: 'implements npm.Module<\"module-name\",\"module-version\">'";
-		var invalidNative = "Invalid :native";
+		
 		var cl = Context.getLocalClass().get();
 		var fields = Context.getBuildFields();
 		var required : Pack = null;
 		var requireNS = false;
 		var pos = Context.currentPos();
-		var isNpm = !( cl.pack.slice(0,2).join('.') == 'js.node' );
+		var isNpm = !( cl.pack.slice(0,2).join('.') == JS_NODE_PACKAGE );
 
 		// see if the type has already been processed
-		if( cl.meta.has(doneMeta) )
+		if( cl.meta.has(NPM_DONE_META) )
 			return fields;
 	
 		// mark the type as processed
-		cl.meta.add( doneMeta , [] , pos );
+		cl.meta.add( NPM_DONE_META , [] , pos );
 		
 		// extract infos from the implemented interfaces
-		for( i in cl.interfaces ){
-			var t = i.t.get();
-			if( t.module == "npm.Package" 
-				&& ( t.name == "Require" || t.name == "RequireNamespace" ) ) {
-				if( t.name == "RequireNamespace" ) 
-					requireNS = true;
-				for( n in 0...i.params.length ){
-					switch(i.params[n]){
-						case TInst(name,_) :
-							switch(name.get().kind){
-								case KExpr(e):
-									switch( e.expr ){
-										case EConst(c) :
-											switch(c){
-												case CString(s) :
-													if( required == null ){
-														required = cast {};
-													}
-													switch( n ){
-														case 0 :
-															required.name = s;
-														case 1 :
-															required.version = s;
-													}
-													
-												default:
-													throw error;
-											}
-										default: 
-											throw error;
-									}
-								default :
-									throw error;
-							}
-						default:
-							throw error;
-					}
-				}
-			}
+		/*t.module == NPM_PACKAGE_MODULE
+				&& ( t.name == NPM_CLASS_REQUIRE || t.name == NPM_CLASS_REQUIRE_NAMESPACE ) */
+
+		var requireParams = util.Macro.extractStringParams( cl , NPM_REQUIRE );
+		if( requireParams.length == 0 ){
+			requireParams = util.Macro.extractStringParams( cl , NPM_REQUIRE_NAMESPACE );
+			requireNS = true;
 		}
 
-		if( required != null ){
+		if( requireParams.length > 0 ){
+
+			required = {
+				name : requireParams[0][0],
+				version : requireParams[0][1]
+			};
 
 			// exclude local files
 			isNpm = isNpm && !( StringTools.startsWith(required.name,'/') || StringTools.startsWith(required.name,'./') );
 			
 			// set the generated class name 
-			var clName = if( !Context.defined('npm_full_paths') )
+			var clName = if( !Context.defined( NPM_OPTION_FULL_PATH ) )
 				// if minified
-				cl.name+'__'+(requireId++);
+				cl.name+SEP+(requireId++);
 			else
 				// if not, use the class' full path
-				cl.pack.join("__") + "__"+cl.name;
+				cl.pack.join(SEP) + SEP+cl.name;
 
 			// initialization expressions
 			var init = [];
@@ -176,25 +155,9 @@ class Package {
 				// if the package is a namespace
 				
 				// check for :native class name
-				if( cl.meta.has(":native") ){
-					for(meta in cl.meta.get() ){
-						if( meta.name == ":native" ){
-							if( meta.params.length != 1 )
-								throw invalidNative;
-							
-							switch( meta.params[0].expr ){
-								case EConst( c ) : 
-									switch( c ) {
-										case CString( s ) :
-											nativeClass = s;
-										default : 
-											throw invalidNative;
-									}
-								default :
-									throw invalidNative;
-							}
-						}
-					}
+				var _nativeName = util.Macro.extractNative( cl );
+				if( _nativeName != null ){
+					nativeClass = _nativeName;
 				}
 			}
 
@@ -217,7 +180,7 @@ class Package {
 
 			// check that __init__ method already exists
 			for( f in fields ){
-				if( f.name == "__init__" ){
+				if( f.name == INIT ){
 					switch( f.kind ){
 						case FFun( fun ) :
 							injected = true;
@@ -236,7 +199,7 @@ class Package {
 			// if __init__ doesn't exist, just add the whole method
 			if( !injected ){
 				var f = {
-					name : "__init__",
+					name : INIT,
 					pos : pos,
 					meta : [],
 					access : [AStatic],
