@@ -1,7 +1,7 @@
 package js.browser;
 
-import js.npm.socketIo.Listener;
-import js.npm.socketIo.Namespace;
+import js.npm.socketio.Listener;
+import js.npm.socketio.Namespace;
 
 @:native("io")
 extern

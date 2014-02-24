@@ -1,3 +1,3 @@
-package js.npm.socketIo;
+package js.npm.socketio;
 
 typedef Listener = Dynamic -> Void;

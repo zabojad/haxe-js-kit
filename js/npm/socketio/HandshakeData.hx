@@ -1,4 +1,4 @@
-package js.npm.socketIo;
+package js.npm.socketio;
 
 typedef HandshakeData = {
 	headers : Dynamic,
