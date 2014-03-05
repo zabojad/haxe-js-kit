@@ -398,6 +398,10 @@ implements requirejs.Package.Require<"jquery","*"> {
 	}
 
 	private static function __init__() : Void untyped {
+		#if !requirejs
+		var q : Dynamic = window.jQuery;
+		js.JQuery = q;
+		#end
 		__feature__('js.JQuery.iterator',
 			q.fn.iterator = function() return { pos : 0, j : __this__, hasNext : function() return __this__.pos < __this__.j.length, next : function() return $(__this__.j[__this__.pos++]) }
 		);
