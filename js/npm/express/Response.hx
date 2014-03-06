@@ -9,7 +9,8 @@ extends ServerResponse {
 	public var charset : String;
 	public var locals : Dynamic;
 
-	public function redirect(?status : Int , url : String) : Void;
+	@:overload( function( code : Int , url : String ) : Void {} )
+	public function redirect( url : String) : Void;
   	
   	@:overload( function( code:Int , value : Dynamic ) : Void {} )
 	function send( value : Dynamic) : Void;
