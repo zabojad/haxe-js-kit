@@ -87,6 +87,8 @@ extern class Models<M:Model<Dynamic>> {
 
 	public function mapReduce( o : ModelMapReduce , callback : Callback2<Array<M>,{}> ) : Void;
 
+	@:overload( function( c1 : {} , c2 : {} , c3 : {} , options : {} , callback : Callback<{}> ) : Void {} )
+	@:overload( function( c1 : {} , c2 : {} , options : {} , callback : Callback<{}> ) : Void {} )
 	@:overload( function( commands : {} , options : {} , callback : Callback<{}> ) : Void {} )
 	public function aggregate( commands : {} , callback : Callback<{}> ) : Void;
 
