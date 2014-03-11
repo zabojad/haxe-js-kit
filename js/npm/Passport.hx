@@ -28,4 +28,7 @@ implements npm.Package.Require<"passport","*">
 	public static inline function user( req : js.node.http.ClientRequest ) : PassportUser {
 		return untyped req.user;
 	}
+	public static inline function logout( req : js.node.http.ClientRequest ) : Void {
+		return untyped req.logout();
+	} 
 }
