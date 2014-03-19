@@ -4,6 +4,14 @@ A collection of externs and tools to quickly get started with [Haxe](http://www.
 
 **Warning : This is a work in progress and is definitely not stable nor complete !**
 
+## Installation
+
+Using haxelib :
+```
+haxelib git js-kit https://github.com/clemos/haxe-js-kit.git haxelib
+```
+Or you can just download / clone the repo manually, and add the folder to your project's classpath
+
 ## Features
 
 ### Type signatures
