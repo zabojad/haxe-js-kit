@@ -1,6 +1,6 @@
-# A node.js SDK for Haxe
+# A Javascript Toolkit for Haxe
 
-A collection of externs and tools to quickly get started with [Haxe](http://www.haxe.org)/[Node.js](http://nodejs.org)
+A collection of externs and tools to quickly get started with [Haxe](http://www.haxe.org)/JS, including [Node.js](http://nodejs.org)
 
 **Warning : This is a work in progress and is definitely not stable nor complete !**
 
@@ -18,6 +18,7 @@ The library contains type signatures for :
 	* **[Socket.io](http://socket.io/)** cross-browser websockets for realtime apps
 	* **[Passport.js](http://passportjs.org/)** simple, unobtrusive authentication
 	* and more to come ;)
+* **Some major client-side libraries** : up-to-date JQuery externs, socket.io client, etc
 	
 We try to keep the externs as close as possible to their native APIs, 
 while sticking as much as possible to the Haxe type / package system.
@@ -102,6 +103,7 @@ Please also note that the dependency system currently doesn't manage package ver
 * Continue integrating / cleaning / completing externs, mainly from [nodejs_externs](https://github.com/dionjwa/nodejs_externs)
 * Better mongoose integration (schema => typedefs, etc)
 * Complete the node API
+* RequireJS & Bower integration
 * Improve NPM integration (SemVer, less intrusive dependency export)
 * Try to fix issues with compiler cache...
 * Publish to haxelib
