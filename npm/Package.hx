@@ -43,7 +43,7 @@ class Package {
 				Reflect.setField( data.dependencies , name , dependencies.get(name) );
 			}
 
-			var content =  npm.Json.stringify( data );
+			var content =  haxe.Json.stringify( data );
 			sys.io.File.saveContent( path , content );
 
 		});
