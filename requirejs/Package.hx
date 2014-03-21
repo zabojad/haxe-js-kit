@@ -11,9 +11,6 @@ import haxe.macro.Expr.Field;
 import sys.io.File;
 #end
 
-@:autoBuild( requirejs.Include.build() )
-interface Require<Const,Const> {}
-
 #if !macro extern #end class Include {
 
 	public static var mapping : StringMap<String>;
@@ -61,3 +58,6 @@ interface Require<Const,Const> {}
 		return fields;
 	}
 }
+
+@:autoBuild( requirejs.Include.build() )
+extern interface Require<Const,Const> {}
