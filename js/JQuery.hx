@@ -24,7 +24,7 @@ package js;
 import js.html.DOMWindow;
 import js.html.Element;
 
-typedef JqEvent = {
+typedef JQueryEvent = {
 	var target : Element;
 	var currentTarget : Element;
 	var relatedTarget : Element;
@@ -62,23 +62,8 @@ typedef JqEvent = {
 	function stopPropagation() : Void;
 }
 
-extern class JQueryHelper {
-	@:overload(function(j:JQuery):JQuery{})
-	@:overload(function(j:DOMWindow):JQuery{})
-	@:overload(function(j:Element):JQuery{})
-	public static inline function J( html : String ) : JQuery {
-		return new JQuery(html);
-	}
-	
-	public static var JTHIS(get, null) : JQuery;
-
-	static inline function get_JTHIS() : JQuery {
-		return untyped __js__("$(this)");
-	}
-
-}
-
 @:initPackage
+@:native("jQuery")
 extern class JQuery 
 implements ArrayAccess<Element>
 implements requirejs.Package.Require<"jquery","*"> {
@@ -280,66 +265,66 @@ implements requirejs.Package.Require<"jquery","*"> {
 	function toggle( ?duration : Int, ?call : Void -> Void ) : JQuery;
 
 	// Events
-	function blur( ?callb : JqEvent -> Void ) : JQuery;
-	function change( ?callb : JqEvent -> Void ) : JQuery;
+	function blur( ?callb : JQueryEvent -> Void ) : JQuery;
+	function change( ?callb : JQueryEvent -> Void ) : JQuery;
 
 	@:overload(function(callb:Void->Void):JQuery { } )
-	@:overload(function(callb:JQuery.JqEvent->Void):JQuery{})
+	@:overload(function(callb:JQuery.JQueryEvent->Void):JQuery{})
 	@:overload(function(callb:Void->Bool):JQuery{})
-	function click( ?callb : JqEvent -> Void ) : JQuery;
-	function dblclick( ?callb : JqEvent -> Void ) : JQuery;
-	function error( ?callb : JqEvent -> Void ) : JQuery;
-	function focus( ?callb : JqEvent -> Void ) : JQuery;
-	function focusin( ?callb : JqEvent -> Void ) : JQuery;
-	function focusout( ?callb : JqEvent -> Void ) : JQuery;
+	function click( ?callb : JQueryEvent -> Void ) : JQuery;
+	function dblclick( ?callb : JQueryEvent -> Void ) : JQuery;
+	function error( ?callb : JQueryEvent -> Void ) : JQuery;
+	function focus( ?callb : JQueryEvent -> Void ) : JQuery;
+	function focusin( ?callb : JQueryEvent -> Void ) : JQuery;
+	function focusout( ?callb : JQueryEvent -> Void ) : JQuery;
 
-	@:overload(function(onInOut:JqEvent->Void):JQuery{})
-	function hover( onIn : JqEvent -> Void, ?onOut : JqEvent -> Void ) : JQuery;
+	@:overload(function(onInOut:JQueryEvent->Void):JQuery{})
+	function hover( onIn : JQueryEvent -> Void, ?onOut : JQueryEvent -> Void ) : JQuery;
 
-	@:overload(function( callb : JQuery.JqEvent -> Bool ) : JQuery {})
-	function keydown( ?callb : JqEvent -> Void ) : JQuery;
+	@:overload(function( callb : JQuery.JQueryEvent -> Bool ) : JQuery {})
+	function keydown( ?callb : JQueryEvent -> Void ) : JQuery;
 
-	@:overload(function( callb : JQuery.JqEvent -> Bool ) : JQuery {})
-	function keypress( ?callb : JqEvent -> Void ) : JQuery;
+	@:overload(function( callb : JQuery.JQueryEvent -> Bool ) : JQuery {})
+	function keypress( ?callb : JQueryEvent -> Void ) : JQuery;
 
-	@:overload(function( callb : JQuery.JqEvent -> Bool ) : JQuery {})
-	function keyup( ?callb : JqEvent -> Void ) : JQuery;
+	@:overload(function( callb : JQuery.JQueryEvent -> Bool ) : JQuery {})
+	function keyup( ?callb : JQueryEvent -> Void ) : JQuery;
 
-	function mousedown( ?callb : JqEvent -> Void ) : JQuery;
-	function mouseenter( ?callb : JqEvent -> Void ) : JQuery;
-	function mouseleave( ?callb : JqEvent -> Void ) : JQuery;
-	function mouseout( ?callb : JqEvent -> Void ) : JQuery;
-	function mouseover( ?callb : JqEvent -> Void ) : JQuery;
-	function mousemove( ?callb : JqEvent -> Void ) : JQuery;
-	function mouseup( ?callb : JqEvent -> Void ) : JQuery;
+	function mousedown( ?callb : JQueryEvent -> Void ) : JQuery;
+	function mouseenter( ?callb : JQueryEvent -> Void ) : JQuery;
+	function mouseleave( ?callb : JQueryEvent -> Void ) : JQuery;
+	function mouseout( ?callb : JQueryEvent -> Void ) : JQuery;
+	function mouseover( ?callb : JQueryEvent -> Void ) : JQuery;
+	function mousemove( ?callb : JQueryEvent -> Void ) : JQuery;
+	function mouseup( ?callb : JQueryEvent -> Void ) : JQuery;
 
 	// AJAX overloads
 	@:overload(function( url:String, ?data : {}, ?callb : String -> String -> Void ) : JQuery {})
 	@:overload(function( url:String, ?data : {}, ?callb : String -> Void ) : JQuery {})
 	@:overload(function( url:String, ?data : {}, ?callb : Void -> Void ) : JQuery {})
-	function load( ?callb : JqEvent -> Void ) : JQuery;
-	function ready( callb : JqEvent -> Void ) : JQuery;
-	function resize( ?callb : JqEvent -> Void ) : JQuery;
-	function scroll( ?callb : JqEvent -> Void ) : JQuery;
-	function select( ?callb : JqEvent -> Void ) : JQuery;
-	function submit( ?callb : JqEvent -> Void ) : JQuery;
-	function unload( ?callb : JqEvent -> Void ) : JQuery;
+	function load( ?callb : JQueryEvent -> Void ) : JQuery;
+	function ready( callb : JQueryEvent -> Void ) : JQuery;
+	function resize( ?callb : JQueryEvent -> Void ) : JQuery;
+	function scroll( ?callb : JQueryEvent -> Void ) : JQuery;
+	function select( ?callb : JQueryEvent -> Void ) : JQuery;
+	function submit( ?callb : JQueryEvent -> Void ) : JQuery;
+	function unload( ?callb : JQueryEvent -> Void ) : JQuery;
 
-	function bind( events : String, callb : JqEvent -> Void ) : JQuery;
-	function delegate( selector : String, events : String, callb : JqEvent -> Void ) : JQuery;
-	function die( ?events : String, ?callb : JqEvent -> Void ) : JQuery;
-	function one( events : String, callb : JqEvent -> Void ) : JQuery;
-	function live( events : String, callb : JqEvent -> Void ) : JQuery;
+	function bind( events : String, callb : JQueryEvent -> Void ) : JQuery;
+	function delegate( selector : String, events : String, callb : JQueryEvent -> Void ) : JQuery;
+	function die( ?events : String, ?callb : JQueryEvent -> Void ) : JQuery;
+	function one( events : String, callb : JQueryEvent -> Void ) : JQuery;
+	function live( events : String, callb : JQueryEvent -> Void ) : JQuery;
 	function trigger( events : String ) : JQuery;
 	function triggerHandler( events : String ) : JQuery;
-	function unbind( ?events : String, ?callb : JqEvent -> Void ) : JQuery;
-	function undelegate( ?selector : String, ?events : String, ?callb : JqEvent -> Void ) : JQuery;
+	function unbind( ?events : String, ?callb : JQueryEvent -> Void ) : JQuery;
+	function undelegate( ?selector : String, ?events : String, ?callb : JQueryEvent -> Void ) : JQuery;
 
 	// JQuery 1.7+
 
-	@:overload(function(events:Dynamic<JqEvent->Void>):JQuery{})
-	@:overload(function(events : String, selector : String , callb : JqEvent -> Void ) : JQuery {} )
-	function on( events : String, callb : JqEvent -> Void ) : JQuery;
+	@:overload(function(events:Dynamic<JQueryEvent->Void>):JQuery{})
+	@:overload(function(events : String, selector : String , callb : JQueryEvent -> Void ) : JQuery {} )
+	function on( events : String, callb : JQueryEvent -> Void ) : JQuery;
 
 	// queue
 	function clearQueue( ?queueName : String ) : JQuery;
@@ -374,11 +359,6 @@ implements requirejs.Package.Require<"jquery","*"> {
 		return untyped __define_feature__('js.JQuery.iterator', this["iterator"])();
 	}
 
-	/**
-		Return the current JQuery element (in a callback), similar to $(this) in JS.
-	**/
-	static var cur(get, null) : JQuery;
-
 	static var fx(default, null) : { off : Bool, interval : Int };
 	static var browser(default, null) : { webkit : Bool, opera : Bool, msie : Bool, mozilla : Bool, version : String };
 
@@ -393,17 +373,9 @@ implements requirejs.Package.Require<"jquery","*"> {
 	//static function getJSON, getScript, grep
 	//static function is*, makeArray, map, merge, noop, now, param, proxy, sub, trim, type, unique
 
-	private static inline function get_cur() : JQuery {
-		return untyped __js__("$(this)");
-	}
-
 	private static function __init__() : Void untyped {
-		#if !requirejs
-		var q : Dynamic = window.jQuery;
-		js.JQuery = q;
-		#end
 		__feature__('js.JQuery.iterator',
-			q.fn.iterator = function() return { pos : 0, j : __this__, hasNext : function() return __this__.pos < __this__.j.length, next : function() return $(__this__.j[__this__.pos++]) }
+			js.JQuery.fn.iterator = function() return { pos : 0, j : __this__, hasNext : function() return __this__.pos < __this__.j.length, next : function() return new js.JQuery(__this__.j[__this__.pos++]) }
 		);
 	}
 }
