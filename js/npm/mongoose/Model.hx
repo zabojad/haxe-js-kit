@@ -7,10 +7,6 @@ extends Document<T>
 implements npm.Package.RequireNamespace<"mongoose","*"> 
 {
 
-	// this is too lame
-	// public var _ (get,null) : T;
-	// inline private function get__() : T return untyped this;
-
 	public var db : Connection;
 	public var collection : Dynamic;//Collection;
 	public var modelName : String;
@@ -23,7 +19,14 @@ implements npm.Package.RequireNamespace<"mongoose","*">
 	
 }
 
-extern typedef Models<T> = TypedModels<T,Model<T>>; 
+extern class UntypedModel<T>
+extends Model<T> {
+	// just add a helper to type models a minimum
+	public var _ (get,null) : T;
+	inline private function get__() : T return untyped this;
+}
+
+extern typedef Models<T> = TypedModels<T,UntypedModel<T>>;
 
 extern class TypedModels<T,M:Model<T>> {
 	public var db : Connection;

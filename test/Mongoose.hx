@@ -3,16 +3,18 @@ package test;
 import js.npm.mongoose.macro.Model;
 import js.npm.Mongoose.mongoose;
 
-// declare the model
-// the typedef fields will be "copied" to Stuff instance
-extern class Stuff extends Model<{
+typedef StuffData = {
 	test : String,
 	foo : Int,
 	?bar : {
 		hello : String,
 		world : Array<Dynamic>
 	}
-}>{
+}
+
+// declare the model
+// the typedef fields will be "copied" to Stuff instance
+extern class Stuff extends Model<StuffData>{
 
 }
 
