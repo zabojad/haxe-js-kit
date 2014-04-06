@@ -1,5 +1,6 @@
 package js.npm.mongoose;
 
-class Promise {
-	
+extern class Promise
+implements npm.Package.RequireNamespace<"mongoose","*"> {
+	// TODO
 }
