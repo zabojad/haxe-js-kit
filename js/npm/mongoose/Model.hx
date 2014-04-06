@@ -19,14 +19,14 @@ implements npm.Package.RequireNamespace<"mongoose","*">
 	
 }
 
-extern class UntypedModel<T>
+// just add a helper to type models a minimum
+extern class RawModel<T>
 extends Model<T> {
-	// just add a helper to type models a minimum
 	public var _ (get,null) : T;
 	inline private function get__() : T return untyped this;
 }
 
-extern typedef Models<T> = TypedModels<T,UntypedModel<T>>;
+extern typedef Models<T> = TypedModels<T,RawModel<T>>;
 
 extern class TypedModels<T,M:Model<T>> {
 	public var db : Connection;
