@@ -5,7 +5,7 @@ import js.npm.Mongoose.mongoose;
 
 // declare the model
 // the typedef fields will be "copied" to Stuff instance
-class Stuff extends Model<{
+extern class Stuff extends Model<{
 	test : String,
 	foo : Int,
 	?bar : {

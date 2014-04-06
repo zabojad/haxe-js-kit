@@ -100,7 +100,7 @@ class Mongoose {
 							
 							var s = new js.npm.mongoose.Schema($schemaDef);
 							//untyped s.methods = $methodsObj;
-							return mongoose.model( name , s );
+							return mongoose.model( name , s , collectionName , skipInit );
 
 						},
 						args : [{
@@ -123,9 +123,29 @@ class Mongoose {
 								params : []
 							}),
 							opt : null
+						},{
+							name : "collectionName",
+							value : null,
+							type : TPath({
+								sub : null,
+								pack : [],
+								name : "String",
+								params : []
+							}),
+							opt : true
+						},{
+							name : "skipInit",
+							value : null,
+							type : TPath({
+								sub : null,
+								pack : [],
+								name : "Bool",
+								params : []
+							}),
+							opt : true
 						}]
 					}),
-					access : [AStatic,APublic]
+					access : [AStatic,APublic,AInline]
 				});
 			default :
 				throw "not supported";
@@ -153,11 +173,13 @@ class Mongoose {
 		return switch( type ){
 			case TInst( t , params ) :
 				var i = t.get();
-				switch( i.pack.join(".") + "." + i.name ){
+				var fullname = i.pack.join(".") + ( i.pack.length > 0 ? "." : "" ) + i.name;
+				switch( fullname ){
 					case "String" : 
 						macro { type : String };
 					case "Array" :
-						macro [{ type : typeToSchemaField(params[0]) }];
+						var t = typeToSchemaField(params[0]);
+						macro [{ type : $t }];
 					case "Date" :
 						macro { type : Date };
 					case "js.node.Buffer" :
@@ -168,8 +190,9 @@ class Mongoose {
 						macro {};
 				}	
 			case TAbstract( t , params ) :
-				var a = t.get();
-				switch( a.pack.join(".") + "." + a.name ){
+				var i = t.get();
+				var fullname = i.pack.join(".") + ( i.pack.length > 0 ? "." : "" ) + i.name;
+				switch( fullname ){
 					case "Float","Int" :
 						macro { type : untyped __js__('Number') };
 					default : 
