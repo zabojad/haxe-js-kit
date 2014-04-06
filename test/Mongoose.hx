@@ -14,9 +14,7 @@ typedef StuffData = {
 
 // declare the model
 // the typedef fields will be "copied" to Stuff instance
-extern class Stuff extends Model<StuffData>{
-
-}
+extern class Stuff extends Model<StuffData>{}
 
 class Mongoose {
 	
