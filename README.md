@@ -27,7 +27,38 @@ The library contains type signatures for :
 	* **[Passport.js](http://passportjs.org/)** simple, unobtrusive authentication
 	* and more to come ;)
 * **Some major client-side libraries** : up-to-date JQuery externs, socket.io client, etc
-	
+
+### NPM integration
+
+The library provides an easy way to manage [NPM](https://npmjs.org/) dependencies: 
+
+Basically, the NPM packages that correspond to the libraries used by your project will be automatically `require`d at compile-time.
+
+#### Exporting your project dependencies
+
+All NPM packages included this way can also be automatically exported by the Haxe compiler, typically to a ``package.json`` file, 
+so they can be automatically installed using ``npm install``
+
+You just add to add this flag to your ``build.hxml`` script :
+```
+--macro npm.Package.export("package.json")
+```
+
+Note that the macro will parse the package file, 
+add dependencies to it, 
+and then rewrite the whole json file.
+
+**This means that it may change formatting.**
+
+The process is incremental, though, which means that :
+
+* other dependencies you may have added manually will be kept.
+* unused dependencies will remain unless you remove them manually
+
+Please also note that the dependency system currently doesn't manage package versions / SemVer.
+
+## Contributing
+
 We try to keep the externs as close as possible to their native APIs, 
 while sticking as much as possible to the Haxe type / package system.
 
@@ -41,11 +72,7 @@ This means :
 * Assuming that in most cases, instantiation using simple JS calls (like ``var app = express()``) 
   is similar to using ``new`` in Haxe (like ``var app = new Express()``)
 
-### NPM integration
-
-The library provides an easy way to manage [NPM](https://npmjs.org/) dependencies.
-
-#### Including NPM packages
+### Including NPM packages
 
 You can map your extern classes to an NPM package by implementing `npm.Package.Require` or `npm.Package.RequireNamespace`.
 
@@ -83,35 +110,10 @@ var js_node_http_Server = require('http').Server;
 The `@:native` metadata is supported with `RequireNamespace`
 
 
-#### Exporting your project dependencies
-
-All NPM packages included this way can be exported by the Haxe compiler, typically to a ``package.json`` file, 
-so they can be automatically installed using ``npm install``
-
-You just add to add this flag to your ``build.hxml`` script :
-```
---macro npm.Package.export("package.json")
-```
-
-Note that the macro will parse the package file, 
-add dependencies to it, 
-and then rewrite the whole json file.
-
-**This means that it will remove any comments, and may change formatting.**
-
-The process is incremental, though, which means that :
-
-* other dependencies you may have added manually will be kept.
-* unused dependencies will remain unless you remove them manually
-
-Please also note that the dependency system currently doesn't manage package versions / SemVer.
-
 ## Todo
 
 * Continue integrating / cleaning / completing externs, mainly from [nodejs_externs](https://github.com/dionjwa/nodejs_externs)
-* Better mongoose integration (schema => typedefs, etc)
 * Complete the node API
-* RequireJS & Bower integration
+* RequireJS & Bower integration (WIP)
 * Improve NPM integration (SemVer, less intrusive dependency export)
-* Try to fix issues with compiler cache...
 * Publish to haxelib
