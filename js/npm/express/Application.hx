@@ -13,7 +13,7 @@ extern class Application
 
 	@:overload( function ( mount : String , middleware : Middleware<Request,Response> ) : Connect {} )
 	@:overload( function ( mount : String , middleware : Middleware<Request,Response> ) : Connect {} )
-	@:overload( function ( errorHandler : Dynamic -> Request -> Response -> Callback<Void> -> Void  ) : Connect {} )
+	@:overload( function ( errorHandler : Dynamic -> Request -> Response -> Callback0 -> Void  ) : Connect {} )
 	public function use ( middleware : Middleware<Request,Response> ) : Connect ;
 
 	@:overload(function( port :Int, ready : Void -> Void ): Application { } )
@@ -38,7 +38,7 @@ extern class Application
 
 	function engine( ext : String , engine : String -> {} -> Callback<String> -> Void ) : Void;
 
-	function param( name : String , callback : Request -> Response -> Callback<Void> -> Dynamic -> Void ) : Void;
+	function param( name : String , callback : Request -> Response -> Callback0 -> Dynamic -> Void ) : Void;
 
 	function set( setting : String , value : Dynamic ) : Void;
 

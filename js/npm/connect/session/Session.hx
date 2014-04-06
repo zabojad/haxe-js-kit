@@ -9,10 +9,10 @@ implements Dynamic {
 	public var maxAge : Int;
 
 	public function new( req : ClientRequest ) : Void;
-	public function regenerate(?cb:Callback<Void> ) : Void;
-	public function destroy(?cb:Callback<Void> ) : Void;
-	public function reload(?cb:Callback<Void> ) : Void;
-	public function save(?cb:Callback<Void> ) : Void;
+	public function regenerate(?cb:Callback0 ) : Void;
+	public function destroy(?cb:Callback0 ) : Void;
+	public function reload(?cb:Callback0 ) : Void;
+	public function save(?cb:Callback0 ) : Void;
 	public function touch() : Void;
 
 }

@@ -2,40 +2,46 @@ package js.npm.mongoose;
 
 import js.support.Callback;
 
-extern class Model<S:Schema>
-extends Document<S>
+extern class Model<T>
+extends Document<T>
 implements npm.Package.RequireNamespace<"mongoose","*"> 
 {
+
+	public var _ (get,null) : T;
+	inline private function get__() : T return untyped this;
+
 	public var db : Connection;
 	public var collection : Dynamic;//Collection;
 	public var modelName : String;
 	
-	public function save( fn : Callback<Model<S>> ) : Void;
-	public function increment() : Model<S>;
-	public function remove( ?fn : Callback<Model<S>> ) : Model<S>;
+	public function save( fn : Callback<Model<T>> ) : Void;
+	public function increment() : Model<T>;
+	public function remove( ?fn : Callback<Model<T>> ) : Model<T>;
 
-	public function model<M:Model<S>>( name : String ) : Models<M>;
+	public function model<T,M>( name : String ) : TypedModels<T,M>;
 	
 }
 
-extern class Models<M:Model<Dynamic>> {
+extern typedef Models<T> = TypedModels<T,Model<T>>; 
+
+extern class TypedModels<T,M:Model<T>> {
 	public var db : Connection;
 	public var collection : Dynamic;//Collection;
 	public var modelName : String;
-	public var schema : Schema;
+	public var schema : Schema<T>;
 	public var base : Mongoose;
-
-	public function ensureIndexes( ?fn : Callback<Void> ) : Void;
-	public function remove( conditions : {} , callback : Callback<Void> ) : Void;
+	
+	public function ensureIndexes( ?fn : Callback0 ) : Void;
+	public function remove( conditions : {} , callback : Callback0 ) : Void;
 
 	@:overload( function ( conditions : {} , fields : String , callback : Callback<Array<M>> ): Query<Array<M>> {} )
-	@:overload( function ( conditions : {} , fields : String , options : {} , ?callback : Callback<Array<M>> ): Query<Array<M>> {} )
+	@:overload( function ( conditions : {} , fields : String , options : {} , ?callback : Callback<Array<Model<T>>> ): Query<Array<M>> {} )
 	@:overload( function ( conditions : {} , fields : Null<{}> , options : {} , ?callback : Callback<Array<M>> ): Query<Array<M>> {} )
-	public function find( ?conditions : {} , ?callback : Callback<Array<M>> ): Query<Array<M>>; // Query<M>
+	public function find( ?conditions : {} , ?callback : Callback<Array<M>> ): Query<Array<M>>; // Query<Model<T>>
 
-	@:overload( function ( id : Dynamic , fields : String , options : {} , ?callback : Callback<Null<M>> ): Query<M> {} )
-	@:overload( function ( id : Dynamic , fields : Null<{}> , options : {} , ?callback : Callback<Null<M>> ): Query<M> {} )
-	public function findById( id : Dynamic , ?callback : Callback<Null<M>> ): Query<M>; // Query<M>
+	@:overload( function ( id : Dynamic , fields : String , options : {} , ?callback : Callback<Null<Model<T>>> ): Query<Model<T>> {} )
+	@:overload( function ( id : Dynamic , fields : Null<{}> , options : {} , ?callback : Callback<Null<Model<T>>> ): Query<Model<T>> {} )
+	public function findById( id : Dynamic , ?callback : Callback<Null<Model<T>>> ): Query<Model<T>>; // Query<Model<T>>
 
 	@:overload( function( conditions : {} , callback : Callback<Null<M>> ) : Void {} )
 	@:overload( function ( conditions : {}  , fields : String , options : {} , ?callback : Callback<Null<M>> ): Query<M> {} )
@@ -77,8 +83,8 @@ extern class Models<M:Model<Dynamic>> {
 	@:overload( function( ?id : Dynamic ) : Query<M> {} )
 	public function findByIdAndRemove( id : Dynamic , callback : Callback<Null<M>> ) : Query<M>;
 
-    @:overload( function( doc : {} , fn : Callback<M> ) : Void {} )
-	public function create( doc:Array<{}> , fn : Callback<Array<M>> /* TODO : maybe there's a solution for multiple arguments... */  ) : Void;
+    @:overload( function( doc : T , fn : Callback<M> ) : Void {} )
+	public function create( doc:Array<T> , fn : Callback<Array<M>> /* TODO : maybe there's a solution for multiple arguments... */  ) : Void;
 
 	@:overload( function( conditions : {} , update : {} , options : {} , callback : Callback<Array<M>> ) : Query<Array<M>> {} )
 	@:overload( function( conditions : {} , update : {} , options : {} ) : Query<Array<M>> {} )
