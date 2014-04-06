@@ -36,6 +36,7 @@ class Mongoose {
 			stuff.create( d , function(err, doc){
 				trace("foo", doc.foo);
 				trace("test",doc.test);
+				
 			} );
 		});
 

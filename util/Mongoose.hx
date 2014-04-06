@@ -3,6 +3,7 @@ package util;
 import haxe.macro.Context;
 import haxe.macro.Expr;
 import haxe.macro.Type;
+import haxe.macro.TypeTools;
 
 class Mongoose {
 
@@ -171,6 +172,9 @@ class Mongoose {
 	static function typeToSchemaField( type : Type ) : Expr {
 		
 		return switch( type ){
+			case TAnonymous( a ) :
+				return { expr : anonTypeToSchemaDef( a.get() ) , pos : Context.currentPos() };
+
 			case TInst( t , params ) :
 				var i = t.get();
 				var fullname = i.pack.join(".") + ( i.pack.length > 0 ? "." : "" ) + i.name;
@@ -179,7 +183,7 @@ class Mongoose {
 						macro { type : String };
 					case "Array" :
 						var t = typeToSchemaField(params[0]);
-						macro [{ type : $t }];
+						macro [$t];
 					case "Date" :
 						macro { type : Date };
 					case "js.node.Buffer" :
@@ -187,7 +191,7 @@ class Mongoose {
 					case "js.npm.mongoose.schema.types.ObjectId" :
 						macro { type : js.npm.mongoose.schema.types.ObjectId };
 					default : 
-						macro {};
+						macro { type : js.npm.mongoose.schema.types.Mixed };
 				}	
 			case TAbstract( t , params ) :
 				var i = t.get();
@@ -196,9 +200,9 @@ class Mongoose {
 					case "Float","Int" :
 						macro { type : untyped __js__('Number') };
 					default : 
-						macro {};
+						macro { type : js.npm.mongoose.schema.types.Mixed };
 				}
-			default : macro {};
+			default : macro { type : js.npm.mongoose.schema.types.Mixed };
 		}
 
 	}
