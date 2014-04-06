@@ -7,8 +7,9 @@ extends Document<T>
 implements npm.Package.RequireNamespace<"mongoose","*"> 
 {
 
-	public var _ (get,null) : T;
-	inline private function get__() : T return untyped this;
+	// this is too lame
+	// public var _ (get,null) : T;
+	// inline private function get__() : T return untyped this;
 
 	public var db : Connection;
 	public var collection : Dynamic;//Collection;
