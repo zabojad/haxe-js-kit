@@ -8,6 +8,7 @@ import js.node.events.EventEmitter;
    drain,error,close,pipe
 */
 extern class Writable
+implements IWritable
 extends EventEmitter
 implements npm.Package.RequireNamespace<"stream","*">
 {
@@ -28,4 +29,17 @@ implements npm.Package.RequireNamespace<"stream","*">
   function destroySoon():Void;
   function new(?opt:Dynamic):Void;
   
+}
+
+extern interface IWritable 
+extends IEventEmitter {
+
+  var writeable:Bool;
+  @:overload(function(chunk:Buffer):Bool {})
+  function write(d:String,?enc:String,?fd:Int):Bool;
+  @:overload(function(b:Buffer):Void {})
+  function end(?s:String,?enc:String):Void;
+  function destroy():Void;
+  function destroySoon():Void;
+
 }

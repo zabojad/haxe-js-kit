@@ -1,8 +1,10 @@
 package js.node.stream;
 
 import js.node.events.EventEmitter;
+import js.node.stream.Writable;
 
 extern class Readable 
+implements IReadable
 extends EventEmitter
 implements npm.Package.RequireNamespace<"stream","*">
 {
@@ -19,7 +21,17 @@ implements npm.Package.RequireNamespace<"stream","*">
   function destroy():Void;
   function destroySoon():Void;
   function setEncoding(enc:String):Void;
-  function pipe(dest:js.node.stream.Writable,?opts:{end:Bool}):Void;
+  function pipe(dest:IWritable,?opts:{end:Bool}):Void;
   function new(?opt:Dynamic):Void;
 
+}
+
+extern interface IReadable 
+extends IEventEmitter {
+  function pause():Void;
+  function resume():Void;
+  function destroy():Void;
+  function destroySoon():Void;
+  function setEncoding(enc:String):Void;
+  function pipe(dest:IWritable,?opts:{end:Bool}):Void;
 }
