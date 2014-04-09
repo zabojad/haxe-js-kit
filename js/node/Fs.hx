@@ -109,8 +109,8 @@ implements npm.Package.Require<"fs","*">
   static function watchFile(fileName:String,?options:FsWatchOpt,listener:Stats->Stats->Void):Void;
   static function unwatchFile(fileName:String):Void;
   static function watch(fileName:String,?options:FsWatchOpt,listener:String->String->Void):FSWatcher;
-  static function createReadStream(path:String,?options:FsReadStreamOpt):Readable;
-  static function createWriteStream(path:String,?options:FsWriteStreamOpt):Writable;
+  static function createReadStream(path:String,?options:FsReadStreamOpt):IReadable;
+  static function createWriteStream(path:String,?options:FsWriteStreamOpt):IWritable;
 
   static function exists(p:String,cb:Bool->Void):Void;
   static function existsSync(p:String):Bool;

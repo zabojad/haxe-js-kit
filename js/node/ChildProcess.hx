@@ -24,9 +24,9 @@ implements npm.Package.Require<"child_process","*"> {
   public static inline var EVENT_DISCONNECT = "disconnect";
   public static inline var EVENT_MESSAGE = "message";
 
-	var stdin:Writable;
-  var stdout:Readable;
-  var stderr:Readable;
+	var stdin:IWritable;
+  var stdout:IReadable;
+  var stderr:IReadable;
   var pid:Int;
   var connected: Bool;
   

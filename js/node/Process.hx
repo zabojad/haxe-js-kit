@@ -15,9 +15,9 @@ extern class Process extends EventEmitter {
   public static inline var EVENT_SIGINT = "SIGINT";
   public static inline var EVENT_SIGUSR1 = "SIGUSR1";
 
-  var stdout:Writable;
-  var stdin:Readable;
-  var stderr:Writable;
+  var stdout:IWritable;
+  var stdin:IReadable;
+  var stderr:IWritable;
   var argv:Array<String>;
   var env:Dynamic;
   var pid:Int;
