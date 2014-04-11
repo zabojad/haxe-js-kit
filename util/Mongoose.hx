@@ -197,7 +197,7 @@ class Mongoose {
 			}
 						
 		}
-		trace(type.expr);
+		//trace(type.expr);
 		switch( type.expr ){
 			case EConst( CIdent( "String" ) ) :
 				for(m in f.meta.get()){
