@@ -254,6 +254,7 @@ class Mongoose {
 	}
 
 	static function typeToSchemaType( type : Type ) : ExprDef {
+		//trace(type);
 		switch( type ){
 			case TAnonymous( a ) :
 				return anonTypeToSchemaDef( a.get() );
@@ -284,6 +285,8 @@ class Mongoose {
 				var expr = switch( fullname ){
 					case "Float","Int" :
 						macro js.Number;
+					case "Bool" :
+						macro Bool;
 					default : 
 						macro js.npm.mongoose.schema.types.Mixed;
 				}
