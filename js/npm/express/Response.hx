@@ -5,6 +5,7 @@ import js.support.Callback;
 
 typedef Response = TResponse<Dynamic>;
 
+@:native("Response")
 extern class TResponse<L> 
 extends ServerResponse {
 
@@ -15,7 +16,7 @@ extends ServerResponse {
 	public function redirect( url : String) : Void;
   	
   	@:overload( function( code:Int , value : Dynamic ) : Void {} )
-	function send( value : Dynamic) : Void;
+	function send( value : Dynamic ) : Void;
 	@:overload( function( code:Int , value : Dynamic ) : Void {} )
 	function json( value : Dynamic) : Void;
 	@:overload( function( code:Int , value : Dynamic ) : Void {} )
@@ -45,8 +46,8 @@ extends ServerResponse {
 
 	function links( links : Dynamic<String> ) : Response;
 
-	@:overload( function ( path : String , locals : {} , callback : Callback<String> ) : Void {} )
-	@:overload( function ( path : String , locals : {} ) : Void {} )
+	@:overload( function ( path : String , locals : L , callback : Callback<String> ) : Void {} )
+	@:overload( function ( path : String , locals : L ) : Void {} )
 	@:overload( function ( path : String ) : Void {} )
 	function render( path : String , callback : Callback<String> ) : Void;
 

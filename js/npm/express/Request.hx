@@ -7,6 +7,7 @@ typedef Accepted = Dynamic;
 
 typedef Request = TRequest<Dynamic,Dynamic>;
 
+@:native("Request")
 extern class TRequest<P,Q>
 extends ClientRequest {
 
