@@ -3,11 +3,13 @@ package js.npm.express;
 import js.node.http.ServerResponse;
 import js.support.Callback;
 
-extern class Response 
+typedef Response = TResponse<Dynamic>;
+
+extern class TResponse<L> 
 extends ServerResponse {
 
 	public var charset : String;
-	public var locals : Dynamic;
+	public var locals : L;
 
 	@:overload( function( code : Int , url : String ) : Void {} )
 	public function redirect( url : String) : Void;

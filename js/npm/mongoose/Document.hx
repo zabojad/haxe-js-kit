@@ -3,13 +3,20 @@ package js.npm.mongoose;
 import js.support.Callback;
 import js.support.Error;
 
+typedef DocumentToObjectOptions<T> = {
+	?getters : Bool,
+	?virtuals : Bool,
+	?minimize : Bool,
+	?transform : T->T
+}
+
 extern class Document<T>
 extends js.node.events.EventEmitter #if !haxe3 , #end
 implements npm.Package.RequireNamespace<"mongoose","*">
 implements Dynamic {
 	//public static var schema : Schema<Dynamic>;
 	public var isNew : Bool;
-	public var id : Dynamic;
+	public var id : Null<String>;
 	public var errors : {};
 
 	public function new( doc : {} , fields : {} , skipId : Bool ) : Void;
@@ -26,4 +33,5 @@ implements Dynamic {
 	public function isSelected( path : String ) : Bool;
 	public function validate( cb : Callback0 ) : Void;
 	public function invalidate( path : String , err : Error , val : Dynamic ) : Void;
+	public function toObject( ?options : DocumentToObjectOptions<T> ) : T;
 }

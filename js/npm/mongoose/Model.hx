@@ -11,9 +11,9 @@ implements npm.Package.RequireNamespace<"mongoose","*">
 	public var collection : Dynamic;//Collection;
 	public var modelName : String;
 	
-	public function save( fn : Callback<Model<T>> ) : Void;
-	public function increment() : Model<T>;
-	public function remove( ?fn : Callback<Model<T>> ) : Model<T>;
+	public function save( fn : Callback<TModel<T>> ) : Void;
+	public function increment() : TModel<T>;
+	public function remove( ?fn : Callback<TModel<T>> ) : TModel<T>;
 
 	public function model<T,M>( name : String ) : TModels<T,M>;
 	
@@ -28,7 +28,7 @@ extends TModel<T> {
 
 extern typedef Models<T> = TModels<T,Model<T>>;
 
-extern class TModels<T,M:Model<T>> {
+extern class TModels<T,M:TModel<T>> {
 	public var db : Connection;
 	public var collection : Dynamic;//Collection;
 	public var modelName : String;

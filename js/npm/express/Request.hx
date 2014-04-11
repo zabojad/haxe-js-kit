@@ -5,11 +5,13 @@ import js.node.http.ClientRequest;
 typedef Route = Dynamic;
 typedef Accepted = Dynamic;
 
-extern class Request
+typedef Request = TRequest<Dynamic,Dynamic>;
+
+extern class TRequest<P,Q>
 extends ClientRequest {
 
-	public var params : Dynamic;
-	public var query : Dynamic;
+	public var params : P;
+	public var query : Q;
 	public var route : Route;
 	public var accepted : Array<Accepted>;
 	public var ip : String;
