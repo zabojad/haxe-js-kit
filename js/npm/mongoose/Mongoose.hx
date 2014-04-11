@@ -14,6 +14,6 @@ implements npm.Package.RequireNamespace<"mongoose","*"> {
 	public function disconnect(cb : Callback0) : Void;
 	public function createConnection( url : String ) : Connection;
 	public function connect( url : String , ?fn : js.support.Callback0 ) : Mongoose;
-	public function model<T,M>( name : String , ?schema : Schema<T> , ?collectionName : String , ?skipInit : Bool ) : Model.TypedModels<T,M>;
+	public function model<T,M>( name : String , ?schema : Schema<T> , ?collectionName : String , ?skipInit : Bool ) : Model.TModels<T,M>;
 	public function plugin( fn : Dynamic , ?options : {} ) : Mongoose;
 }

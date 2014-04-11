@@ -94,7 +94,7 @@ class Mongoose {
 									name : cl.name
 								}))
 							],
-							sub : "TypedModels"
+							sub : "TModels"
 						}),
 						params : [],
 						expr : macro {

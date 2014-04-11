@@ -2,7 +2,7 @@ package js.npm.mongoose;
 
 import js.support.Callback;
 
-extern class Model<T>
+extern class TModel<T>
 extends Document<T>
 implements npm.Package.RequireNamespace<"mongoose","*"> 
 {
@@ -15,20 +15,20 @@ implements npm.Package.RequireNamespace<"mongoose","*">
 	public function increment() : Model<T>;
 	public function remove( ?fn : Callback<Model<T>> ) : Model<T>;
 
-	public function model<T,M>( name : String ) : TypedModels<T,M>;
+	public function model<T,M>( name : String ) : TModels<T,M>;
 	
 }
 
 // just add a helper to type models a minimum
-extern class RawModel<T>
-extends Model<T> {
+extern class Model<T>
+extends TModel<T> {
 	public var _ (get,null) : T;
 	inline private function get__() : T return untyped this;
 }
 
-extern typedef Models<T> = TypedModels<T,RawModel<T>>;
+extern typedef Models<T> = TModels<T,Model<T>>;
 
-extern class TypedModels<T,M:Model<T>> {
+extern class TModels<T,M:Model<T>> {
 	public var db : Connection;
 	public var collection : Dynamic;//Collection;
 	public var modelName : String;
