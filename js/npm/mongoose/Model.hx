@@ -2,6 +2,7 @@ package js.npm.mongoose;
 
 import js.support.Callback;
 
+@:native("Model")
 extern class TModel<T>
 extends Document<T>
 implements npm.Package.RequireNamespace<"mongoose","*"> 

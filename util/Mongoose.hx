@@ -158,10 +158,7 @@ class Mongoose {
 		var fields : Array<{ field : String, expr : haxe.macro.Expr }> = [];
 		
 		for( f in a.fields ){
-			var name = f.name;
-			var type = f.type;
-
-			fields.push({ field : name , expr : typeToSchemaField(type) });
+			fields.push( classFieldToSchemaField(f) );
 		}
 
 		var objDecl = EObjectDecl( fields );
@@ -169,40 +166,132 @@ class Mongoose {
 		return objDecl;
 	}
 
-	static function typeToSchemaField( type : Type ) : Expr {
+	static function classFieldToSchemaField( f : ClassField ){
+		var type = {
+			pos : f.pos,
+			expr : typeToSchemaType(f.type)
+		};
 		
-		return switch( type ){
+		var expr = macro { type : $type };
+		
+		var fields = switch(expr.expr){
+			case EObjectDecl( fields ) : fields;
+			default : throw "assert";
+		}
+
+		for(m in f.meta.get()){
+			var mname = m.name.substring(1);
+			switch( mname ){
+				case "required","select","sparse","unique" :
+					// TODO : remove :optional when required ? throw error ?
+					fields.push( { field : mname , expr : m.params.length == 0 ? macro true : m.params[0] } );
+				case "default","index", "validate" :
+					// TODO : add :optional when default ?
+					if( m.params.length != 1 )
+						Context.error( "Expected 1 value" , m.pos );
+					fields.push( { field : mname , expr : m.params[0] } );
+				case "get","set" :
+					if( m.params.length != 1 )
+							Context.error( "Getter expected" , m.pos );
+						fields.push( { field : mname , expr : m.params[0] });
+			}
+						
+		}
+		trace(type.expr);
+		switch( type.expr ){
+			case EConst( CIdent( "String" ) ) :
+				for(m in f.meta.get()){
+					//trace(m);
+					var mname = m.name.substring(1);
+					switch( mname ){
+						case "trim","uppercase","lowercase" :
+							fields.push( { field : mname , expr : m.params.length == 0 ? macro true : m.params[0] } );
+						case "match":
+							if( m.params.length != 1 ) 
+								Context.error( "EReg expected" , m.pos );
+							var regexp = m.params[0];
+							
+							fields.push( { field : mname , expr : macro js.support.RegExp.fromEReg( $regexp ) } );
+						case "enum" :
+							if( m.params.length != 1 )
+								Context.error( "String values expected" , m.pos );
+							var vals = m.params[0];
+							
+							fields.push( { field : mname , expr : macro ($vals : Array<String>) } );
+						default:
+					}
+				}
+			case EConst( CIdent( "Number" ) ) :
+				for(m in f.meta.get()){
+					//trace(m);
+					var mname = m.name.substring(1);
+					switch( mname ){
+						case "min","max":
+							if( m.params.length != 1 ) 
+								Context.error( "Float expected" , m.pos );
+							var val = m.params[0];
+							
+							fields.push( { field : mname , expr : macro ( $val : Float ) } );
+					}
+				}
+			case EConst( CIdent( "Date" ) ) :
+				for(m in f.meta.get()){
+					//trace(m);
+					var mname = m.name.substring(1);
+					switch( mname ){
+						case "expires":
+							if( m.params.length != 1 ) 
+								Context.error( "Date expected" , m.pos );
+							var val = m.params[0];
+							
+							fields.push( { field : mname , expr : macro $val } );
+					}
+				}
+			default:
+		}
+
+		return { field : f.name , expr : expr };
+	}
+
+	static function typeToSchemaType( type : Type ) : ExprDef {
+		switch( type ){
 			case TAnonymous( a ) :
-				return { expr : anonTypeToSchemaDef( a.get() ) , pos : Context.currentPos() };
+				return anonTypeToSchemaDef( a.get() );
 
 			case TInst( t , params ) :
 				var i = t.get();
 				var fullname = i.pack.join(".") + ( i.pack.length > 0 ? "." : "" ) + i.name;
-				switch( fullname ){
+				var expr = switch( fullname ){
 					case "String" : 
-						macro { type : String };
+						macro String;
 					case "Array" :
-						var t = typeToSchemaField(params[0]);
+						var t = { expr : typeToSchemaType(params[0]) , pos : Context.currentPos() };
 						macro [$t];
 					case "Date" :
-						macro { type : Date };
+						macro Date;
 					case "js.node.Buffer" :
-						macro { type : js.node.Buffer };
+						macro js.node.Buffer;
 					case "js.npm.mongoose.schema.types.ObjectId" :
-						macro { type : js.npm.mongoose.schema.types.ObjectId };
+						macro js.npm.mongoose.schema.types.ObjectId;
 					default : 
-						macro { type : js.npm.mongoose.schema.types.Mixed };
-				}	
+						macro js.npm.mongoose.schema.types.Mixed;
+				}
+				return expr.expr;
+
 			case TAbstract( t , params ) :
 				var i = t.get();
 				var fullname = i.pack.join(".") + ( i.pack.length > 0 ? "." : "" ) + i.name;
-				switch( fullname ){
+				var expr = switch( fullname ){
 					case "Float","Int" :
-						macro { type : untyped __js__('Number') };
+						macro js.Number;
 					default : 
-						macro { type : js.npm.mongoose.schema.types.Mixed };
+						macro js.npm.mongoose.schema.types.Mixed;
 				}
-			default : macro { type : js.npm.mongoose.schema.types.Mixed };
+				return expr.expr;
+
+			default : 
+				var expr = macro js.npm.mongoose.schema.types.Mixed;
+				return expr.expr;
 		}
 
 	}
