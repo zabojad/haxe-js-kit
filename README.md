@@ -20,11 +20,11 @@ The library contains type signatures for :
 
 * **The core [node.js API](http://nodejs.org/api/)**
 * **Common NPM libraries** such as :
-	* **[Connect.js](http://www.senchalabs.org/connect/)** middleware framework
-	* **[Express.js](http://expressjs.com/)** web application framework
-	* **[Mongoose](http://mongoosejs.com/)** elegant mongodb object modeling
-	* **[Socket.io](http://socket.io/)** cross-browser websockets for realtime apps
-	* **[Passport.js](http://passportjs.org/)** simple, unobtrusive authentication
+	* **[Mongoose](http://mongoosejs.com/) elegant mongodb object modeling** with optional strict-typing and support for typedef to schema modeling
+	* **[Connect.js](http://www.senchalabs.org/connect/) middleware framework**
+	* **[Express.js](http://expressjs.com/) web application framework**
+	* **[Socket.io](http://socket.io/) cross-browser websockets for realtime apps**
+	* **[Passport.js](http://passportjs.org/) simple, unobtrusive authentication**
 	* and more to come ;)
 * **Some major client-side libraries** : up-to-date JQuery externs, socket.io client, etc
 
