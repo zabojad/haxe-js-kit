@@ -192,7 +192,7 @@ class Mongoose {
 					fields.push( { field : mname , expr : m.params[0] } );
 				case "get","set" :
 					if( m.params.length != 1 )
-							Context.error( "Getter expected" , m.pos );
+							Context.error( "Function expected" , m.pos );
 						fields.push( { field : mname , expr : m.params[0] });
 			}
 						
