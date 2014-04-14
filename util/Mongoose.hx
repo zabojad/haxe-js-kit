@@ -9,7 +9,11 @@ class Mongoose {
 
 	inline static var INSTANCE_MEMBER_ERROR = "Instance members are not supported";
 
-	#if !macro macro #end public static function buildModel( modelType : Expr ){
+	#if !macro macro #end public static function buildManager( modelType : Expr ){
+		var fields = Context.getBuildFields();
+		var cl = Context.getLocalClass().get();
+		var pos = Context.currentPos();
+		var type = Context.getLocalType();
 
 		// retrieve class type
 		var modelClass = switch( Context.typeExpr(modelType).expr ){
@@ -18,11 +22,6 @@ class Mongoose {
 			default : throw "error";
 		}
 
-		var fields = Context.getBuildFields();
-		var cl = Context.getLocalClass().get();
-		var pos = Context.currentPos();
-		var type = Context.getLocalType();
-		
 		// find Model in superclasses
 		var superClass = cl.superClass;
 		while( superClass != null ){
@@ -35,46 +34,34 @@ class Mongoose {
 			superClass = superClass.t.get().superClass;
 		}
 
-		// forbid instance members
-		for( f in fields ){
-			if( f.access.indexOf(AStatic) < 0 ){
-				haxe.macro.Context.error( INSTANCE_MEMBER_ERROR , cl.pos );
-			}
-		}
-
 		var modelDecl = haxe.macro.TypeTools.follow( superClass.params[0] );
+		var modelFullname = cl.pack.join(".") + ((cl.pack.length>0) ? "." : "") + cl.name;
+		var modelExpr = macro $i{modelFullname};
+
+		var modelTypePath = {
+			sub : null,
+			params : [],
+			pack : cl.pack,
+			name : cl.name
+		};
+
+		var mod = haxe.macro.TypeTools.follow( superClass.params[1] );
+
+		var cl2 = switch(mod){
+			case TInst(t,params):
+				t.get();
+			default : throw "illegal";
+		}
+		var modFullname = cl2.pack.join(".") + ((cl2.pack.length>0) ? "." : "") + cl2.name;
+		var modExpr = macro $i{modFullname};
 
 		switch(modelDecl){
 			case TAnonymous( a ):
-				// copy anonymous fields to instance fields
-				for( f in a.get().fields ){
-					var access = [APublic];
-					var varType = haxe.macro.TypeTools.toComplexType( f.type );
-					if( f.meta.has(":optional") ){
-						varType = TPath({
-							sub : null,
-							params : [TPType(varType)],
-							pack : [],
-							name : "Null"
-						});
-					}
-					
-					fields.push({
-						name : f.name,
-						pos : pos,
-						meta : f.meta.get(),
-						doc : null,
-						access : access,
-						kind : FVar( varType )
-					});
-					
-				}
-
 				var schemaDef = {
 					expr : anonTypeToSchemaDef( a.get() ),
 					pos : pos
 				};
-				
+
 				// add "make" method
 				fields.push({
 					pos : pos,
@@ -83,7 +70,11 @@ class Mongoose {
 					doc : null,
 					kind : FFun({
 						ret : TPath({
-							name : "Model",
+							sub : null,
+							params : [],
+							pack : cl.pack,
+							name : cl.name
+							/*name : "Model",
 							pack : ["js","npm","mongoose"],
 							params : [
 								TPType( haxe.macro.TypeTools.toComplexType( modelDecl ) ),
@@ -94,14 +85,23 @@ class Mongoose {
 									name : cl.name
 								}))
 							],
-							sub : "TModels"
+							sub : "TModels"*/
 						}),
 						params : [],
 						expr : macro {
-							
 							var s = new js.npm.mongoose.Schema($schemaDef);
-							//untyped s.methods = $methodsObj;
-							return mongoose.model( name , s , collectionName , skipInit );
+							var proto1 = untyped $modExpr.prototype;
+							for( f in Reflect.fields(proto1) ){
+								untyped s.methods[f] = proto1[f];
+							}
+
+							var m = untyped mongoose.model( name , s , collectionName , skipInit );
+							var proto = untyped $modelExpr.prototype;
+							for( f in Reflect.fields(proto) ){
+								untyped m[f] = proto[f];
+							}
+							
+							return untyped m;
 
 						},
 						args : [{
@@ -148,6 +148,74 @@ class Mongoose {
 					}),
 					access : [AStatic,APublic,AInline]
 				});
+			default :
+				throw "not supported";
+		}
+		
+		return fields;
+	}
+
+	#if !macro macro #end public static function buildModel( modelType : Expr ){
+
+		// retrieve class type
+		var modelClass = switch( Context.typeExpr(modelType).expr ){
+			case TTypeExpr(TClassDecl(c)) :
+				c.get();
+			default : throw "error";
+		}
+
+		var fields = Context.getBuildFields();
+		var cl = Context.getLocalClass().get();
+		var pos = Context.currentPos();
+		var type = Context.getLocalType();
+		
+		// find Model in superclasses
+		var superClass = cl.superClass;
+		while( superClass != null ){
+			var superType = superClass.t.get();
+
+			if( superType.name == modelClass.name && superType.module == modelClass.module ){
+				break;
+			}
+
+			superClass = superClass.t.get().superClass;
+		}
+
+		// // forbid instance members
+		// for( f in fields ){
+		// 	if( f.access.indexOf(AStatic) < 0 ){
+		// 		haxe.macro.Context.error( INSTANCE_MEMBER_ERROR , cl.pos );
+		// 	}
+		// }
+
+		var modelDecl = haxe.macro.TypeTools.follow( superClass.params[0] );
+
+		switch(modelDecl){
+			case TAnonymous( a ):
+				// copy anonymous fields to instance fields
+				for( f in a.get().fields ){
+					var access = [APublic];
+					var varType = haxe.macro.TypeTools.toComplexType( f.type );
+					if( f.meta.has(":optional") ){
+						varType = TPath({
+							sub : null,
+							params : [TPType(varType)],
+							pack : [],
+							name : "Null"
+						});
+					}
+					
+					fields.push({
+						name : f.name,
+						pos : pos,
+						meta : f.meta.get(),
+						doc : null,
+						access : access,
+						kind : FVar( varType )
+					});
+					
+				}	
+				
 			default :
 				throw "not supported";
 		}

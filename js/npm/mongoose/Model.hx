@@ -29,6 +29,7 @@ extends TModel<T> {
 
 extern typedef Models<T> = TModels<T,Model<T>>;
 
+@:native("{}")
 extern class TModels<T,M:TModel<T>> {
 	public var db : Connection;
 	public var collection : Dynamic;//Collection;
@@ -88,8 +89,8 @@ extern class TModels<T,M:TModel<T>> {
 	@:overload( function( ?id : Dynamic ) : Query<M> {} )
 	public function findByIdAndRemove( id : Dynamic , callback : Callback<Null<M>> ) : Query<M>;
 
-    @:overload( function( doc : T , fn : Callback<M> ) : Void {} )
-	public function create( doc:Array<T> , fn : Callback<Array<M>> /* TODO : maybe there's a solution for multiple arguments... */  ) : Void;
+	@:overload( function( doc : Array<T> , fn : Callback<Array<M>> ) : Void {} )
+	public function create( doc:T , fn : Callback<M> /* TODO : maybe there's a solution for multiple arguments... */  ) : Void;
 
 	@:overload( function( conditions : {} , update : {} , options : {} , callback : Callback<Array<M>> ) : Query<Array<M>> {} )
 	@:overload( function( conditions : {} , update : {} , options : {} ) : Query<Array<M>> {} )
