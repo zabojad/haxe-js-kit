@@ -2,6 +2,7 @@ package util;
 
 import haxe.macro.Context;
 import haxe.macro.Expr;
+import haxe.macro.MacroStringTools;
 import haxe.macro.Type;
 import haxe.macro.TypeTools;
 
@@ -33,8 +34,8 @@ class Mongoose {
 		}
 
 		var modelDecl = haxe.macro.TypeTools.follow( superClass.params[0] );
-		var modelFullname = cl.pack.join(".") + ((cl.pack.length>0) ? "." : "") + cl.name;
-		var modelExpr = macro $i{modelFullname};
+		var modelFullname = MacroStringTools.toDotPath(cl.pack, cl.name);
+		var modelExpr = MacroStringTools.toFieldExpr(modelFullname.split("."));
 
 		var modelTypePath = {
 			sub : null,
@@ -50,8 +51,8 @@ class Mongoose {
 				t.get();
 			default : throw "illegal";
 		}
-		var modFullname = cl2.pack.join(".") + ((cl2.pack.length>0) ? "." : "") + cl2.name;
-		var modExpr = macro $i{modFullname};
+		var modFullname = MacroStringTools.toDotPath(cl2.pack, cl2.name); //cl2.pack.join(".") + ((cl2.pack.length>0) ? "." : "") + cl2.name;
+		var modExpr = MacroStringTools.toFieldExpr(modFullname.split(".")); //macro $i{modFullname};
 
 		switch(modelDecl){
 			case TAnonymous( a ):
@@ -75,12 +76,8 @@ class Mongoose {
 						}),
 						params : [],
 						expr : macro {
-							var s = new js.npm.mongoose.Schema($schemaDef);
-							var proto1 = untyped $modExpr.prototype;
-							for( f in Reflect.fields(proto1) ){
-								untyped s.methods[f] = proto1[f];
-							}
-
+							var s = $modExpr.build();
+							
 							var m = untyped mongoose.model( name , s , collectionName , skipInit );
 							var proto = untyped $modelExpr.prototype;
 							for( f in Reflect.fields(proto) ){
@@ -168,9 +165,46 @@ class Mongoose {
 		}
 
 		var modelDecl = haxe.macro.TypeTools.follow( superClass.params[0] );
+		var modelFullname = MacroStringTools.toDotPath(cl.pack,cl.name);
+		var modelExpr = MacroStringTools.toFieldExpr( modelFullname.split(".") );
+
 
 		switch(modelDecl){
 			case TAnonymous( a ):
+
+				var schemaDef = {
+					expr : anonTypeToSchemaDef( a.get() ),
+					pos : pos
+				};
+
+				// add "make" method
+				fields.push({
+					pos : pos,
+					name : 'build',
+					meta : [],
+					doc : null,
+					kind : FFun({
+						ret : /*TPath({
+							sub : null,
+							params : [],
+							pack : cl.pack,
+							name : cl.name
+						})*/null,
+						params : [],
+						expr : macro {
+							var s = new js.npm.mongoose.Schema($schemaDef);
+							var proto1 = untyped $modelExpr.prototype;
+							for( f in Reflect.fields(proto1) ){
+								untyped s.methods[f] = proto1[f];
+							}
+							return untyped s;
+
+						},
+						args : []
+					}),
+					access : [AStatic,APublic,AInline]
+				});
+
 				// copy anonymous fields to instance fields
 				for( f in a.get().fields ){
 					var access = [APublic];
@@ -198,6 +232,8 @@ class Mongoose {
 			default :
 				throw "not supported";
 		}
+
+
 		return fields;
 	}
 
