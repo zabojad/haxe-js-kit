@@ -7,8 +7,6 @@ import haxe.macro.TypeTools;
 
 class Mongoose {
 
-	inline static var INSTANCE_MEMBER_ERROR = "Instance members are not supported";
-
 	#if !macro macro #end public static function buildManager( modelType : Expr ){
 		var fields = Context.getBuildFields();
 		var cl = Context.getLocalClass().get();
@@ -74,18 +72,6 @@ class Mongoose {
 							params : [],
 							pack : cl.pack,
 							name : cl.name
-							/*name : "Model",
-							pack : ["js","npm","mongoose"],
-							params : [
-								TPType( haxe.macro.TypeTools.toComplexType( modelDecl ) ),
-								TPType(TPath({
-									sub : null,
-									params : [],
-									pack : cl.pack,
-									name : cl.name
-								}))
-							],
-							sub : "TModels"*/
 						}),
 						params : [],
 						expr : macro {
@@ -180,13 +166,6 @@ class Mongoose {
 
 			superClass = superClass.t.get().superClass;
 		}
-
-		// // forbid instance members
-		// for( f in fields ){
-		// 	if( f.access.indexOf(AStatic) < 0 ){
-		// 		haxe.macro.Context.error( INSTANCE_MEMBER_ERROR , cl.pos );
-		// 	}
-		// }
 
 		var modelDecl = haxe.macro.TypeTools.follow( superClass.params[0] );
 
