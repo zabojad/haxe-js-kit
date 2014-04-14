@@ -14,7 +14,8 @@ typedef StuffData = {
 
 // declare the model
 // the typedef fields will be "copied" to Stuff instance
-extern class Stuff extends Model<StuffData>{}
+class Stuff extends Model<StuffData>{}
+class StuffManager extends js.npm.mongoose.macro.Manager<StuffData,Stuff>{}
 
 class Mongoose {
 	
@@ -23,7 +24,7 @@ class Mongoose {
 		var db = mongoose.connect("mongodb://localhost/test_mongoose");
 
 		// build the model
-		var stuff = Stuff.build(db,"Stuff");
+		var stuff = StuffManager.build(db,"Stuff");
 
 		// use the model
 		trace("running test");
