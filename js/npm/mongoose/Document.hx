@@ -19,7 +19,7 @@ implements Dynamic {
 	public var id : Null<String>;
 	public var errors : {};
 
-	public function new( ?doc : {} , ?fields : {} , ?skipId : Bool ) : Void;
+	public function new( doc : {} , fields : {} , skipId : Bool ) : Void;
 	public function update( doc : {} , options : {} , fn : Callback0 ) : Void;
 	@:overload( function( values : {} , ?options : {} ) : Document<T> {} )
 	public function set( path : String , val : Dynamic , ?type : Dynamic , ?options : {} ) : Document<T>;
