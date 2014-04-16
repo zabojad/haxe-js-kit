@@ -26,6 +26,9 @@ class Mongoose {
 		// build the model
 		var stuff = StuffManager.build(db,"Stuff");
 
+		// will expand to `new stuff({...})`
+		var something = stuff.construct({test:"hello",foo:1});
+
 		// use the model
 		trace("running test");
 		stuff.remove({}, function(err){
@@ -37,7 +40,6 @@ class Mongoose {
 			stuff.create( d , function(err, doc){
 				trace("foo", doc.foo);
 				trace("test",doc.test);
-				
 			} );
 		});
 
