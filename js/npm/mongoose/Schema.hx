@@ -7,7 +7,7 @@ implements npm.Package.RequireNamespace<"mongoose","*"> {
 	public static var indexTypes (default,null) : Array<String>;
 
 	public var tree : Dynamic;
-	public var paths : Dynamic<Class<SchemaType>>;
+	public var paths : Dynamic<SchemaType>;
 	public var methods (default,null) : Dynamic<Dynamic->Dynamic>;
 	public function new( definition : {} , ?options : SchemaOptions ) : Void;
 	public function defaultOptions( ?options : SchemaOptions ) : SchemaOptions;

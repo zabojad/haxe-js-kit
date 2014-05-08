@@ -76,9 +76,8 @@ class Mongoose {
 						}),
 						params : [],
 						expr : macro {
-							var s = $modExpr.build();
 							
-							var m = untyped mongoose.model( name , s , collectionName , skipInit );
+							var m = untyped mongoose.model( name , $modExpr.get_Schema() , collectionName , skipInit );
 							var proto = untyped $modelExpr.prototype;
 							for( f in Reflect.fields(proto) ){
 								untyped m[f] = proto[f];
@@ -151,7 +150,7 @@ class Mongoose {
 		var cl = Context.getLocalClass().get();
 		var pos = Context.currentPos();
 		var type = Context.getLocalType();
-		
+
 		// find Model in superclasses
 		var superClass = cl.superClass;
 		while( superClass != null ){
@@ -177,38 +176,69 @@ class Mongoose {
 					pos : pos
 				};
 
-				// add "make" method
 				fields.push({
 					pos : pos,
-					name : 'build',
+					name : '_schema',
+					meta : [],
+					doc : null,
+					kind : FVar(null),
+					access : [AStatic,APrivate]
+				});
+
+				fields.push({
+					pos : pos,
+					name : 'Schema',
+					meta : [],
+					doc : null,
+					kind : FProp('get','null',TPath({
+						sub : null,
+						params : [TPType(haxe.macro.TypeTools.toComplexType(modelDecl))],
+						pack : ['js','npm','mongoose'],
+						name : 'Schema'
+
+					})),
+					access : [AStatic,APublic]
+				});
+
+				fields.push({
+					pos : pos,
+					name : 'get_Schema',
 					meta : [],
 					doc : null,
 					kind : FFun({
-						ret : /*TPath({
+						ret : null/*TPath({
 							sub : null,
 							params : [],
-							pack : cl.pack,
-							name : cl.name
-						})*/null,
+							pack : ['js','npm','mongoose'],
+							name : 'Schema'
+						})*/,
 						params : [],
 						expr : macro {
-							var s = new js.npm.mongoose.Schema($schemaDef);
-							var proto1 = untyped $modelExpr.prototype;
-							for( f in Reflect.fields(proto1) ){
-								untyped s.methods[f] = proto1[f];
+							if( _schema == null ){
+								_schema = new js.npm.mongoose.Schema($schemaDef);
+								var proto1 = untyped $modelExpr.prototype;
+								for( f in Reflect.fields(proto1) ){
+									untyped s.methods[f] = proto1[f];
+								}
 							}
-							return untyped s;
+							return _schema;
 
 						},
 						args : []
 					}),
-					access : [AStatic,APublic,AInline]
+					access : [AStatic,APublic,APrivate]
 				});
 
 				// copy anonymous fields to instance fields
+				var hasId = false;
 				for( f in a.get().fields ){
 					var access = [APublic];
 					var varType = haxe.macro.TypeTools.toComplexType( f.type );
+
+					if( f.name == "_id" ){
+						hasId = true;
+					}
+
 					if( f.meta.has(":optional") ){
 						varType = TPath({
 							sub : null,
@@ -227,6 +257,23 @@ class Mongoose {
 						kind : FVar( varType )
 					});
 					
+				}
+
+				// add _id field if not present
+				if( !hasId ){
+					fields.push({
+						name : "_id",
+						pos : pos,
+						meta : [],
+						doc : null,
+						access : [APublic],
+						kind : FVar( TPath({
+							sub : null,
+							params : [],
+							pack : ['js','npm','mongoose','schema','types'],
+							name : "ObjectId"
+						}) )
+					});
 				}	
 				
 			default :
@@ -262,6 +309,8 @@ class Mongoose {
 			default : throw "assert";
 		}
 
+		/*
+
 		for(m in f.meta.get()){
 			var mname = m.name.substring(1);
 			switch( mname ){
@@ -280,9 +329,13 @@ class Mongoose {
 			}
 						
 		}
-		//trace(type.expr);
+
+		// cases are wrong now
+
+		trace( type.expr);
 		switch( type.expr ){
-			case EConst( CIdent( "String" ) ) :
+
+			case EConst( CIdent( "Number" ) ) :
 				for(m in f.meta.get()){
 					//trace(m);
 					var mname = m.name.substring(1);
@@ -331,6 +384,55 @@ class Mongoose {
 					}
 				}
 			default:
+		}*/
+
+		for(m in f.meta.get()){
+			//trace(m);
+			var mname = m.name.substring(1);
+			switch( mname ){
+				case "required","select","sparse","unique" :
+					// TODO : remove :optional when required ? throw error ?
+					fields.push( { field : mname , expr : m.params.length == 0 ? macro true : m.params[0] } );
+				case "default","index", "validate" :
+					// TODO : add :optional when default ?
+					if( m.params.length != 1 )
+						Context.error( "Expected 1 value" , m.pos );
+					fields.push( { field : mname , expr : m.params[0] } );
+				case "get","set" :
+					if( m.params.length != 1 )
+							Context.error( "Function expected" , m.pos );
+						fields.push( { field : mname , expr : m.params[0] });
+					
+				case "trim","uppercase","lowercase" :
+					fields.push( { field : mname , expr : m.params.length == 0 ? macro true : m.params[0] } );
+				case "match":
+					if( m.params.length != 1 ) 
+						Context.error( "EReg expected" , m.pos );
+					var regexp = m.params[0];
+					
+					fields.push( { field : mname , expr : macro js.support.RegExp.fromEReg( $regexp ) } );
+				case "enum" :
+					if( m.params.length != 1 )
+						Context.error( "String values expected" , m.pos );
+					var vals = m.params[0];
+					
+					fields.push( { field : mname , expr : macro ($vals : Array<String>) } );
+				
+				case "min","max":
+					if( m.params.length != 1 ) 
+						Context.error( "Float expected" , m.pos );
+					var val = m.params[0];
+					
+					fields.push( { field : mname , expr : macro ( $val : Float ) } );
+				case "expires":
+					if( m.params.length != 1 ) 
+						Context.error( "Date expected" , m.pos );
+					var val = m.params[0];
+					
+					fields.push( { field : mname , expr : macro $val } );
+				default :
+					fields.push( {field : mname , expr : m.params.length == 0 ? macro true : m.params[0] } );
+			}
 		}
 
 		return { field : f.name , expr : expr };
@@ -338,27 +440,35 @@ class Mongoose {
 
 	static function typeToSchemaType( type : Type ) : ExprDef {
 		//trace(type);
-		switch( type ){
+		switch( haxe.macro.TypeTools.follow(type) ){
 			case TAnonymous( a ) :
 				return anonTypeToSchemaDef( a.get() );
 
 			case TInst( t , params ) :
 				var i = t.get();
 				var fullname = i.pack.join(".") + ( i.pack.length > 0 ? "." : "" ) + i.name;
+				//trace(fullname);
 				var expr = switch( fullname ){
 					case "String" : 
-						macro String;
-					case "Array" :
+						macro untyped __js__('String');
+					case "Array" : // TODO handle DocumentArray etc
 						var t = { expr : typeToSchemaType(params[0]) , pos : Context.currentPos() };
 						macro [$t];
 					case "Date" :
-						macro Date;
+						macro untyped __js__('Date');
 					case "js.node.Buffer" :
 						macro js.node.Buffer;
 					case "js.npm.mongoose.schema.types.ObjectId" :
 						macro js.npm.mongoose.schema.types.ObjectId;
 					default : 
-						macro js.npm.mongoose.schema.types.Mixed;
+						var sup = i.superClass;
+						if(sup.t.toString() == "js.npm.mongoose.macro.Model"){
+							var targetSchema = fullname.split(".");
+							targetSchema.push("Schema");
+							macro js.npm.mongoose.schema.types.ObjectId;
+						}else{
+							macro js.npm.mongoose.schema.types.Mixed;
+						}
 				}
 				return expr.expr;
 
@@ -369,7 +479,7 @@ class Mongoose {
 					case "Float","Int" :
 						macro js.Number;
 					case "Bool" :
-						macro Bool;
+						macro untyped __js__('Boolean');
 					default : 
 						macro js.npm.mongoose.schema.types.Mixed;
 				}
