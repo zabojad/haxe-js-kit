@@ -463,9 +463,15 @@ class Mongoose {
 					default : 
 						var sup = i.superClass;
 						if(sup.t.toString() == "js.npm.mongoose.macro.Model"){
-							var targetSchema = fullname.split(".");
-							targetSchema.push("Schema");
+							
+							for( f in i.fields.get() ){
+								 if( f.name == '_id' ){
+								 	return typeToSchemaType(f.type);
+								 }
+							}
+							
 							macro js.npm.mongoose.schema.types.ObjectId;
+							
 						}else{
 							macro js.npm.mongoose.schema.types.Mixed;
 						}
