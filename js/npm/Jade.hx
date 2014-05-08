@@ -1,9 +1,9 @@
 package js.npm;
 
-import js.support.Callback;
+import js.npm.express.ViewEngine;
 
 extern class Jade
 implements npm.Package.Require<"jade","*"> {
-	public static var __express : String -> {} -> Callback<String> -> Void;
+	public static var __express : ViewEngine;
 	// TODO
 }

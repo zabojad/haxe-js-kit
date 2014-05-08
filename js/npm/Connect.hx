@@ -14,8 +14,8 @@ implements npm.Package.Require<"connect","*">
 
 	//@:overload( function ( middleware : Middleware ) : Connect {} )
 	//@:overload( function ( mount : String , middleware : MiddlewareFunction ) : Connect {} )
-	@:overload( function ( mount : String , middleware : Middleware<ClientRequest,ServerResponse> ) : Connect {} )
-	public function use ( middleware : Middleware<ClientRequest,ServerResponse> ) : Connect ;
+	@:overload( function ( mount : String , middleware : TMiddleware<ClientRequest,ServerResponse> ) : Connect {} )
+	public function use ( middleware : TMiddleware<ClientRequest,ServerResponse> ) : Connect ;
 
 	@:overload(function( port :Int, ready : Void -> Void ): Server { } )
 	public function listen (port :Int, ?address :String) : Server;

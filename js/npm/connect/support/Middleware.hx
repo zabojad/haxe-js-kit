@@ -5,7 +5,9 @@ import js.node.http.ServerResponse;
 
 typedef MiddlewareNext = ?Dynamic->Void;
 
-abstract Middleware<Request:ClientRequest,Response:ServerResponse>(Request->Response->MiddlewareNext->Void) {
+typedef Middleware = TMiddleware<ClientRequest,ServerResponse>;
+
+abstract TMiddleware<Request:ClientRequest,Response:ServerResponse>(Request->Response->MiddlewareNext->Void) {
 	@:from static public inline function fromMiddleware( middleware : js.npm.connect.Middleware ){
 		return untyped middleware;
 	}
