@@ -7,5 +7,3 @@ import js.npm.mongoose.Mongoose;
 class Model<T>
 extends js.npm.mongoose.Model.TModel<T>
 {}
-
-class Ref<M> {}
