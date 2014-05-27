@@ -59,7 +59,7 @@ Please also note that the dependency system currently doesn't manage package ver
 
 #### Asynchronous programming (experimental)
 
-Implementing `util.Async` allows to write typical asynchronous code in a "flat" way.
+Implementing `util.Async` allows to write typical asynchronous code in a "flat" way using the `@async` inline metadata.
 
 This is very useful, avoiding superfluous indentations and braces / parenthesis mess 
 in the context of linear, "single threaded" scripts...
@@ -69,7 +69,7 @@ For instance :
 ```haxe
 class Exemple implements util.Async {
   static function main(){
-     var err,doc = model.create({...});
+     var err,doc = @async model.create({ /*...*/ });
      if( err != null ){
         trace("error",err);  
      }else{
@@ -84,7 +84,7 @@ is the equivalent of:
 ```haxe
 class Exemple {
   static function main(){
-     model.create({...}, function(err,doc){
+     model.create({ /* ... */ }, function(err,doc){
      	if( err != null ){
            trace("error",err);  
         }else{
