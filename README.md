@@ -95,7 +95,9 @@ class Exemple {
 }
 ```
 
-You can also scope the Async macro only to some block by using `util.Async.run({ \* flat code *\ })`.
+See the (small) [mongoose example](https://github.com/clemos/haxe-js-kit/blob/master/test/Mongoose.hx) for a more practical and complete sample.
+
+You can also scope the Async macro only to some block by using `util.Async.run({ \* flat code block / @async *\ })`.
 
 ## Contributing
 
