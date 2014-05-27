@@ -57,6 +57,46 @@ The process is incremental, though, which means that :
 
 Please also note that the dependency system currently doesn't manage package versions / SemVer.
 
+#### Asynchronous programming (experimental)
+
+Implementing `util.Async` allows to write typical asynchronous code in a "flat" way.
+
+This is very useful, avoiding superfluous indentations and braces / parenthesis mess 
+in the context of linear, "single threaded" scripts...
+
+For instance :
+
+```haxe
+class Exemple implements util.Async {
+  static function main(){
+     var err,doc = model.create({...});
+     if( err != null ){
+        trace("error",err);  
+     }else{
+        trace("created doc",doc);
+     }
+  }
+}
+```
+
+is the equivalent of:
+
+```haxe
+class Exemple {
+  static function main(){
+     model.create({...}, function(err,doc){
+     	if( err != null ){
+           trace("error",err);  
+        }else{
+           trace("created doc",doc);
+        }
+     });
+  }
+}
+```
+
+You can also scope the Async macro only to some block by using `util.Async.run({ \* flat code *\ })`.
+
 ## Contributing
 
 We try to keep the externs as close as possible to their native APIs, 
