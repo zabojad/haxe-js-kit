@@ -17,7 +17,7 @@ typedef StuffData = {
 class Stuff extends Model<StuffData>{}
 class StuffManager extends js.npm.mongoose.macro.Manager<StuffData,Stuff>{}
 
-class Mongoose {
+class Mongoose implements util.Async {
 	
 	static function main(){
 		// connect
@@ -31,17 +31,18 @@ class Mongoose {
 
 		// use the model
 		trace("running test");
-		stuff.remove({}, function(err){
-			trace("cleared DB");
-			var d = {
-				test : "test",
-				foo : 1
-			};
-			stuff.create( d , function(err, doc){
-				trace("foo", doc.foo);
-				trace("test",doc.test);
-			} );
-		});
+		var err = @async stuff.remove({});
+
+		trace("cleared DB");
+		var d = {
+			test : "test",
+			foo : 1
+		};
+		
+		var err,doc = @async stuff.create( d ); 
+
+		trace("foo", doc.foo);
+		trace("test",doc.test);
 
 	}
 
