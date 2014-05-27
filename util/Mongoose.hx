@@ -297,6 +297,7 @@ class Mongoose {
 	}
 
 	static function classFieldToSchemaField( f : ClassField ){
+
 		var type = {
 			pos : f.pos,
 			expr : typeToSchemaType(f.type)
@@ -307,6 +308,23 @@ class Mongoose {
 		var fields = switch(expr.expr){
 			case EObjectDecl( fields ) : fields;
 			default : throw "assert";
+		}
+
+		//trace(type.expr);
+		switch(type.expr){
+			case EArrayDecl([v]):
+				if( f.meta.has(':ref') ){
+					var type = macro {type:$v};
+					expr = macro [$type];
+					switch( type.expr ){
+						case EObjectDecl(f) :
+							fields = f;
+						default : throw "assert";
+					}
+				}
+				
+			default :
+
 		}
 
 		/*
