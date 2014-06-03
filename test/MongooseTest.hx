@@ -17,7 +17,7 @@ typedef StuffData = {
 class Stuff extends Model<StuffData>{}
 class StuffManager extends js.npm.mongoose.macro.Manager<StuffData,Stuff>{}
 
-class Mongoose implements util.Async {
+class MongooseTest implements util.Async {
 	
 	static function main(){
 		// connect

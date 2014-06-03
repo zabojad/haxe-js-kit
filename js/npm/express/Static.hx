@@ -1,4 +1,4 @@
-package js.npm.connect;
+package js.npm.express;
 
 typedef StaticOptions = {
 	?maxAge : Int,
@@ -6,8 +6,9 @@ typedef StaticOptions = {
 	?redirect : Bool
 }
 
+@:native('static')
 extern class Static 
-implements npm.Package.Require<"serve-static","~1.2.1"> #if !haxe3,#end
+implements npm.Package.RequireNamespace<"express","~4.0"> #if !haxe3,#end
 implements js.npm.connect.Middleware
 {
 	public function new( path : String , ?opts : StaticOptions ) : Void;

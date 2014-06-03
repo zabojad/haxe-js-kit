@@ -4,9 +4,8 @@ typedef BodyParserOptions = {
 	?uploadDir : String
 };
 
-@:native('bodyParser')
 extern class BodyParser
-implements npm.Package.RequireNamespace<"connect","*"> #if !haxe3,#end
+implements npm.Package.Require<"body-parser","~1.3.0"> #if !haxe3,#end
 implements js.npm.connect.Middleware {
 
 	public inline static function body( req : js.node.http.ClientRequest ) : Dynamic {

@@ -1,8 +1,7 @@
 package js.npm.connect;
 
-@:native('methodOverride')
 extern class MethodOverride 
-implements npm.Package.RequireNamespace<"connect","*"> #if !haxe3,#end
+implements npm.Package.Require<"method-override","~2.0.1"> #if !haxe3,#end
 implements js.npm.connect.Middleware
 {
 

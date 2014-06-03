@@ -1,8 +1,7 @@
 package js.npm.connect;
 
-@:native("cookieParser")
 extern class CookieParser 
-implements npm.Package.RequireNamespace<"connect","*"> #if !haxe3,#end
+implements npm.Package.Require<"cookie-parser","~1.1.0"> #if !haxe3,#end
 implements js.npm.connect.Middleware
 {
 	public function new(?secret:String) : Void;

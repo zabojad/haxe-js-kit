@@ -1,8 +1,12 @@
 package js.npm.connect;
 
-@:native('compress')
+typedef CompressOptions = {
+	?threshold : Dynamic,
+	?filter : Dynamic
+}
+
 extern class Compress 
-implements npm.Package.RequireNamespace<"connect","*"> #if !haxe3,#end
+implements npm.Package.Require<"compress","~1.0.3"> #if !haxe3,#end
 implements js.npm.connect.Middleware
 {
 	public function new() : Void;
