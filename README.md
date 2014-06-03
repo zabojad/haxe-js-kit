@@ -20,7 +20,7 @@ The library contains type signatures for :
 
 * **The core [node.js API](http://nodejs.org/api/)**
 * **Common NPM libraries** such as :
-	* **[Mongoose](http://mongoosejs.com/) elegant mongodb object modeling** with optional strict-typing and support for typedef to schema modeling
+	* **[Mongoose](http://mongoosejs.com/) elegant mongodb object modeling** with optional strict-typing and support for typedef to schema modeling [[example](https://github.com/clemos/haxe-js-kit/blob/master/test/Mongoose.hx)]
 	* **[Connect.js](http://www.senchalabs.org/connect/) middleware framework**
 	* **[Express.js](http://expressjs.com/) web application framework**
 	* **[Socket.io](http://socket.io/) cross-browser websockets for realtime apps**
@@ -56,6 +56,48 @@ The process is incremental, though, which means that :
 * unused dependencies will remain unless you remove them manually
 
 Please also note that the dependency system currently doesn't manage package versions / SemVer.
+
+#### Asynchronous programming (experimental)
+
+Implementing `util.Async` allows to write typical asynchronous code in a "flat" way using the `@async` inline metadata.
+
+This is very useful, avoiding superfluous indentations and braces / parenthesis mess 
+in the context of linear, "single threaded" scripts...
+
+For instance :
+
+```haxe
+class Exemple implements util.Async {
+  static function main(){
+     var err,doc = @async model.create({ /*...*/ });
+     if( err != null ){
+        trace("error",err);  
+     }else{
+        trace("created doc",doc);
+     }
+  }
+}
+```
+
+is the equivalent of:
+
+```haxe
+class Exemple {
+  static function main(){
+     model.create({ /* ... */ }, function(err,doc){
+     	if( err != null ){
+           trace("error",err);  
+        }else{
+           trace("created doc",doc);
+        }
+     });
+  }
+}
+```
+
+See the (small) [mongoose example](https://github.com/clemos/haxe-js-kit/blob/master/test/Mongoose.hx) for a more practical and complete sample.
+
+You can also scope the Async macro only to some block by using `util.Async.run({ \* flat code block / @async *\ })`.
 
 ## Contributing
 
