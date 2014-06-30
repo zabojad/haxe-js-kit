@@ -1,3 +1,4 @@
+package js.node;
 
 @:native("JSON")
 extern class JSON {
