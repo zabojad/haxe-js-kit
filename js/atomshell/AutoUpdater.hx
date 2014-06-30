@@ -1,20 +1,22 @@
 package js.atomshell;
+import js.node.events.EventEmitter;
 
 /**
  * @author AS3Boyan
  * MIT
  */
 /* Mac only */
-extern class AutoUpdater implements npm.Package.Require<"auto-updater","*">
+extern class AutoUpdater implements npm.Package.Require<"auto-updater","*"> extends EventEmitter
 {
 	static function setFeedUrl(url:String):Void;
 	static function checkForUpdates():Void;
 }
 
-class AutoUpdaterC
+@:enum
+abstract AutoUpdaterEvent(String) to String
 {
-	inline public static var CHECKING_FOR_UPDATE:String = "checking-for-update";
-	inline public static var CHECKING_FOR_UPDATE:String = "update-available";
-	inline public static var CHECKING_FOR_UPDATE:String = "update-not-available";
-	inline public static var CHECKING_FOR_UPDATE:String = "update-downloaded";
+	var CHECKING_FOR_UPDATE = "checking-for-update";
+	var UPDATE_AVAILABLE = "update-available";
+	var UPDATE_NOT_AVAILABLE = "update-not-available";
+	var UPDATE_DOWNLOADED = "update-downloaded";
 }

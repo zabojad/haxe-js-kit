@@ -5,7 +5,7 @@ import js.node.events.EventEmitter;
 * @author AS3Boyan
  */
 @:enum
-abstract NodeIntegration(String) to String
+abstract BrowserWindowNodeIntegration(String) to String
 {
     var ALL = "all";
     var EXCEPT_IFRAME = "except-iframe";
@@ -70,7 +70,7 @@ class BrowserWindowOptions
 	public var minHeight(never, set):Int;
 	public var maxWidth(never, set):Int;
 	public var maxHeight(never, set):Int;
-	public var nodeIntegration(never, set):NodeIntegration;
+	public var nodeIntegration(never, set):BrowserWindowNodeIntegration;
 	public var acceptFirstMouse(never, set):Bool;
 	public var webPreferences(get, set):BrowserWindowWebPreferences;
 	
@@ -114,7 +114,7 @@ class BrowserWindowOptions
 		return untyped this["max-height"] = value;
 	}
 
-	function set_nodeIntegration(value:NodeIntegration)
+	function set_nodeIntegration(value:BrowserWindowNodeIntegration)
 	{
 		return untyped this["node-integration"] = value;
 	}
@@ -142,8 +142,8 @@ class BrowserWindowOptions
 
 extern class BrowserWindow implements npm.Package.Require<"browser-window","*"> extends EventEmitter
 {
-	public var webContents:WebContents;
-	public var devToolsWebContents:Dynamic;
+	public var webContents:BrowserWindowWebContents;
+	public var devToolsWebContents:BrowserWindowWebContents;
 	public var id:Int;
 	
 	function new(options:BrowserWindowOptions);
@@ -215,7 +215,7 @@ abstract BrowserWindowEvent(String) to String
 	var FOCUS = "focus";	
 }
 
-extern class WebContents extends EventEmitter
+extern class BrowserWindowWebContents extends EventEmitter
 {
 	public function loadUrl(url:String):Void;
 	public function getUrl():String;

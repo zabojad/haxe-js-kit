@@ -5,24 +5,24 @@ package js.atomshell;
  */
 extern class AppCommandLine
 {
-	static function appendSwitch(switchArg:String, ?value:String):Void;
-	static function appendArgument(value:String):Void;
+	function appendSwitch(switchArg:String, ?value:String):Void;
+	function appendArgument(value:String):Void;
 }
 
 extern class AppDock
 {
 	/* Mac only */
-	static function bounce(?type:String):Void;
+	function bounce(?type:String):Void;
 	/* Mac only */
-	static function cancelBounce(id:Int):Void;
+	function cancelBounce(id:Int):Void;
 	/* Mac only */
-	static function setBadge(text:String):Void;
+	function setBadge(text:String):Void;
 	/* Mac only */
-	static function getBadge():String;
+	function getBadge():String;
 	/* Mac only */
-	static function hide():Void;
+	function hide():Void;
 	/* Mac only */
-	static function show():Void;
+	function show():Void;
 }
 
 extern class App implements npm.Package.Require<"app","*">
@@ -38,7 +38,7 @@ extern class App implements npm.Package.Require<"app","*">
 }
 
 @:enum
-abstract AppC(String) to String
+abstract AppEvent(String) to String
 {
 	var WINDOW_ALL_CLOSED = "window-all-closed";
 	var READY = "ready";
