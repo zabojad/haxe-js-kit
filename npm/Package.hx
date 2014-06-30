@@ -146,7 +146,7 @@ class Package {
 				cl.pack.join(SEP) + SEP+cl.name;
 
 			// initialization expressions
-			var init = [];
+			// var init = [];
 
 			// use the type name by default
 			var nativeClass = cl.name;
@@ -161,17 +161,17 @@ class Package {
 				}
 			}
 
-			if( requireNS )
-				init.push( macro var $clName = untyped npm.Package.resolve( npm.Package.require( '${required.name}','${required.version}' , $v{isNpm} ) , '${nativeClass}' ) );
-			else
-				init.push( macro var $clName = untyped npm.Package.require( '${required.name}','${required.version}' , $v{isNpm} ) );
+			// if( requireNS )
+			// 	init.push( macro var $clName = untyped npm.Package.resolve( npm.Package.require( '${required.name}','${required.version}' , $v{isNpm} ) , '${nativeClass}' ) );
+			// else
+			// 	init.push( macro var $clName = untyped npm.Package.require( '${required.name}','${required.version}' , $v{isNpm} ) );
 
 			// change the class' native name
 			var native = 'require("${required.name}")';
 			if( requireNS ){
 				native = native + '.${nativeClass}';
 			}
-			native = '($clName||' + native + ')';
+			//native = '($clName||' + native + ')';
 			
 			cl.meta.add(":native",[macro $v{native}], pos);
 
@@ -179,47 +179,47 @@ class Package {
 			var injected = false;
 
 			// check that __init__ method already exists
-			for( f in fields ){
-				if( f.name == INIT ){
-					switch( f.kind ){
-						case FFun( fun ) :
-							injected = true;
-							// add the existing __init__ body in the end of the generated init expression
-							init.push( { expr : fun.expr.expr , pos : fun.expr.pos } );
-							var newExpr = {
-								pos : fun.expr.pos,
-								expr : EBlock(init)
-							};
-							fun.expr = newExpr;
-						default :
-					}
-				}
-			}
+			// for( f in fields ){
+			// 	if( f.name == INIT ){
+			// 		switch( f.kind ){
+			// 			case FFun( fun ) :
+			// 				injected = true;
+			// 				// add the existing __init__ body in the end of the generated init expression
+			// 				init.push( { expr : fun.expr.expr , pos : fun.expr.pos } );
+			// 				var newExpr = {
+			// 					pos : fun.expr.pos,
+			// 					expr : EBlock(init)
+			// 				};
+			// 				fun.expr = newExpr;
+			// 			default :
+			// 		}
+			// 	}
+			// }
 
-			// if __init__ doesn't exist, just add the whole method
-			if( !injected ){
-				var f = {
-					name : INIT,
-					pos : pos,
-					meta : [],
-					access : [AStatic],
-					kind : FFun({
-						ret : TPath({
-							name : "Void",
-							pack : [],
-							params : [],
-							sub : null
-						}),
-						params : [],
-						args : [],
-						expr : {
-							pos : pos,
-							expr : EBlock(init)
-						}
-					})
-				};
-				fields.push(f);
-			}
+			// // if __init__ doesn't exist, just add the whole method
+			// if( !injected ){
+			// 	var f = {
+			// 		name : INIT,
+			// 		pos : pos,
+			// 		meta : [],
+			// 		access : [AStatic],
+			// 		kind : FFun({
+			// 			ret : TPath({
+			// 				name : "Void",
+			// 				pack : [],
+			// 				params : [],
+			// 				sub : null
+			// 			}),
+			// 			params : [],
+			// 			args : [],
+			// 			expr : {
+			// 				pos : pos,
+			// 				expr : EBlock(init)
+			// 			}
+			// 		})
+			// 	};
+			// 	fields.push(f);
+			// }
 			
 		}
 
