@@ -142,7 +142,7 @@ class BrowserWindowOptions
 
 extern class BrowserWindow implements npm.Package.Require<"browser-window","*"> extends EventEmitter
 {
-	public var webContents:Dynamic;
+	public var webContents:WebContents;
 	public var devToolsWebContents:Dynamic;
 	public var id:Int;
 	
