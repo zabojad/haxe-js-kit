@@ -2,6 +2,8 @@ package js.node;
 
 import js.node.net.*;
 import js.node.stream.*;
+import js.node.stream.Writable;
+import js.node.stream.Readable;
 
 /*
   Emits: message
