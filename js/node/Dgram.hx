@@ -10,7 +10,7 @@ import js.support.Callback;
    Emits: message,listening,close
 */
 typedef DgramSocket = { > EventEmitter,
-  function send(buf:Buffer,offset:Int,length:Int,port:Int,address:String,cb:Callback<Void>):Void;
+  function send(buf:Buffer,offset:Int,length:Int,port:Int,address:String,cb:Callback0):Void;
   function bind(port:Int,?address:String):Void;
   function close():Void;
   function address():Dynamic;
