@@ -27,5 +27,5 @@ extern class Walkdir implements npm.Package.Require<"walkdir","*">
 {	
 	static function walk(path:String, options:AsyncOptions, ?onItem:String->Stats->Void):EventEmitter;
     
-    static function walkSync(path:String, ?options:SyncOptions, ?onItem:String->Stats->Void):Array<String>;
+    static function sync(path:String, ?options:SyncOptions, ?onItem:String->Stats->Void):Array<String>;
 }
