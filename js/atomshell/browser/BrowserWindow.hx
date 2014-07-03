@@ -12,133 +12,80 @@ abstract BrowserWindowNodeIntegration(String) to String
     var MANUAL_ENABLE_IFRAME = "manual-enable-iframe";
 }
 
-class BrowserWindowWebPreferences
+typedef BrowserWindowWebPreferencesDef =
 {
-	public var javascript:Bool;
-	public var images:Bool;
-	public var java:Bool;
-	public var webgl:Bool;
-	public var webaudio:Bool;
-	public var plugins:Bool;
+	@:optional var javascript:Bool;
+	@:optional var images:Bool;
+	@:optional var java:Bool;
+	@:optional var webgl:Bool;
+	@:optional var webaudio:Bool;
+	@:optional var plugins:Bool;
 	
-	public var webSecurity(never, set):Bool;
-	public var textAreasAreResizable(never, set):Bool;
-	public var acceleratedCompositing(never, set):Bool;
-	public var extraPluginDirs(never, set):Array<String>;
+	@:native("web-security")
+	@:optional var webSecurity:Bool;
 	
-	function set_webSecurity(value:Bool)
-	{
-		return untyped this["web-security"] = value;
-	}
+	@:native("text-areas-are-resizable")
+	@:optional var textAreasAreResizable:Bool;
 	
-	function set_textAreasAreResizable(value:Bool)
-	{
-		return untyped this["text-areas-are-resizable"] = value;
-	}
+	@:native("accelerated-compositing")
+	@:optional var acceleratedCompositing:Bool;
 	
-	function set_acceleratedCompositing(value:Bool)
-	{
-		return untyped this["accelerated-compositing"] = value;
-	}
-	
-	function set_extraPluginDirs(value:Array<String>)
-	{
-		return untyped this["extra-plugin-dirs"] = value;
-	}
+	@:native("extra-plugin-dirs")
+	@:optional var extraPluginDirs:Array<String>;
 }
 
-class BrowserWindowOptions
+typedef BrowserWindowWebPreferences = haxe.macro.MacroType<[util.NativeMap.build(BrowserWindowWebPreferencesDef)]>;
+
+typedef BrowserWindowOptionsDef = 
 {
-	public var width:Int;
-	public var height:Int;
-	public var x:Int;
-	public var y:Int;
-	public var center:Bool;
-	public var resizable:Bool;
-	public var fullscreen:Bool;
-	public var kiosk:Bool;
-	public var title:String;
-	public var icon:String;
-	public var show:Bool;
-	public var frame:Bool;
+	@:optional var width:Int;
+	@:optional var height:Int;
+	@:optional var x:Int;
+	@:optional var y:Int;
+	@:optional var center:Bool;
+	@:optional var resizable:Bool;
+	@:optional var fullscreen:Bool;
+	@:optional var kiosk:Bool;
+	@:optional var title:String;
+	@:optional var icon:String;
+	@:optional var show:Bool;
+	@:optional var frame:Bool;
 	
-	public var skipTaskbar(never, set):Bool;
-	public var zoomFactor(never, set):Float;
-	public var alwaysOnTop(never, set):Bool;
-	public var useContentSize(never, set):Bool;
-	public var minWidth(never, set):Int;
-	public var minHeight(never, set):Int;
-	public var maxWidth(never, set):Int;
-	public var maxHeight(never, set):Int;
-	public var nodeIntegration(never, set):BrowserWindowNodeIntegration;
-	public var acceptFirstMouse(never, set):Bool;
-	public var webPreferences(get, set):BrowserWindowWebPreferences;
+	@:native("skip-taskbar")
+	@:optional var skipTaskbar:Bool;
 	
-	function set_skipTaskbar(value:Bool)
-	{
-		return untyped this["skip-taskbar"] = value;
-	}
-
-	function set_zoomFactor(value:Float)
-	{
-		return untyped this["zoom-factor"] = value;
-	}
-
-	function set_alwaysOnTop(value:Bool)
-	{
-		return untyped this["always-on-top"] = value;
-	}
-
-	function set_useContentSize(value:Bool)
-	{
-		return untyped this["use-content-size"] = value;
-	}
-
-	function set_minWidth(value:Int)
-	{
-		return untyped this["min-width"] = value;
-	}
-
-	function set_minHeight(value:Int)
-	{
-		return untyped this["min-height"] = value;
-	}
-
-	function set_maxWidth(value:Int)
-	{
-		return untyped this["max-width"] = value;
-	}
-
-	function set_maxHeight(value:Int)
-	{
-		return untyped this["max-height"] = value;
-	}
-
-	function set_nodeIntegration(value:BrowserWindowNodeIntegration)
-	{
-		return untyped this["node-integration"] = value;
-	}
-
-	function set_acceptFirstMouse(value:Bool)
-	{
-		return untyped this["accept-first-mouse"] = value;
-	}
-
-	function set_webPreferences(value:BrowserWindowWebPreferences)
-	{
-		return untyped this["web-preferences"] = value;
-	}
+	@:native("zoom-factor")
+	@:optional var zoomFactor:Float;
 	
-	function get_webPreferences()
-	{
-		return untyped this["web-preferences"];
-	}
+	@:native("always-on-top")
+	@:optional var alwaysOnTop:Bool;
 	
-	public function new()
-	{
-		
-	}
+	@:native("use-content-size")
+	@:optional var useContentSize:Bool;
+	
+	@:native("min-width")
+	@:optional var minWidth:Int;
+	
+	@:native("min-height")
+	@:optional var minHeight:Int;
+	
+	@:native("max-width")
+	@:optional var maxWidth:Int;
+	
+	@:native("max-height")
+	@:optional var maxHeight:Int;
+	
+	@:native("node-integration")
+	@:optional var nodeIntegration:BrowserWindowNodeIntegration;
+	
+	@:native("accept-first-mouse")
+	@:optional var acceptFirstMouse:Bool;
+	
+	@:native("web-preferences")
+	@:optional var webPreferences:BrowserWindowWebPreferences;
 }
+	
+typedef BrowserWindowOptions = haxe.macro.MacroType<[util.NativeMap.build(BrowserWindowOptionsDef)]>;
 
 extern class BrowserWindow implements atomshell.Package.Require<"browser-window","*"> extends EventEmitter
 {
