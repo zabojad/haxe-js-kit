@@ -8,6 +8,138 @@ class NativeMap {
 	#if macro
 	static inline var INVALID = "Invalid";
 
+	public static function buildFields(){
+		//trace("hello");
+		var fields = Context.getBuildFields();
+		var cl = Context.getLocalClass().get();
+
+		var lt = Context.getLocalType();
+		var pos = Context.currentPos();
+		//trace(cl.name);
+		switch(cl.kind){
+			case KAbstractImpl(_ab) :
+				//trace(ab.get());
+				var ab = _ab.get();
+				var t = Context.follow( ab.type );
+				var ct = TypeTools.toComplexType(t);
+				var tp = {
+					pack : ab.pack,
+					name : ab.name,
+					params : [],
+					sub : null
+				};
+				var rt : ComplexType = TPath(tp);
+				switch(t){
+					case TAnonymous( _an ) :
+						//trace("ANON");
+						//var t = ComplexType.TAnonymous( an.fields );
+						var an = _an.get();
+						var constructor =  macro {
+							this = cast {};
+						}
+
+						var initExprs = switch( constructor.expr ){
+							case EBlock(e) : e;
+							default : throw "assert";
+						}
+
+						fields.push({
+							pos : pos,
+							name : 'new',
+							access : [AInline,APublic/*,AStatic*/],
+							
+							kind : FFun({
+								ret : null,
+								args : [{type:ct,name:'val'}],
+								expr : constructor,
+								params : []
+							}) //FProp('get','set')
+						});
+
+						fields.push({
+							pos : pos,
+							name : 'fromT',
+							access : [AInline,AStatic],
+							meta : [{
+								name : ":from",
+								pos : pos,
+								params : []
+							}],
+							kind : FFun({
+								ret : rt,
+								args : [{type:ct,name:'val'}],
+								expr : macro {
+									//var t = new ATest(v);
+									//t.something = "FROM TEST";
+									return new $tp(val);
+								}
+								,
+								params : []
+							}) //FProp('get','set')
+						});
+						
+						for( f in an.fields ){
+							var fname = f.name;
+							var nameExpr = Context.makeExpr(fname, pos);
+							var nativeName = nameExpr;
+
+
+							if( f.meta.has(":native") ){
+								for( m in f.meta.get() ){
+									if( m.name == ":native" ){
+										nativeName = m.params[0];
+									}
+								}
+							}
+							
+							fields.push({
+								pos : f.pos,
+								name : f.name,
+								access : [APublic],
+								kind : FProp( "get", "set", TypeTools.toComplexType( f.type ) ) //FProp('get','set')
+							});
+
+							fields.push({
+								pos : f.pos,
+								name : 'get_'+f.name,
+								access : [AInline],
+								kind : FFun({
+									ret : TypeTools.toComplexType(f.type),
+									args : [],
+									expr : macro return untyped this[$nativeName],
+									params : []
+								}) //FProp('get','set')
+							});
+
+							fields.push({
+								pos : f.pos,
+								name : 'set_'+f.name,
+								access : [AInline],
+								kind : FFun({
+									ret : TypeTools.toComplexType(f.type),
+									args : [{type:TypeTools.toComplexType(f.type),name:'val'}],
+									expr : macro return untyped this[$nativeName] = val,
+									params : []
+								}) //FProp('get','set')
+							});
+
+							initExprs.push(macro untyped this[$nativeName] = val[$nameExpr] );
+						}
+
+					default : throw INVALID;
+				}
+//				trace(t);
+			default: throw INVALID;
+		}
+
+		var pr = new haxe.macro.Printer();
+		for(f in fields){
+//			trace("FIELD");
+//			trace( pr.printField(f) );
+		}
+		return fields;
+	}
+
 	public static function build(e : Expr){
 		var pos = Context.currentPos();
 		switch(e.expr){
