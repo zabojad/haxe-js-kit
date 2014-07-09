@@ -12,8 +12,8 @@ abstract BrowserWindowNodeIntegration(String) to String
     var MANUAL_ENABLE_IFRAME = "manual-enable-iframe";
 }
 
-typedef BrowserWindowWebPreferencesDef =
-{
+@:build(util.NativeMap.build())
+abstract BrowserWindowWebPreferences({
 	@:optional var javascript:Bool;
 	@:optional var images:Bool;
 	@:optional var java:Bool;
@@ -32,12 +32,10 @@ typedef BrowserWindowWebPreferencesDef =
 	
 	@:native("extra-plugin-dirs")
 	@:optional var extraPluginDirs:Array<String>;
-}
+}) {}
 
-typedef BrowserWindowWebPreferences = haxe.macro.MacroType<[util.NativeMap.build(BrowserWindowWebPreferencesDef)]>;
-
-typedef BrowserWindowOptionsDef = 
-{
+@:build(util.NativeMap.build())
+abstract BrowserWindowOptions({
 	@:optional var width:Int;
 	@:optional var height:Int;
 	@:optional var x:Int;
@@ -84,8 +82,7 @@ typedef BrowserWindowOptionsDef =
 	@:native("web-preferences")
 	@:optional var webPreferences:BrowserWindowWebPreferences;
 }
-	
-typedef BrowserWindowOptions = haxe.macro.MacroType<[util.NativeMap.build(BrowserWindowOptionsDef)]>;
+) {}
 
 extern class BrowserWindow implements atomshell.Package.Require<"browser-window","*"> extends EventEmitter
 {
@@ -104,6 +101,7 @@ extern class BrowserWindow implements atomshell.Package.Require<"browser-window"
 	function isVisible():Bool;
 	function maximize():Void;
 	function unmaximize():Void;
+	function isMaximized():Bool;
 	function minimize():Void;
 	function restore():Void;
 	function setFullScreen(flag:Bool):Void;
