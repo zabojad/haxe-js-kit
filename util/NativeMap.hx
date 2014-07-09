@@ -4,6 +4,8 @@ import haxe.macro.Context;
 import haxe.macro.Expr;
 import haxe.macro.TypeTools;
 
+using util.Macro;
+
 class NativeMap {
 	#if macro
 	static inline var INVALID = "Invalid";
@@ -16,7 +18,7 @@ class NativeMap {
 		var pos = Context.currentPos();
 		
 		switch(cl.kind){
-			case KAbstractImpl(_ab) :
+			case KAbstractImpl( _ab ) :
 				
 				var ab = _ab.get();
 				var t = Context.follow( ab.type );
@@ -33,26 +35,13 @@ class NativeMap {
 						
 						var an = _an.get();
 						var constructor =  macro {
-							var _this = {};
+							this = {};
 						};
 						
 						var initExprs = switch( constructor.expr ){
 							case EBlock( exprs ) : exprs;
 							default : throw "assert";
 						}
-
-						fields.push({
-							pos : pos,
-							name : '_new',
-							access : [AInline,AStatic],
-							meta : [{name:":impl",pos:pos}],
-							kind : FFun({
-								ret : null,
-								args : [{type:ct,name:'val'}],
-								expr : constructor,
-								params : []
-							}) //FProp('get','set')
-						});
 
 						fields.push({
 							pos : pos,
@@ -81,7 +70,6 @@ class NativeMap {
 							var nameExpr = Context.makeExpr(fname, pos);
 							var nativeName = nameExpr;
 
-
 							if( f.meta.has(":native") ){
 								for( m in f.meta.get() ){
 									if( m.name == ":native" ){
@@ -90,47 +78,60 @@ class NativeMap {
 								}
 							}
 
-							var prop = {
+							var prop = ab.implementAbstractField({
 								pos : f.pos,
 								name : f.name,
-								access : [APublic,AStatic],
-								meta : [{name:":impl",pos:f.pos,params:[]}],
+								access : [APublic],
+								meta : [],
 								kind : FProp( "get", "set", TypeTools.toComplexType( f.type ) ) //FProp('get','set')
-							};
-							var getter = {
+							});
+							var getter = ab.implementAbstractField({
 								pos : f.pos,
 								name : 'get_'+f.name,
-								access : [AInline,AStatic],
-								meta : [{name:":impl",pos:f.pos,params:[]}],
+								access : [AInline],
+								meta : [],
 								kind : FFun({
 									ret : TypeTools.toComplexType(f.type),
-									args : [{type:ct,name:'this'}],
+									args : [],
 									expr : macro return untyped this[$nativeName],
 									params : []
 								}) //FProp('get','set')
-							};
+							});
 
-							var setter = {
+							var setter = ab.implementAbstractField( {
 								pos : f.pos,
 								name : 'set_'+f.name,
-								access : [AInline,AStatic],
-								meta : [{name:":impl",pos:f.pos,params:[]}],
+								access : [AInline],
+								meta : [],
 								kind : FFun({
 									ret : TypeTools.toComplexType(f.type),
-									args : [{type:ct,name:'this'},{type:TypeTools.toComplexType(f.type),name:'val'}],
+									args : [{type:TypeTools.toComplexType(f.type),name:'val'}],
 									expr : macro return untyped this[$nativeName] = val,
 									params : []
 								}) //FProp('get','set')
-							}
+							} );
 
 							fields.push(prop);
 							fields.push(getter);
 							fields.push(setter);
 
-							initExprs.push(macro untyped _this[$nativeName] = val[$nameExpr] );
+							initExprs.push(macro untyped this[$nativeName] = val[$nameExpr] );
 						}
 
-						initExprs.push(macro return _this);
+						fields.push( ab.implementAbstractField( {
+							pos : pos,
+							name : 'new',
+							access : [AInline],
+							//meta : [],
+							kind : FFun({
+								ret : null,
+								args : [{type:ct,name:'val'}],
+								expr : constructor,
+								params : []
+							}) //FProp('get','set')
+						} ) );
+
+						//initExprs.push(macro return _this);
 
 					default : throw INVALID;
 				}
