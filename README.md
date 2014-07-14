@@ -25,6 +25,7 @@ The library contains type signatures for :
 	* **[Express.js](http://expressjs.com/) web application framework**
 	* **[Socket.io](http://socket.io/) cross-browser websockets for realtime apps**
 	* **[Passport.js](http://passportjs.org/) simple, unobtrusive authentication**
+	* **[Atom-shell](https://github.com/atom/atom-shell) cross-platform desktop application shell**
 	* and more to come ;)
 * **Some major client-side libraries** : up-to-date JQuery externs, socket.io client, etc
 
