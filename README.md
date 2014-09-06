@@ -20,11 +20,12 @@ The library contains type signatures for :
 
 * **The core [node.js API](http://nodejs.org/api/)**
 * **Common NPM libraries** such as :
-	* **[Mongoose](http://mongoosejs.com/) elegant mongodb object modeling** with optional strict-typing and support for typedef to schema modeling [[example](https://github.com/clemos/haxe-js-kit/blob/master/test/Mongoose.hx)]
+	* **[Mongoose](http://mongoosejs.com/) elegant mongodb object modeling** with optional strict-typing and support for typedef to schema modeling [[example](https://github.com/clemos/haxe-js-kit/blob/master/test/MongooseTest.hx)]
 	* **[Connect.js](http://www.senchalabs.org/connect/) middleware framework**
 	* **[Express.js](http://expressjs.com/) web application framework**
 	* **[Socket.io](http://socket.io/) cross-browser websockets for realtime apps**
 	* **[Passport.js](http://passportjs.org/) simple, unobtrusive authentication**
+	* **[Atom-shell](https://github.com/atom/atom-shell) cross-platform desktop application shell**
 	* and more to come ;)
 * **Some major client-side libraries** : up-to-date JQuery externs, socket.io client, etc
 
