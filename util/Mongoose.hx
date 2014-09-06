@@ -218,7 +218,7 @@ class Mongoose {
 								_schema = new js.npm.mongoose.Schema($schemaDef);
 								var proto1 = untyped $modelExpr.prototype;
 								for( f in Reflect.fields(proto1) ){
-									untyped s.methods[f] = proto1[f];
+									untyped _schema.methods[f] = proto1[f];
 								}
 							}
 							return _schema;
