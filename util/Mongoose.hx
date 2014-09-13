@@ -217,8 +217,12 @@ class Mongoose {
 							if( _schema == null ){
 								_schema = new js.npm.mongoose.Schema($schemaDef);
 								var proto1 = untyped $modelExpr.prototype;
-								for( f in Reflect.fields(proto1) ){
-									untyped _schema.methods[f] = proto1[f];
+								for( f in Reflect.fields(proto1) ) untyped {
+									var v = proto1[f];
+									switch( Type.typeof(v) ){
+										case TFunction : _schema.methods[f] = v;
+										case _ : 
+									}
 								}
 							}
 							return _schema;
