@@ -12,6 +12,7 @@ implements npm.Package.RequireNamespace<"mongoose","*">
 	public var collection : Dynamic;//Collection;
 	public var modelName : String;
 	
+	@:overload(function(): Void {})
 	public function save( fn : Callback<TModel<T>> ) : Void;
 	public function increment() : TModel<T>;
 	public function remove( ?fn : Callback<TModel<T>> ) : TModel<T>;
@@ -45,6 +46,7 @@ extern class TModels<T,M:TModel<T>> {
 	@:overload( function ( conditions : {} , fields : Null<{}> , options : {} , ?callback : Callback<Array<M>> ): Query<Array<M>> {} )
 	public function find( ?conditions : {} , ?callback : Callback<Array<M>> ): Query<Array<M>>; // Query<Model<T>>
 
+	@:overload( function( id : Dynamic , callback : Callback<Null<M>> ) : Void {} )
 	@:overload( function ( id : Dynamic , fields : String , options : {} , ?callback : Callback<Null<Model<T>>> ): Query<Model<T>> {} )
 	@:overload( function ( id : Dynamic , fields : Null<{}> , options : {} , ?callback : Callback<Null<Model<T>>> ): Query<Model<T>> {} )
 	public function findById( id : Dynamic , ?callback : Callback<Null<Model<T>>> ): Query<Model<T>>; // Query<Model<T>>
