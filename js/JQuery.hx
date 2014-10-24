@@ -146,6 +146,10 @@ implements requirejs.Package.Require<"jquery","*"> {
 	function each( f : Void -> Void ) : JQuery;
 	function end() : JQuery;
 	function eq( index : Int ) : JQuery;
+
+	@:overload(function(f: Int -> Element -> Bool): JQuery{})
+	@:overload(function(elem: Element): JQuery{})
+	@:overload(function(query: JQuery): JQuery{})
 	function filter( selector : String ) : JQuery;
 	function find( selector : String ) : JQuery;
 	function first() : JQuery;
@@ -325,6 +329,11 @@ implements requirejs.Package.Require<"jquery","*"> {
 	@:overload(function(events:Dynamic<JQueryEvent->Void>):JQuery{})
 	@:overload(function(events : String, selector : String , callb : JQueryEvent -> Void ) : JQuery {} )
 	function on( events : String, callb : JQueryEvent -> Void ) : JQuery;
+
+	@:overload(function(): JQuery{})
+	@:overload(function(events : String ): JQuery{})
+	@:overload(function(events : String, selector : String , callb : JQueryEvent -> Void ) : JQuery {} )
+	function off( events : String, callb : JQueryEvent -> Void  ): JQuery;
 
 	// queue
 	function clearQueue( ?queueName : String ) : JQuery;
