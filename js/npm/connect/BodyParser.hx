@@ -25,6 +25,11 @@ typedef UrlEncodedOptions = { > OptionsBase,
 	@:optional var parameterLimit :Int;
 }
 
+typedef BodyParserOptions = {
+	?uploadDir : String,
+	?limit: String
+};
+
 extern class BodyParser
 implements npm.Package.Require<"body-parser","~1.12.0"> #if !haxe3,#end
 implements js.npm.connect.Middleware {

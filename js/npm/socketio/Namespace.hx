@@ -1,11 +1,16 @@
 package js.npm.socketio;
 
+import js.support.Callback.Callback0;
+import js.support.DynamicObject;
+
 extern
 class Namespace {
 
 	public var id : String;
   public var handshake (default,null) : HandshakeData; 
   public var broadcast (default,null) : Namespace;
+  public var connected:DynamicObject<Namespace>;
+  public var adapter: Adapter;
 
 //  public static function SocketNamespace (socket : Dynamic, name : String) : Void;
   public function send(data : Dynamic, fn : Dynamic) : Namespace;
@@ -23,18 +28,28 @@ class Namespace {
 	@:overload(function(name : String) : Namespace{ } )
   public function emit(event:String,?arg1:Dynamic,?arg2:Dynamic,?arg3:Dynamic):Void;
 
-  public function join(room:String):Void;
-  public function leave(room:String):Void;
+  @:overload(function(room : String) : Namespace{ } )
+  public function join(room:String, callback: Callback0):Namespace;
+  public function leave(room:String):Namespace;
 
   /*@:native("in")*/
   public inline function in_(room:String):Namespace return untyped this["in"](room);
+  public function to(room: String):Namespace;
   
 
-  public function clients(room:String):Array<Namespace>;
+  // Not supported in 1.0.0
+  //public function clients(room:String):Array<Namespace>;
 
   public function set<T>( key : String , value : T , ?cb : Void -> Void ) : Void;
   public function get<T>( key : String , cb : Null<String> -> T -> Void ) : Void;
 
   public function socket( id : String ) : Namespace;
-
 }
+
+extern
+class Adapter
+{
+  public var rooms: DynamicObject<Array<String>>;
+}
+
+
