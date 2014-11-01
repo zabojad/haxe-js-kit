@@ -1,6 +1,18 @@
 package js.npm.socketio;
 
-typedef Manager = {
+import js.browser.SocketIo.ManagerOpts;
+
+extern class Manager{
+	public function new(url: String, opts: ManagerOpts);
+
+	public function reconnection(?v: Bool): Manager;
+	public function reconnectionAttemps(?v: Int): Manager;
+	public function reconnectionDelay(?v: Int): Manager;
+	public function reconnectionDelayMax(?v: Int): Manager;
+	public function timeout(?v: Int): Manager;
+}
+
+/*typedef Manager = {
 
 	var sockets(default,null) : Namespace;
 
@@ -22,4 +34,4 @@ typedef Manager = {
 	function configure(env : Dynamic, fn : Manager -> Void) : Manager;
 
 	function of(nsp : Dynamic) : Namespace;
-}
+}*/

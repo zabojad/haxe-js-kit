@@ -192,10 +192,12 @@ implements requirejs.Package.Require<"jquery","*"> {
 
 	@:overload(function(value:JQuery):JQuery{})
 	@:overload(function(value:Element):JQuery{})
+	@:overload(function(value:Array<Element>):JQuery{})
 	function append( html : String ) : JQuery;
 
 	@:overload(function(value:JQuery):JQuery{})
 	@:overload(function(value:Element):JQuery{})
+	@:overload(function(value:Array<Element>):JQuery{})
 	function appendTo( html : String ) : JQuery;
 
 	function detach( ?selector : String ) : JQuery;
