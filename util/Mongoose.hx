@@ -8,6 +8,8 @@ import haxe.macro.TypeTools;
 
 class Mongoose {
 
+    static inline var SCHEMA_OPTIONS_META = ':schemaOptions';
+
 	#if !macro macro #end public static function buildManager( modelType : Expr ){
 		var fields = Context.getBuildFields();
 		var cl = Context.getLocalClass().get();
@@ -76,13 +78,13 @@ class Mongoose {
 						}),
 						params : [],
 						expr : macro {
-							
+
 							var m = untyped mongoose.model( name , $modExpr.get_Schema() , collectionName , skipInit );
 							var proto = untyped $modelExpr.prototype;
 							for( f in Reflect.fields(proto) ){
 								untyped m[f] = proto[f];
 							}
-							
+
 							return untyped m;
 
 						},
@@ -133,7 +135,7 @@ class Mongoose {
 			default :
 				throw "not supported";
 		}
-		
+
 		return fields;
 	}
 
@@ -167,6 +169,16 @@ class Mongoose {
 		var modelFullname = MacroStringTools.toDotPath(cl.pack,cl.name);
 		var modelExpr = MacroStringTools.toFieldExpr( modelFullname.split(".") );
 
+        var schemaOptions = macro {};
+
+        // extract schema option metadata
+        if( cl.meta.has( SCHEMA_OPTIONS_META ) ) {
+            for( m in cl.meta.get() ){
+                if( m.name == SCHEMA_OPTIONS_META ){
+                    schemaOptions = m.params[0];
+                }
+            }
+        }
 
 		switch(modelDecl){
 			case TAnonymous( a ):
@@ -215,13 +227,13 @@ class Mongoose {
 						params : [],
 						expr : macro {
 							if( _schema == null ){
-								_schema = new js.npm.mongoose.Schema($schemaDef);
+								_schema = new js.npm.mongoose.Schema($schemaDef,$schemaOptions);
 								var proto1 = untyped $modelExpr.prototype;
 								for( f in Reflect.fields(proto1) ) untyped {
 									var v = proto1[f];
 									switch( Type.typeof(v) ){
 										case TFunction : _schema.methods[f] = v;
-										case _ : 
+										case _ :
 									}
 								}
 							}
@@ -251,7 +263,7 @@ class Mongoose {
 							name : "Null"
 						});
 					}
-					
+
 					fields.push({
 						name : f.name,
 						pos : pos,
@@ -260,7 +272,7 @@ class Mongoose {
 						access : access,
 						kind : FVar( varType )
 					});
-					
+
 				}
 
 				// add _id field if not present
@@ -278,8 +290,8 @@ class Mongoose {
 							name : "ObjectId"
 						}) )
 					});
-				}	
-				
+				}
+
 			default :
 				throw "not supported";
 		}
@@ -290,7 +302,7 @@ class Mongoose {
 
 	static function anonTypeToSchemaDef( a : AnonType ) : ExprDef {
 		var fields : Array<{ field : String, expr : haxe.macro.Expr }> = [];
-		
+
 		for( f in a.fields ){
 			fields.push( classFieldToSchemaField(f) );
 		}
@@ -306,9 +318,9 @@ class Mongoose {
 			pos : f.pos,
 			expr : typeToSchemaType(f.type)
 		};
-		
+
 		var expr = macro { type : $type };
-		
+
 		var fields = switch(expr.expr){
 			case EObjectDecl( fields ) : fields;
 			default : throw "assert";
@@ -326,7 +338,7 @@ class Mongoose {
 						default : throw "assert";
 					}
 				}
-				
+
 			default :
 
 		}
@@ -349,7 +361,7 @@ class Mongoose {
 							Context.error( "Function expected" , m.pos );
 						fields.push( { field : mname , expr : m.params[0] });
 			}
-						
+
 		}
 
 		// cases are wrong now
@@ -365,16 +377,16 @@ class Mongoose {
 						case "trim","uppercase","lowercase" :
 							fields.push( { field : mname , expr : m.params.length == 0 ? macro true : m.params[0] } );
 						case "match":
-							if( m.params.length != 1 ) 
+							if( m.params.length != 1 )
 								Context.error( "EReg expected" , m.pos );
 							var regexp = m.params[0];
-							
+
 							fields.push( { field : mname , expr : macro js.support.RegExp.fromEReg( $regexp ) } );
 						case "enum" :
 							if( m.params.length != 1 )
 								Context.error( "String values expected" , m.pos );
 							var vals = m.params[0];
-							
+
 							fields.push( { field : mname , expr : macro ($vals : Array<String>) } );
 						default:
 					}
@@ -385,10 +397,10 @@ class Mongoose {
 					var mname = m.name.substring(1);
 					switch( mname ){
 						case "min","max":
-							if( m.params.length != 1 ) 
+							if( m.params.length != 1 )
 								Context.error( "Float expected" , m.pos );
 							var val = m.params[0];
-							
+
 							fields.push( { field : mname , expr : macro ( $val : Float ) } );
 					}
 				}
@@ -398,10 +410,10 @@ class Mongoose {
 					var mname = m.name.substring(1);
 					switch( mname ){
 						case "expires":
-							if( m.params.length != 1 ) 
+							if( m.params.length != 1 )
 								Context.error( "Date expected" , m.pos );
 							var val = m.params[0];
-							
+
 							fields.push( { field : mname , expr : macro $val } );
 					}
 				}
@@ -424,33 +436,33 @@ class Mongoose {
 					if( m.params.length != 1 )
 							Context.error( "Function expected" , m.pos );
 						fields.push( { field : mname , expr : m.params[0] });
-					
+
 				case "trim","uppercase","lowercase" :
 					fields.push( { field : mname , expr : m.params.length == 0 ? macro true : m.params[0] } );
 				case "match":
-					if( m.params.length != 1 ) 
+					if( m.params.length != 1 )
 						Context.error( "EReg expected" , m.pos );
 					var regexp = m.params[0];
-					
+
 					fields.push( { field : mname , expr : macro js.support.RegExp.fromEReg( $regexp ) } );
 				case "enum" :
 					if( m.params.length != 1 )
 						Context.error( "String values expected" , m.pos );
 					var vals = m.params[0];
-					
+
 					fields.push( { field : mname , expr : macro ($vals : Array<String>) } );
-				
+
 				case "min","max":
-					if( m.params.length != 1 ) 
+					if( m.params.length != 1 )
 						Context.error( "Float expected" , m.pos );
 					var val = m.params[0];
-					
+
 					fields.push( { field : mname , expr : macro ( $val : Float ) } );
 				case "expires":
-					if( m.params.length != 1 ) 
+					if( m.params.length != 1 )
 						Context.error( "Date expected" , m.pos );
 					var val = m.params[0];
-					
+
 					fields.push( { field : mname , expr : macro $val } );
 				default :
 					fields.push( {field : mname , expr : m.params.length == 0 ? macro true : m.params[0] } );
@@ -471,7 +483,7 @@ class Mongoose {
 				var fullname = i.pack.join(".") + ( i.pack.length > 0 ? "." : "" ) + i.name;
 				//trace(fullname);
 				var expr = switch( fullname ){
-					case "String" : 
+					case "String" :
 						macro untyped __js__('String');
 					case "Array" : // TODO handle DocumentArray etc
 						var t = { expr : typeToSchemaType(params[0]) , pos : Context.currentPos() };
@@ -482,18 +494,18 @@ class Mongoose {
 						macro js.node.Buffer;
 					case "js.npm.mongoose.schema.types.ObjectId" :
 						macro js.npm.mongoose.schema.types.ObjectId;
-					default : 
+					default :
 						var sup = i.superClass;
 						if(sup.t.toString() == "js.npm.mongoose.macro.Model"){
-							
+
 							for( f in i.fields.get() ){
 								 if( f.name == '_id' ){
 								 	return typeToSchemaType(f.type);
 								 }
 							}
-							
+
 							macro js.npm.mongoose.schema.types.ObjectId;
-							
+
 						}else{
 							macro js.npm.mongoose.schema.types.Mixed;
 						}
@@ -508,12 +520,12 @@ class Mongoose {
 						macro js.Number;
 					case "Bool" :
 						macro untyped __js__('Boolean');
-					default : 
+					default :
 						macro js.npm.mongoose.schema.types.Mixed;
 				}
 				return expr.expr;
 
-			default : 
+			default :
 				var expr = macro js.npm.mongoose.schema.types.Mixed;
 				return expr.expr;
 		}

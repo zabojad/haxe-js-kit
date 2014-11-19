@@ -14,11 +14,14 @@ typedef StuffData = {
 
 // declare the model
 // the typedef fields will be "copied" to Stuff instance
+@:schemaOptions({
+    autoIndex: true
+})
 class Stuff extends Model<StuffData>{}
 class StuffManager extends js.npm.mongoose.macro.Manager<StuffData,Stuff>{}
 
 class MongooseTest implements util.Async {
-	
+
 	static function main(){
 		// connect
 		var db = mongoose.connect("mongodb://localhost/test_mongoose");
@@ -38,8 +41,8 @@ class MongooseTest implements util.Async {
 			test : "test",
 			foo : 1
 		};
-		
-		var err,doc = @async stuff.create( d ); 
+
+		var err,doc = @async stuff.create( d );
 
 		trace("foo", doc.foo);
 		trace("test",doc.test);
