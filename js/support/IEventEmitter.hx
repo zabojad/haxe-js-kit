@@ -1,13 +1,11 @@
 package js.node.events;
 
-import js.node.events.IEventEmitter;
-
-extern class EventEmitter 
-implements IEventEmitter
-implements npm.Package.RequireNamespace<"events","*">{
-	public static inline var EVENT_NEW_LISTENER = "newListener";
-	public static inline var EVENT_REMOVE_LISTENER = "removeListener";
-	static function listenerCount(emitter:EventEmitter,event:String) : Int;
+typedef EventEmitterListener = Dynamic;
+/* 
+   emits: newListener
+ */
+extern interface IEventEmitter 
+{
 
 	function addListener(event:String,fn:EventEmitterListener):Dynamic;
 	function on(event:String,fn:EventEmitterListener):Dynamic;
@@ -19,4 +17,3 @@ implements npm.Package.RequireNamespace<"events","*">{
 	function emit(event:String,?arg1:Dynamic,?arg2:Dynamic,?arg3:Dynamic):Void;
 
 }
-

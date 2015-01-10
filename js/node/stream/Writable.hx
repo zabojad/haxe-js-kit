@@ -1,6 +1,7 @@
 package js.node.stream;
 
 import js.node.Buffer;
+import js.node.events.IEventEmitter;
 import js.node.events.EventEmitter;
 
 /* 

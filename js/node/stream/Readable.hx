@@ -1,6 +1,7 @@
 package js.node.stream;
 
 import js.node.events.EventEmitter;
+import js.node.events.IEventEmitter;
 import js.node.stream.Writable;
 
 extern class Readable 
