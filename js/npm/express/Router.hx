@@ -1,9 +1,9 @@
 package js.npm.express;
-import js.npm.connect.support.Middleware;
+import js.npm.express.Middleware;
 import js.support.Callback;
 
 extern class Router 
-implements js.npm.connect.Middleware
+implements IMiddleware<Request,Response>
 implements Dynamic<String->TMiddleware<Request,Response>->Void>
 implements npm.Package.RequireNamespace<"express","~4.0">
 {
