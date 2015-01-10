@@ -13,18 +13,29 @@ class ExpressTest {
 		app.set('test','toto');
 		app.use( new js.npm.express.CookieParser( secret ) );
 		app.use( new Session({ secret : secret }) );
-		app.use(function(_,_,next){
-			trace("got request");
+
+		/** custom middleware **/
+		app.use( function(req,_,next){
+			trace("got request",req.originalUrl,req.session());
 			next();
 		});
-		app.all('/', function(req:Request,res:Response){
+		
+		/** all verbs route on / **/
+		app.all('/', function(req,res){
 			var session = req.session();
 			if( session.n == null ){
 				session.n = 1;
 			}
 			res.send("HELLO " + session.n++ );
-
 		});
+
+		/** custom verb route **/
+		app.head('/',function(req,res,next){
+			trace('HEAD REQUEST');
+			next();
+		});
+
+		/** otherwise, go static **/
 		app.use( new js.npm.express.Static('.') );
 		
 		trace('listening to $PORT');

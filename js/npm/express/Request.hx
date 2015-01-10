@@ -2,19 +2,19 @@ package js.npm.express;
 
 import js.node.http.ClientRequest;
 
-typedef Route = Dynamic;
-typedef Accepted = Dynamic;
+typedef RequestRoute = Dynamic;
+typedef RequestAccepted = Dynamic;
 
-typedef Request = TRequest<Dynamic,Dynamic>;
+typedef Request = TRequest<Dynamic>;
 
 @:native("Request")
-extern class TRequest<P,Q>
+extern class TRequest<P>
 extends ClientRequest {
 
 	public var params : P;
-	public var query : Q;
-	public var route : Route;
-	public var accepted : Array<Accepted>;
+	public var query : Dynamic;
+	public var route : RequestRoute;
+	public var accepted : Array<RequestAccepted>;
 	public var ip : String;
 	public var ips : Array<String>;
 	public var path : String;
