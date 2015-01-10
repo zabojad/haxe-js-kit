@@ -42,7 +42,7 @@ typedef MiddlewareMethod = Route->TMiddleware<Request,Response>->Void;
 	'mkactivity', 
 	'checkout', 
 	'merge', 
-	'm-search', 
+	'm-search',
 	'notify', 
 	'subscribe', 
 	'unsubscribe', 

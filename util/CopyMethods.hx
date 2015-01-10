@@ -6,7 +6,26 @@ import haxe.macro.Expr;
 class CopyMethods {	
 
 	static function toIdentifier( verb : String ) {
-		return verb;
+		var r = ~/[^a-zA-Z0-9_]+/g;
+		var v = verb;
+
+		if( !r.match(v) ){
+			return v;
+		}
+
+		var id = r.matchedLeft();
+		v = r.matchedRight();
+
+		while( r.match(v) ){
+			var term = r.matchedLeft();
+			id += term.substr(0,1).toUpperCase() + term.substr(1);
+			v = r.matchedRight();		
+		}
+
+		var term = v;
+		id += term.substr(0,1).toUpperCase() + term.substr(1);
+
+		return id;
 	}
 
 	static macro function build( verbs : ExprOf<Array<String>> , _fun : ExprOf<Function> , overloads : ExprOf<Array<Function>> ) : Array<Field> {
@@ -23,14 +42,21 @@ class CopyMethods {
 				for( s in arr ) {
 					switch( s.expr ) {
 						case EConst(CString( verb )) : 
-							//trace(verb);
-							var verbIdentifier = toIdentifier( verb );
+							
+							var method = toIdentifier( verb );
+
 							var f = {
-								name : verb,
+								name : method,
 								pos : s.pos,
 								kind : FFun(fun),
-								meta : []
+								meta : [],
+								access : []
 							};
+
+							if( method != verb ) {
+								f.access.push(AInline);
+								fun.expr = macro untyped return this[$v{verb}]( path , f );
+							}
 							switch( overloads.expr ){
 								case EArrayDecl(arr2) : 
 									for( o in arr2 ) {

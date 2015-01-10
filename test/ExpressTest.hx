@@ -35,6 +35,11 @@ class ExpressTest {
 			next();
 		});
 
+		app.mSearch('/',function(req,res,next){
+			trace("M-SEARCH REQUEST");
+			next();
+		});
+
 		/** otherwise, go static **/
 		app.use( new js.npm.express.Static('.') );
 		
