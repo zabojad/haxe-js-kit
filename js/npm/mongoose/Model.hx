@@ -109,7 +109,7 @@ extern class TModels<T,M:TModel<T>> {
 	@:overload(function( doc : {} , options : {} , cb : Callback<M> ) : Void {} )
 	public function populate( docs : Array<{}> , options : {} , cb : Callback<Array<M>> ) : Void;
 
-	public inline function construct( ?doc : T ) : M {
+	public function construct( ?doc : T ) : M {
 		return untyped __new__(this,doc);
 	}
 
