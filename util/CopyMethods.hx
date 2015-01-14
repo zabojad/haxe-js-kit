@@ -69,6 +69,16 @@ class CopyMethods {
 								case _ : throw 'assert';
 
 							}
+
+							// Special case for the get method
+							if(method == 'get') {
+								f.meta.push({
+									pos : f.pos,
+									params : [macro function(setting : String) : Dynamic {}],
+									name : ":overload"
+								});								
+							}
+
 							fields.push(f);
 						case _ : throw 'assert';
 					}
