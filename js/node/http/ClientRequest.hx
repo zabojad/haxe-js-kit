@@ -19,5 +19,6 @@ implements npm.Package.RequireNamespace<"http","*">
     function end(?data:Dynamic,?enc:String):Void;
     function abort():Void;
     function setTimeout(timeout: Int, ?callback: Void->Void): Void;
-    
+    function setNoDelay(?noDelay: Bool): Void;
+    function setSocketKeepAlive(?enable: Bool, ?initialDelay: Int): Void;
 }
