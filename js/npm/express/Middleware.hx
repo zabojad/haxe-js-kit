@@ -3,13 +3,13 @@ package js.npm.express;
 import js.support.Callback;
 
 abstract TMiddleware<Req:Request,Res:Response>( Middleware<Request,Response> ) {
-	@:from static inline public function fromIMiddleware<Req,Res>( m : IMiddleware<Req,Res> ) : TMiddleware<Req,Res> {
+	@:from static inline public function fromIMiddleware<Req:Request,Res:Response>( m : IMiddleware<Req,Res> ) : TMiddleware<Req,Res> {
 		return untyped cast m;
 	}
-	@:from static inline public function fromResponder<Req,Res>( m : MiddlewareResponder<Req,Res> ) : TMiddleware<Req,Res> {
+	@:from static inline public function fromResponder<Req:Request,Res:Response>( m : MiddlewareResponder<Req,Res> ) : TMiddleware<Req,Res> {
 		return untyped cast m;
 	}
-	@:from static inline public function fromMiddleware<Req,Res>( m : Middleware<Req,Res> ) : TMiddleware<Req,Res> {
+	@:from static inline public function fromMiddleware<Req:Request,Res:Response>( m : Middleware<Req,Res> ) : TMiddleware<Req,Res> {
 		return untyped cast m;
 	}
 }

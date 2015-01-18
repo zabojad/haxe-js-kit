@@ -43,4 +43,5 @@ extern class RegExpMatch
 implements ArrayAccess<String> {
     var index:Int;
     var input:String;
+    var length:Int;
 }
