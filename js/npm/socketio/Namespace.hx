@@ -1,10 +1,12 @@
 package js.npm.socketio;
 
+import js.npm.socketio.Listener;
+
 import js.support.Callback.Callback0;
 import js.support.DynamicObject;
 
 extern
-class Namespace {
+class Namespace implements Dynamic{
 
 	public var id : String;
   public var handshake (default,null) : HandshakeData; 
@@ -18,7 +20,11 @@ class Namespace {
 
   // from js.Node.NodeEventEmitter
   public function addListener(event:String,fn:Listener):Dynamic;
+
+  @:overload(function(event:String,fn:CallbackListener) : Dynamic{ } )
   public function on(event:String,fn:Listener):Dynamic;
+
+  @:overload(function(event:String,fn:CallbackListener) : Void{ } )
   public function once(event:String,fn:Listener):Void;
   public function removeListener(event:String,listener:Listener):Void;
   public function removeAllListeners(event:String):Void;

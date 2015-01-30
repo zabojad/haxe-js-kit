@@ -104,6 +104,7 @@ implements requirejs.Package.Require<"jquery","*"> {
 	function val() : String;
 
 	@:overload(function(text:String):JQuery{})
+	@:overload(function(fn: Int -> String -> String):JQuery{})
 	function text() : String;
 
 	// Size & Position

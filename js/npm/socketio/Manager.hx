@@ -10,6 +10,7 @@ typedef Manager = {
 
 	function get(key : Dynamic) : Dynamic;
 	function set(key : Dynamic, value : Dynamic) : Manager;
+	function use(fn: Namespace -> Dynamic -> Void) : Manager;
 	function enable(key : Dynamic) : Manager;
 	function disable(key : Dynamic) : Manager;
 
