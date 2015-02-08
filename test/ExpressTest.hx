@@ -38,6 +38,7 @@ class ExpressTest {
 			next();
 		});
 
+		// FIXME: inline conversion to 'm-search' won't work on @:overloads
 		app.mSearch('/',function(req,res){
 			trace("M-SEARCH REQUEST");
 			
