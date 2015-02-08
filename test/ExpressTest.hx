@@ -8,18 +8,21 @@ using js.npm.express.Session;
 class ExpressTest {
 	static function main(){
 		var PORT = 9000;
-		var app = new js.npm.Express();
+		var app : js.npm.express.Application = new js.npm.Express();
 		var secret = 'mySecret';
+		
+		var store = js.npm.ConnectMongo.construct( Session ,{ db : 'localhost' } );
+
 		app.set('test','toto');
 		app.use( new js.npm.express.CookieParser( secret ) );
-		app.use( new Session({ secret : secret }) );
+		app.use( new Session({ secret : secret , store : store }) );
 
 		/** custom middleware **/
 		app.use( function(req,_,next){
 			trace("got request",req.originalUrl,req.session());
 			next();
 		});
-		
+
 		/** all verbs route on / **/
 		app.all('/', function(req,res){
 			var session = req.session();
@@ -35,9 +38,9 @@ class ExpressTest {
 			next();
 		});
 
-		app.mSearch('/',function(req,res,next){
+		app.mSearch('/',function(req,res){
 			trace("M-SEARCH REQUEST");
-			next();
+			
 		});
 
 		/** otherwise, go static **/

@@ -24,5 +24,5 @@ extends MiddlewareHttp
 	@:overload(function<Req:Request,Res:Response>(path : Route , f : Array<TMiddleware<Req,Res>> ) : Application {})
 	@:overload(function<Req:Request,Res:Response>(path : Route , f : TMiddleware<Req,Res> ) : Application {})
 	@:overload(function ( setting : String ): Dynamic { } )
-	override function get( path : Route, f : MiddlewareResponder<Request,Response> ) : Application;
+	function get( path : Route, f : MiddlewareResponder<Request,Response> ) : Application;
 }

@@ -23,7 +23,6 @@ typedef MiddlewareParam<Req:Request,Res:Response,P> = Req -> Res -> MiddlewareNe
 typedef MiddlewareMethod = Route->TMiddleware<Request,Response>->Void;
 
 @:build( util.CopyMethods.build([
-	'get', 
 	'post', 
 	'put', 
 	'head', 
