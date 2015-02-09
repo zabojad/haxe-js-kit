@@ -4,8 +4,8 @@ import js.support.Callback;
 
 extern class Router 
 extends MiddlewareHttp
-implements IMiddleware<Request,Response>
-implements Dynamic<String->TMiddleware<Request,Response>->Void>
+implements IMiddleware
+implements Dynamic<String->TMiddleware->Void>
 implements npm.Package.RequireNamespace<"express","~4.0">
 {
 

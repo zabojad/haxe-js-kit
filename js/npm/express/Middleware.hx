@@ -2,25 +2,25 @@ package js.npm.express;
 
 import js.support.Callback;
 
-abstract TMiddleware<Req:Request,Res:Response>( Middleware<Request,Response> ) {
-	@:from static inline public function fromIMiddleware<Req:Request,Res:Response>( m : IMiddleware<Req,Res> ) : TMiddleware<Req,Res> {
+abstract TMiddleware( Middleware ) {
+	@:from static inline public function fromIMiddleware( m : IMiddleware ) : TMiddleware {
 		return untyped cast m;
 	}
-	@:from static inline public function fromResponder<Req:Request,Res:Response>( m : MiddlewareResponder<Req,Res> ) : TMiddleware<Req,Res> {
+	@:from static inline public function fromResponder( m : MiddlewareResponder ) : TMiddleware {
 		return untyped cast m;
 	}
-	@:from static inline public function fromMiddleware<Req:Request,Res:Response>( m : Middleware<Req,Res> ) : TMiddleware<Req,Res> {
+	@:from static inline public function fromMiddleware( m : Middleware ) : TMiddleware {
 		return untyped cast m;
 	}
 }
 
 typedef MiddlewareNext = ?Dynamic -> Void ;
-typedef Middleware<Req:Request,Res:Response> = Req->Res->MiddlewareNext->Void;
-typedef MiddlewareResponder<Req:Request,Res:Response> = Req->Res->Void;
-typedef MiddlewareErrorHandler<Req:Request,Res:Response> = Dynamic -> Req -> Res -> Callback0 -> Void;
-typedef MiddlewareParam<Req:Request,Res:Response,P> = Req -> Res -> MiddlewareNext -> P -> Void;
+typedef Middleware = Request->Response->MiddlewareNext->Void;
+typedef MiddlewareResponder = Request->Response->Void;
+typedef MiddlewareErrorHandler = Dynamic -> Request -> Response -> Callback0 -> Void;
+typedef MiddlewareParam<P> = Request -> Response -> MiddlewareNext -> P -> Void;
 
-typedef MiddlewareMethod = Route->TMiddleware<Request,Response>->Void;
+typedef MiddlewareMethod = Route->TMiddleware->Void;
 
 @:build( util.CopyMethods.build([
 	'post', 
@@ -50,41 +50,21 @@ typedef MiddlewareMethod = Route->TMiddleware<Request,Response>->Void;
 	'connect',
 	'all'
 ], 
-function( path : Route, f : MiddlewareResponder<Request,Response> ) : Application {},
+function( path : Route, f : MiddlewareResponder ) : Application {},
 [
-	function<Req:Request,Res:Response>(path : Route , f : Array<TMiddleware<Req,Res>> ) : Application {},
-	function<Req:Request,Res:Response>(path : Route , f : TMiddleware<Req,Res> ) : Application {}
+	function<Req:Request,Res:Response>(path : Route , f : Array<TMiddleware> ) : Application {},
+	function<Req:Request,Res:Response>(path : Route , f : TMiddleware ) : Application {}
 ]) )
 extern class MiddlewareHttp 
 {
-	@:overload( function<Req:Request,Res:Response> ( path : Route , f : Array<TMiddleware<Req,Res>> ) : Application {} )
-	@:overload( function<Req:Request,Res:Response> ( path : Route , TMiddleware : TMiddleware<Req,Res> ) : Application {} )
-	@:overload( function<Req:Request,Res:Response> ( errorHandler : MiddlewareErrorHandler<Req,Res> ) : Application {} )
-	@:overload( function<Req:Request,Res:Response> ( middleware : TMiddleware<Req,Res> ) : Application {} )
-	public function use ( middleware : MiddlewareResponder<Request,Response> ) : Application ;
+	@:overload( function<Req:Request,Res:Response> ( path : Route , f : Array<TMiddleware> ) : Application {} )
+	@:overload( function<Req:Request,Res:Response> ( path : Route , TMiddleware : TMiddleware ) : Application {} )
+	@:overload( function<Req:Request,Res:Response> ( errorHandler : MiddlewareErrorHandler ) : Application {} )
+	@:overload( function<Req:Request,Res:Response> ( middleware : TMiddleware ) : Application {} )
+	public function use ( middleware : MiddlewareResponder ) : Application ;
 
-	// @:overload(function<Req:Request,Res:Response>(path : Route , f : Array<TMiddleware<Req,Res>> ) : Application {} )
-	// @:overload(function<Req:Request,Res:Response>(path : Route , f : TMiddleware<Req,Res> ) : Application {} )
-	// function get( path : Route, f : MiddlewareResponder<Request,Response> ) : Application;
-
-	// @:overload(function<Req:Request,Res:Response>(path : Route , f : Array<TMiddleware<Req,Res>> ) : Application {} )
-	// @:overload(function<Req:Request,Res:Response>(path : Route , f : TMiddleware<Req,Res> ) : Application {} )
-	// function post( path : Route, f : MiddlewareResponder<Request,Response> ) : Application;
-
-	// @:overload(function<Req:Request,Res:Response>(path : Route , f : Array<TMiddleware<Req,Res>> ) : Application {} )
-	// @:overload(function<Req:Request,Res:Response>(path : Route , f : TMiddleware<Req,Res> ) : Application {} )
-	// function put( path : Route, f : MiddlewareResponder<Request,Response> ) : Application;
-
-	// @:overload(function<Req:Request,Res:Response>(path : Route , f : Array<TMiddleware<Req,Res>> ) : Application {} )
-	// @:overload(function<Req:Request,Res:Response>(path : Route , f : TMiddleware<Req,Res> ) : Application {} )
-	// function delete( path : Route, f : MiddlewareResponder<Request,Response> ) : Application;
-
-	// @:overload(function<Req:Request,Res:Response>(path : Route , f : Array<TMiddleware<Req,Res>> ) : Application {} )
-	// @:overload(function<Req:Request,Res:Response>(path : Route , f : TMiddleware<Req,Res> ) : Application {} )
-	// function all( path : Route, f : MiddlewareResponder<Request,Response> ) : Application;
-
-	function param<Req:Request,Res:Response,P>( name : String , callback : MiddlewareParam<Req,Res,P> ) : Application;
+	function param<P>( name : String , callback : MiddlewareParam<P> ) : Application;
 }
 
-extern interface IMiddleware<Req:Request,Res:Response> {}
+extern interface IMiddleware {}
 

@@ -9,7 +9,7 @@ extern class VHostHost implements ArrayAccess<String>
 
 extern class VHost
 implements npm.Package.Require<"vhost", "^3.0.0"> #if !haxe3,#end
-implements Middleware.IMiddleware<Request, Response>
+implements Middleware.IMiddleware
 {
 	@:overload(function(hostname : EReg, app : Dynamic) : Void {})
 	public function new(hostname : String, app : Dynamic) : Void;

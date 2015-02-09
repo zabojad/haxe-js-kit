@@ -20,7 +20,7 @@ typedef StaticOptions = {
 @:native('static')
 extern class Static 
 implements npm.Package.RequireNamespace<"express","~4.0"> #if !haxe3,#end
-implements Middleware.IMiddleware<Request,Response>
+implements Middleware.IMiddleware
 {
 	public function new( path : String , ?opts : StaticOptions ) : Void;
 }

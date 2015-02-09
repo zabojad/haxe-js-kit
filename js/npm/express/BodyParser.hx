@@ -13,7 +13,7 @@ typedef UrlencodedOptions = {
 
 extern class BodyParser
 implements npm.Package.Require<"body-parser", "^1.10.1"> #if !haxe3,#end
-implements Middleware.IMiddleware<Request, Response>
+implements Middleware.IMiddleware
 {
 	public static function json(?options : {}) : BodyParser;
 	public static function raw(?options : {}) : BodyParser;
