@@ -22,7 +22,7 @@ typedef ConnectRestResult2<T> = T -> Dynamic -> ConnectRestCallback -> Void;
 extern class ConnectRest
 implements npm.Package.Require<"connect-rest", "^1.6.6">
 {
-	public static function rester(?options : {}) : Middleware<Request, Response>;
+	public static function rester(?options : {}) : Middleware;
 
 	@:overload(function<T>(path : Dynamic, cb : T -> Void) : Void {})
 	@:overload(function<T>(path : Dynamic, cb : ConnectRestResult<T>) : Void {})
