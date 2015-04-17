@@ -1,7 +1,5 @@
 package js.npm.zombie;
 
-extern class Promise
-{
-	public function then(then : Void -> Void) : Promise;
-	public function done(done : Void -> Void) : Void;
+typedef Promise<T, T2> = {
+	function then<T3, T4>(success : T -> T3, ?error : T2 -> T4) : Promise<T3, T4>;
 }
