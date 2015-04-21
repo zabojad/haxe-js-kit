@@ -20,9 +20,9 @@ class HXX {
 	#if macro
 	static function tr( expr : Expr ): Expr {
 		return switch(expr.expr){
-			case EMeta(m,c) if (m.name == 'el'):
+			case EMeta({ name: 'el' },c) :
 				createElement(c);
-			case _: 
+			default: 
 				ExprTools.map(expr,tr);
 
 		}
@@ -33,26 +33,36 @@ class HXX {
 			case ECall(call, args ):
 				var children : Array<Expr> = [];
 				var attributes : Array<{ field : String, expr: Expr}> = [];
+				var spread : Array<Expr> = [ { expr : EObjectDecl( attributes ) , pos : expr.pos } ];
+
 				for ( a in args ) switch ( a.expr ) {
-					case EBinop(op,left,right) : 
+					case EBinop(op,left,right) : // prop = "test", "data-prop" = 1, etc
 						var field = switch( left.expr ) {
 							case EConst(CIdent(i)) : i;
 	 						case EConst(CString(i)) : i;
 	 						default: Context.error("unsupported", left.pos ); 
 						}
 						attributes.push( { field : field , expr : right } );
-					default:
+					case EMeta({name:"spread"},e) : // @spread this.props
+					 	spread.push( e );
+					default: // all others are considered children
 						children.push( tr( a ) );
 				}
 
 				var element = switch( call.expr ){
-					case EConst(CIdent(el)) if (~/^[a-z]/.match(el)) : 
+					case EConst(CIdent(el)) if (~/^[a-z]/.match(el)) : // simple, lower case element
 						macro $v{el};
-					default: 
+					default: // react component
 						macro js.npm.react.support.Tools.createReactClass( $call );
 				}
 
-				var callArgs = [element, { expr : EObjectDecl(attributes) , pos : expr.pos } ];
+				var mergedAttributes : ExprDef = if( spread.length > 1 ) { // if several props objects, merge them using "spread"
+					ECall( macro untyped js.npm.React.__spread , spread );
+				} else { // otherwise just pass in the attributes object
+					spread[0].expr;
+				}
+
+				var callArgs = [element, { expr : mergedAttributes , pos : expr.pos } ];
 				callArgs = callArgs.concat( children );
 
 				var o = {

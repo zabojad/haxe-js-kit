@@ -1,5 +1,7 @@
 package js.npm.react;
 
+import js.support.Callback;
+
 @:remove
 abstract Fragment(Dynamic) 
 from Component<Dynamic,Dynamic> 
@@ -26,8 +28,16 @@ from Bool
 
 // FIXME : rename or something
 @:native('{}')
-extern class Component<P,S> {
+extern class Component<P:Props,S> {
   var props : P;
   var state : S;
   function render() : Fragment;
+  function setState(data:S, ?cb:Callback0 ) : Void;
+  function getInitialState() : S;
+  function shouldComponentUpdate() : Bool;
+  function getDefaultProps() : P;
+}
+
+typedef Props = {
+  var children : Dynamic;
 }
