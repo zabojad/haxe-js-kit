@@ -1,5 +1,6 @@
 package js.npm.react;
 
+import js.npm.react.PropTypes;
 import js.support.Callback;
 
 @:remove
@@ -31,6 +32,7 @@ from Bool
 extern class Component<P:Props,S> {
   var props : P;
   var state : S;
+  var propTypes : Dynamic<PropTypes.PropType<Dynamic>>;
   function render() : Fragment;
   function setState(data:S, ?cb:Callback0 ) : Void;
   function getInitialState() : S;

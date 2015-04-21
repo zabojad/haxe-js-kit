@@ -24,5 +24,6 @@ implements npm.Package.Require<"react","0.12.2">
   
   static public function createElement<P:Props,S>( type : Dynamic, ?props : {} , ?childs : Fragment ) : Component<P,S>;
   public static function createClass(cl:Dynamic) : Dynamic;
+  public static function initializeTouchEvents(flag:Bool): Void;
   
 }
