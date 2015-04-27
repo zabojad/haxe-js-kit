@@ -17,6 +17,7 @@ implements npm.Package.RequireNamespace<"stream","*">
   public static inline var EVENT_CLOSE = "close";
 
   var readable:Bool;
+  function read<T>(?buffer:Int) : Null<T>;
   function pause():Void;
   function resume():Void;
   function destroy():Void;
@@ -27,8 +28,10 @@ implements npm.Package.RequireNamespace<"stream","*">
 
 }
 
-extern interface IReadable 
-extends IEventEmitter {
+interface IReadable 
+extends IEventEmitter 
+{
+  function read<T>(?buffer:Int) : Null<T>;
   function pause():Void;
   function resume():Void;
   function destroy():Void;
