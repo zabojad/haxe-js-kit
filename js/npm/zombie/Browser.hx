@@ -17,6 +17,7 @@ import js.html.DOMElement in Element;
 #else
 import js.html.Element;
 #end
+import js.node.stream.Writable.IWritable;
 import js.support.Either;
 
 typedef BrowserOptions = {
@@ -31,6 +32,12 @@ typedef BrowserOptions = {
 	@:optional var language : String;		// 'en-US'
 	@:optional var waitDuration : Either<String, Int>;	// '5s'
 	@:optional var runScripts : Bool;		// true
+}
+
+extern class BrowserResources implements ArrayAccess<{request: Dynamic, response: Null<Dynamic>, error: Null<Dynamic>}>
+{
+	public function dump(?output : IWritable) : Void;
+	public function request<T, T2>(method : String, url : String, ?options : {}, ?callback : Void -> Void) : Null<Promise<T, T2>>;
 }
 
 extern class Browser extends EventEmitter
@@ -56,7 +63,7 @@ extern class Browser extends EventEmitter
 	public var pipeline : Dynamic;
 	
 	// Returns all resources loaded by currently open window.
-	public var resources(default, null) : Array<{request: Dynamic, response: Null<Dynamic>, error: Null<Dynamic>}>;
+	public var resources(default, null) : BrowserResources;
 	// Get Request associated with currently open window
 	public var request(default, null) : Dynamic;
 	// Get Response associated with currently open window
