@@ -9,7 +9,10 @@ implements npm.Package.RequireNamespace<"http","*">
     public static inline var EVENT_CLOSE  = "close";
 	public static inline var EVENT_FINISH = "finish";
 
-	var statusCode:Int;
+	public var statusCode(default, null) : Int;
+	public var statusMessage(default, null) : Int;
+	public var headersSent(default, null) : Bool;
+
 	function writeContinue():Void;
 	@:overload(function(statusCode:Int,?reasonPhrase:String,?headers:Dynamic):Void {})
 	function writeHead(statusCode:Int,headers:Dynamic):Void;
