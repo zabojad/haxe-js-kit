@@ -1,5 +1,6 @@
 package js.npm;
 
+import js.node.http.ServerResponse;
 import js.node.stream.Readable;
 import js.support.Either;
 import js.support.Either.Either3;
@@ -14,8 +15,8 @@ extern class RestlerResponse
 */
 
 typedef RequestCallback2 = Null<Dynamic> -> Void;
-typedef RequestCallback1 = Null<Dynamic> -> js.node.stream.IReadable -> Void;
-typedef RequestCallback = Null<Dynamic> -> js.node.stream.IReadable -> String -> Void;
+typedef RequestCallback1 = Null<Dynamic> -> ServerResponse -> Void;
+typedef RequestCallback = Null<Dynamic> -> ServerResponse -> String -> Void;
 
 typedef EitherCallback = Either3<RequestCallback, RequestCallback1, RequestCallback2>;
 
