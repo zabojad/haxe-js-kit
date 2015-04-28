@@ -1,14 +1,12 @@
 package js.npm;
 
 import haxe.Constraints;
-import js.support.Either;
 
 typedef AsyncCallback<T> = T -> Void;
 typedef AsyncOptionalCallback<T> = ?T -> Void;
 typedef AsyncMapCallback<Err, T> = Err -> T -> Void;
 
-typedef AsyncSeriesCallback<Err> = AsyncCallback<Err> -> Void;
-typedef AsyncSeriesMapCallback<Err, T> = AsyncMapCallback<Err, T> -> Void;
+typedef AsyncLoopCallback<Err> = AsyncCallback<Err> -> Void;
 
 extern class Async
 implements npm.Package.Require<"async", "^0.9.0">
@@ -44,20 +42,24 @@ implements npm.Package.Require<"async", "^0.9.0">
 	public static function concat<T1, T2, Err>(arr : Array<T1>, iterator : T1 -> AsyncMapCallback<Err, Array<T2>> -> Void, callback : AsyncMapCallback<Err, Array<T2>>) : Void;
 	public static function concatSeries<T1, T2, Err>(arr : Array<T1>, iterator : T1 -> AsyncMapCallback<Err, Array<T2>> -> Void, callback : AsyncMapCallback<Err, Array<T2>>) : Void;
 
-	public static function series<T1 : AsyncSeriesMapCallback<Err, T2>, T2, Err>(tasks : Array<T1>, ?callback : AsyncMapCallback<Err, Array<T2>>) : Void;
+	@:overload(function(tasks : Array<Function>) : Void {})
+	public static function series<T1, Err>(tasks : Array<Function>, callback : AsyncMapCallback<Err, Array<T1>>) : Void;
 
-	public static function parallel<T1 : AsyncSeriesMapCallback<Err, T2>, T2, Err>(tasks : Array<T1>, ?callback : AsyncMapCallback<Err, Array<T2>>) : Void;
-	public static function parallelLimit<T1 : AsyncSeriesMapCallback<Err, T2>, T2, Err>(tasks : Array<T1>, limit : Int, ?callback : AsyncMapCallback<Err, Array<T2>>) : Void;
+	@:overload(function(tasks : Array<Function>) : Void {})
+	public static function parallel<T1, Err>(tasks : Array<Function>, callback : AsyncMapCallback<Err, Array<T1>>) : Void;
+
+	@:overload(function(tasks : Array<Function>, limit : Int) : Void {})
+	public static function parallelLimit<T1, Err>(tasks : Array<Function>, limit : Int, callback : AsyncMapCallback<Err, Array<T1>>) : Void;
 
 	// The test function must be synchronous for whilst:
-	public static function whilst<Err>(test : Void -> Bool, fn : AsyncSeriesCallback<Err>, callback : AsyncCallback<Err>) : Void;
-	public static function doWhilst<Err>(fn : AsyncSeriesCallback<Err>, test : Void -> Bool, callback : AsyncCallback<Err>) : Void;
+	public static function whilst<Err>(test : Void -> Bool, fn : AsyncLoopCallback<Err>, callback : AsyncCallback<Err>) : Void;
+	public static function doWhilst<Err>(fn : AsyncLoopCallback<Err>, test : Void -> Bool, callback : AsyncCallback<Err>) : Void;
 	
 	// The test function must be synchronous for until:
-	public static function until<Err>(test : Void -> Bool, fn : AsyncSeriesCallback<Err>, callback : AsyncCallback<Err>) : Void;
-	public static function doUntil<Err>(fn : AsyncSeriesCallback<Err>, test : Void -> Bool, callback : AsyncCallback<Err>) : Void;
+	public static function until<Err>(test : Void -> Bool, fn : AsyncLoopCallback<Err>, callback : AsyncCallback<Err>) : Void;
+	public static function doUntil<Err>(fn : AsyncLoopCallback<Err>, test : Void -> Bool, callback : AsyncCallback<Err>) : Void;
 	
-	public static function forever<Err>(fn : AsyncSeriesCallback<Err>, errback : AsyncCallback<Err>) : Void;
+	public static function forever<Err>(fn : AsyncLoopCallback<Err>, errback : AsyncCallback<Err>) : Void;
 
 	public static function waterfall<T1, Err>(arr : Array<Function>, callback : AsyncMapCallback<Err, T1>) : Void;
 
@@ -81,7 +83,8 @@ implements npm.Package.Require<"async", "^0.9.0">
 	// cargo
 	// auto
 
-	public static function retry<T, Err>(times : Int, task : AsyncSeriesMapCallback<Err, T>, ?callback : AsyncMapCallback<Err, T>) : Void;
+	@:overload(function<Err, T>(times : Int, task : AsyncMapCallback<Err, T> -> Void) : Void {})
+	public static function retry<Err, T>(times : Int, task : AsyncMapCallback<Err, T> -> Void, callback : AsyncMapCallback<Err, T>) : Void;
 
 	// iterator
 
