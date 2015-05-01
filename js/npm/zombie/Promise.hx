@@ -1,5 +1,4 @@
 package js.npm.zombie;
 
-typedef Promise<T, T2> = {
-	function then<T3, T4>(success : T -> T3, ?error : T2 -> T4) : Promise<T3, T4>;
-}
+extern class Promise<T, T2> extends js.npm.Bluebird<T, T2>
+{}
