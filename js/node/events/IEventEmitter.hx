@@ -4,7 +4,7 @@ typedef EventEmitterListener = Dynamic;
 /* 
    emits: newListener
  */
-extern interface IEventEmitter 
+interface IEventEmitter 
 {
 
 	function addListener(event:String,fn:EventEmitterListener):Dynamic;
