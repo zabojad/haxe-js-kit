@@ -23,6 +23,10 @@ typedef EitherCallback = Either3<RequestCallback, RequestCallback1, RequestCallb
 extern class Request extends Readable
 implements npm.Package.Require<"request", "^2.55.0">
 {
+	public static inline function construct() : Request {
+		untyped return require('request');
+	}
+
 	public static function defaults(options : {}) : Request;
 
 	public function put(options : Either<{}, String>, ?callback : EitherCallback) : Request;

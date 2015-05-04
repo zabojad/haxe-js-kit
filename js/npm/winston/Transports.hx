@@ -1,7 +1,5 @@
 package js.npm.winston;
 
-// Thanks for complicating things, winston.
-
 class Transports {}
 
 @:native('transports.Console')
