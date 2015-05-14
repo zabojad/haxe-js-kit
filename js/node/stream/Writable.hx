@@ -1,6 +1,7 @@
 package js.node.stream;
 
 import js.node.Buffer;
+import js.node.events.IEventEmitter;
 import js.node.events.EventEmitter;
 
 /* 
@@ -31,9 +32,9 @@ implements npm.Package.RequireNamespace<"stream","*">
   
 }
 
-extern interface IWritable 
-extends IEventEmitter {
-
+interface IWritable 
+extends IEventEmitter 
+{
   var writeable:Bool;
   @:overload(function(chunk:Buffer):Bool {})
   function write(d:String,?enc:String,?fd:Int):Bool;
@@ -41,5 +42,4 @@ extends IEventEmitter {
   function end(?s:String,?enc:String):Void;
   function destroy():Void;
   function destroySoon():Void;
-
 }

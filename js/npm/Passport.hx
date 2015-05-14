@@ -1,6 +1,8 @@
 package js.npm;
 
-import js.npm.connect.Middleware;
+import js.npm.express.Middleware;
+import js.npm.express.Request;
+import js.npm.express.Response;
 
 typedef PassportAuthenticateOptions = {
 	?successRedirect : String,

@@ -59,7 +59,7 @@ class Package {
 		var nameExpr = Context.makeExpr( name , Context.currentPos() );
 		
 		if( isNpm )
-			dependencies.set( name , version );
+			addDependency( name, version );
 
 		var outp = macro __js__("require")( $nameExpr );
 		
@@ -73,6 +73,10 @@ class Package {
 
 		return macro untyped $outp;
 		
+	}
+
+	public static function addDependency( name : String , version : String ) : Void {
+		dependencies.set( name , version );
 	}
 
 	#if haxe3 macro #else @:macro #end public static function resolve( expr , path : String ) {
@@ -99,6 +103,7 @@ class Package {
 	static inline var JS_NODE_PACKAGE  = 'js.node';
 	static inline var SEP = "__";
 	static inline var INIT = "__init__";
+	static inline var USE_JS_REQUIRE = "useJsRequire";
 	#end
 
 	#if haxe3 macro #else @:macro #end public static function build() : Array<Field>{
@@ -161,64 +166,76 @@ class Package {
 				}
 			}
 
-			if( requireNS )
-				init.push( macro var $clName = untyped npm.Package.resolve( npm.Package.require( '${required.name}','${required.version}' , $v{isNpm} ) , '${nativeClass}' ) );
-			else
-				init.push( macro var $clName = untyped npm.Package.require( '${required.name}','${required.version}' , $v{isNpm} ) );
+			if( Context.defined(USE_JS_REQUIRE) ) {
 
-			// change the class' native name
-			var native = 'require("${required.name}")';
-			if( requireNS ){
-				native = native + '.${nativeClass}';
-			}
-			native = '($clName||' + native + ')';
-			
-			cl.meta.add(":native",[macro $v{native}], pos);
+				var params = [macro $v{required.name}];
+				if( requireNS ) {
+					params.push( macro $v{nativeClass} );
+				}
+				cl.meta.add(":jsRequire", params, pos);
+				cl.meta.remove(":native");
 
-			// inject the initiatization code in __init__
-			var injected = false;
+			}else{
 
-			// check that __init__ method already exists
-			for( f in fields ){
-				if( f.name == INIT ){
-					switch( f.kind ){
-						case FFun( fun ) :
-							injected = true;
-							// add the existing __init__ body in the end of the generated init expression
-							init.push( { expr : fun.expr.expr , pos : fun.expr.pos } );
-							var newExpr = {
-								pos : fun.expr.pos,
-								expr : EBlock(init)
-							};
-							fun.expr = newExpr;
-						default :
+				if( requireNS )
+					init.push( macro var $clName = untyped npm.Package.resolve( npm.Package.require( '${required.name}','${required.version}' , $v{isNpm} ) , '${nativeClass}' ) );
+				else
+					init.push( macro var $clName = untyped npm.Package.require( '${required.name}','${required.version}' , $v{isNpm} ) );
+
+				// change the class' native name
+				var native = 'require("${required.name}")';
+				if( requireNS ){
+					native = native + '.${nativeClass}';
+				}
+				native = '($clName||' + native + ')';
+				
+				cl.meta.add(":native",[macro $v{native}], pos);
+
+				// inject the initiatization code in __init__
+				var injected = false;
+
+				// check that __init__ method already exists
+				for( f in fields ){
+					if( f.name == INIT ){
+						switch( f.kind ){
+							case FFun( fun ) :
+								injected = true;
+								// add the existing __init__ body in the end of the generated init expression
+								init.push( { expr : fun.expr.expr , pos : fun.expr.pos } );
+								var newExpr = {
+									pos : fun.expr.pos,
+									expr : EBlock(init)
+								};
+								fun.expr = newExpr;
+							default :
+						}
 					}
 				}
-			}
 
-			// if __init__ doesn't exist, just add the whole method
-			if( !injected ){
-				var f = {
-					name : INIT,
-					pos : pos,
-					meta : [],
-					access : [AStatic],
-					kind : FFun({
-						ret : TPath({
-							name : "Void",
-							pack : [],
+				// if __init__ doesn't exist, just add the whole method
+				if( !injected ){
+					var f = {
+						name : INIT,
+						pos : pos,
+						meta : [],
+						access : [AStatic],
+						kind : FFun({
+							ret : TPath({
+								name : "Void",
+								pack : [],
+								params : [],
+								sub : null
+							}),
 							params : [],
-							sub : null
-						}),
-						params : [],
-						args : [],
-						expr : {
-							pos : pos,
-							expr : EBlock(init)
-						}
-					})
-				};
-				fields.push(f);
+							args : [],
+							expr : {
+								pos : pos,
+								expr : EBlock(init)
+							}
+						})
+					};
+					fields.push(f);
+				}
 			}
 			
 		}

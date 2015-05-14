@@ -17,7 +17,7 @@ implements npm.Package.RequireNamespace<"mongoose","*">
 	public function increment() : TModel<T>;
 	public function remove( ?fn : Callback<TModel<T>> ) : TModel<T>;
 
-	public function model<T,M>( name : String ) : TModels<T,M>;
+	public function model<T,M:TModel<T>>( name : String ) : TModels<T,M>;
 	
 }
 

@@ -9,3 +9,16 @@
 -main test.ExpressTest
 -js test.express.js
 --macro npm.Package.export('package.json')
+
+--next
+# test.SocketIoTest (js:test.socketio.js)
+-main test.SocketIoTest
+-js test.socketio.server.js
+-D server
+--macro npm.Package.export('package.json')
+
+--next
+# test.SocketIoTest (js:test/test.socketio.js)
+-main test.SocketIoTest
+-js test/test.socketio.client.js
+-D client

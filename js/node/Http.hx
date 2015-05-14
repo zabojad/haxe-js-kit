@@ -52,11 +52,16 @@ extends EventEmitter
 /* 
  */
 typedef HttpReqOpt = {
-  var host:String;
-  var port:Int;
-  var path:String;
-  var method:String;
-  var headers:Dynamic;
+  @:optional var host : String;
+  @:optional var hostname : String;
+  @:optional var port : Int;
+  @:optional var localAddress : String;
+  @:optional var socketPath : String;
+  @:optional var method : String;
+  @:optional var path : String;
+  @:optional var headers : Dynamic;
+  @:optional var auth : Dynamic;
+  @:optional var agent : Dynamic;
 }
 
 extern class Http 
@@ -66,7 +71,7 @@ implements npm.Package.Require<"http","*">
   static function createClient(port:Int,host:String):HttpClient;
   @:overload(function(parsedUrl:UrlObj,res:HttpClientResp->Void):ClientRequest {})
   static function request(options:HttpReqOpt,res:HttpClientResp->Void):ClientRequest;
-  @:overload(function(parsedUrl:UrlObj,res:HttpClientResp->Void):Void {})
-  static function get(options:HttpReqOpt,res:HttpClientResp->Void):Void;
+  @:overload(function(parsedUrl:UrlObj,res:HttpClientResp->Void):ClientRequest {})
+  static function get(options:HttpReqOpt,res:HttpClientResp->Void):ClientRequest;
   static function getAgent(host:String,port:Int):Agent;
 }

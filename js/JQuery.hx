@@ -66,7 +66,7 @@ typedef JQueryEvent = {
 @:native("jQuery")
 extern class JQuery 
 implements ArrayAccess<Element>
-implements requirejs.Package.Require<"jquery","*"> {
+implements npm.Package.Require<"jquery","*"> {
 
 	var context(default,null) : Element;
 	var length(default, null) : Int;

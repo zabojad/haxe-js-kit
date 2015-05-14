@@ -11,6 +11,7 @@ implements npm.Package.RequireNamespace<"stream","*">
 {
 	
 	var readable:Bool;
+	function read<T>(?buffer:Int) : Null<T>;
 	function pause():Void;
 	function resume():Void;
 	function destroy():Void;
@@ -31,18 +32,4 @@ implements npm.Package.RequireNamespace<"stream","*">
 interface IDuplex
 extends IWritable
 extends IReadable
-{
-	var readable:Bool;
-	function pause():Void;
-	function resume():Void;
-	function destroy():Void;
-	function destroySoon():Void;
-	function setEncoding(enc:String):Void;
-	function pipe(dest:IWritable,?opts:{end:Bool}):Void;
-
-	var writeable:Bool;
-	@:overload(function(chunk:Buffer):Bool {})
-	function write(d:String,?enc:String,?fd:Int):Bool;
-	@:overload(function(b:Buffer):Void {})
-	function end(?s:String,?enc:String):Void;
-}
+{}

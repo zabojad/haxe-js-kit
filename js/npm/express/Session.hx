@@ -47,7 +47,7 @@ interface SessionStore {
 
 extern class Session 
 implements npm.Package.Require<"express-session","~1.9.3"> #if !haxe3,#end
-implements js.npm.connect.Middleware
+implements Middleware.IMiddleware
 {
 	public function new( opts : SessionOptions ) : Void;
 

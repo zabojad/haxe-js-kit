@@ -1,6 +1,5 @@
 package js.npm.express;
 
-import js.npm.connect.support.Middleware;
 import js.npm.Express;
 import js.npm.express.Application;
 import js.npm.express.Request;
@@ -38,7 +37,7 @@ implements npm.Package.Require<"express-resource","*">
 	public var name : String;
 	public var id : String;
 	public function load( cb : String -> Callback<T> -> Void ) : Resource<T>;
-	public function map( method : String , path : String , fn : Middleware ) : Resource<T>;
+	public function map( method : String , path : String , fn : Middleware.TMiddleware ) : Resource<T>;
 	public function add<R>( resource : Resource<R> ) : Resource<T>;
 
 }
