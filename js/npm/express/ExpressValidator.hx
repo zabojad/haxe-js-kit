@@ -63,8 +63,8 @@ class ValidationMethods {
 	public inline function isHexColor() : ValidationMethods { return untyped isHexColor(); }
 	public inline function isLowercase() : ValidationMethods { return untyped isLowercase(); }
 	public inline function isUppercase() : ValidationMethods { return untyped isUppercase(); }
-	public inline function isInt(?options:Dynamic) : ValidationMethods { return untyped isInt(options); }
-	public inline function isFloat(?options:Dynamic) : ValidationMethods { return untyped isFloat(options); }
+	public inline function isInt(?options:{?min:Int,?max:Int}) : ValidationMethods { return untyped isInt(options); }
+	public inline function isFloat(?options:{?min:Float,?max:Float}) : ValidationMethods { return untyped isFloat(options); }
 	public inline function isDivisibleBy(?number:Float) : ValidationMethods { return untyped isDivisibleBy(number); }
 	public inline function isNull() : ValidationMethods { return untyped isNull(); }
 	public inline function isLength(min:Int, ?max:Int) : ValidationMethods { return untyped isLength(min,max); }
