@@ -1,4 +1,6 @@
 package js.npm.sequelize;
+import atomshell.Package;
+import haxe.Constraints.Function;
 
 typedef SequelizeOptions = {
 	?dialect:String,
@@ -55,7 +57,10 @@ typedef ModelOptions = {
 	?deletedAt:Dynamic,	// bool or string
 	?paranoid:Bool,
 	?comment:String, // table comment
-	?indexes: Array<Index>
+	?indexes: Array<Index>,
+	?engine:String,
+	?defaultScope:{ },
+	?scopes: { },
 }
 
 typedef Index = {
@@ -65,18 +70,23 @@ typedef Index = {
 	?method:String,
 }
 
-typedef TypedColumns = Dynamic<Column>;
+typedef ModelFields = Dynamic<Column>;
 typedef Column = {
-    var type:String;
-	@:optional var field:String;
-	@:optional var defaultValue:Dynamic;
-	@:optional var allowNull:Bool;
-    @:optional var unique:Bool;
-	@:optional var primaryKey:Bool;
-	@:optional var autoIncrement:Bool;
-	@:optional var comment:String;
-	@:optional var get:Void->Dynamic;
-	@:optional var set:Dynamic->Void;
+    type:String,
+	?field:String,
+	?defaultValue:Dynamic,
+	?allowNull:Bool,
+    ?unique:Bool,
+	?primaryKey:Bool,
+	?autoIncrement:Bool,
+	?comment:String,
+	?get:Void->Dynamic,
+	?set:Dynamic->Void,
+	?validation:{},
+	?states: {
+		type:String,
+		values:Array<String>
+	},
 }
 
 
@@ -85,9 +95,35 @@ typedef Column = {
  * @author TiagoLr
  */
 extern class Sequelize
-implements npm.Package.Require<"sequelize","*"> {
+implements npm.Package.Require < "sequelize", "*" > {
+	
+	// DATATYPES
+	static var STRING:String;		
+	static var CHAR:String;          
+	static var TEXT:String;  		
+	static var INTEGER:String;  	
+	static var BIGINT:String;   		
+	static var FLOAT:String;  	
+	static var DECIMAL:String;	
+	static var BOOLEAN:String; 		
+	static var TIME:String;
+	static var DATE:String;    
+	static var DATEONLY:String;
+	static var HSTORE:String;
+	static var JSON:String; 		
+	static var JSONB:String;
+	static var NOW:String;
+	static var BLOB:String;
+	static var RANGE:String;
+	static var UUID:String;
+	static var UUIDV1:String;
+	static var UUIDV4:String;
+	static var VIRTUAL:String;
+	static var ENUM:String; 		
+	static var ARRAY:String;		
+	
 	function new(?database:String, ?username:String, ?password:String, ?options: SequelizeOptions );
-	function define(tableName:String, columns:TypedColumns, ?options:ModelOptions):Model;
+	function define(tableName:String, fields:ModelFields, ?options:ModelOptions):Model;
 	function sync(?options:SyncOptions):Promise;
 	function query(sql:String, ?instanceOrModel:Dynamic, ?options: QueryOptions ):Promise;
 	function set(variables:Dynamic, options: { } ):Promise;
@@ -102,6 +138,4 @@ implements npm.Package.Require<"sequelize","*"> {
 	function drop(options: { } ):Promise;
 	function authenticate():Promise;
 	function transaction(f:Transaction->Void, ?options: TransactionOptions ):Promise;
-	
-	
 }

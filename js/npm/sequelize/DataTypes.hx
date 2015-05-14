@@ -28,89 +28,89 @@ extern class DataTypes {
 	 * A 32 bit integer. 
 	 * Available properties: `UNSIGNED`, `ZEROFILL`
 	 */
-	static  var INTEGER:Int;  	
+	static  var INTEGER:String;  	
 	/**
 	 * A 64 bit integer. 
 	 * Available properties: `UNSIGNED`, `ZEROFILL`
 	 */
-	static  var BIGINT:Int;   		
+	static  var BIGINT:String;   		
 	/**
 	 * Floating point number. 
 	 * Accepts one or two arguments for precision.
 	 * Available properties: `UNSIGNED`, `ZEROFILL`
 	 */
-	static  var FLOAT:Float;  	
+	static  var FLOAT:String;  	
 	/**
 	 * Decimal number. 
 	 * Accepts one or two arguments for precision. 
 	 * Available properties: `UNSIGNED`, `ZEROFILL`
 	 */
-	static  var DECIMAL:Float;	
+	static  var DECIMAL:String;	
 	/**
 	 * A boolean / tinyint column, depending on dialect
 	 */
-	static  var BOOLEAN:Bool; 		
+	static  var BOOLEAN:String; 		
 	/**
 	 * A time column
 	 */
-	static  var TIME:Dynamic;
+	static  var TIME:String;
 	/**
 	 * A datetime column
 	 */
-	static  var DATE:Date;    
+	static  var DATE:String;    
 	/**
 	 * A date only column
 	 */
-	static  var DATEONLY:Dynamic;
+	static  var DATEONLY:String;
 	/**
 	 * A key / value column. Only available in postgres.
 	 */
-	static  var HSTORE:Dynamic;
+	static  var HSTORE:String;
 	/**
 	 * A JSON string column. Only available in postgres.
 	 */
-	static  var JSON:Dynamic; 		
+	static  var JSON:String; 		
 	/**
 	 * A pre-processed JSON data column. Only available in postgres.
 	 */
-	static  var JSONB:Dynamic;
+	static  var JSONB:String;
 	/**
 	 * A default value of the current timestamp
 	 */
-	static  var NOW:Dynamic;
+	static  var NOW:String;
 	/**
 	 * Binary storage. Available lengths: `tiny`, `medium`, `long`
 	 */
-	static  var BLOB:Dynamic;
+	static  var BLOB:String;
 	/**
 	* Range types are data types representing a range of values of some element type (called the range's subtype).
 	* Only available in postgres.
 	* See {@link http://www.postgresql.org/docs/9.4/static/rangetypes.html|Postgres documentation} for more details
 	*/
-	static  var RANGE:Dynamic;
+	static  var RANGE:String;
 	/**
 	 * A column storing a unique univeral identifier. Use with `UUIDV1` or `UUIDV4` for default values.
 	 */
-	static  var UUID:Dynamic;
+	static  var UUID:String;
 	/**
 	 * A default unique universal identifier generated following the UUID v1 standard
 	 */
-	static  var UUIDV1:Dynamic;
+	static  var UUIDV1:String;
 	/**
 	 * A default unique universal identifier generated following the UUID v2 standard
 	 */
-	static  var UUIDV4:Dynamic;
+	static  var UUIDV4:String;
 	/**
 	 * A virtual value that is not stored in the DB. This could for example be useful if you want to provide a default value in your model that is returned to the user but not stored in the DB.
 	 */
-	static  var VIRTUAL:Dynamic;
+	static  var VIRTUAL:String;
 	/**
 	 * An enumeration. `DataTypes.ENUM('value', 'another value')`.
 	 */
-	static  var ENUM:Dynamic; 		
+	static  var ENUM:String; 		
 	/**
 	 * An array of `type`, e.g. `DataTypes.ARRAY(DataTypes.DECIMAL)`. Only available in postgres.
 	 */
-	static  var ARRAY:Dynamic;		
+	static  var ARRAY:String;		
 	
 }
