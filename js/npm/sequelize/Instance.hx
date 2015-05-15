@@ -32,8 +32,7 @@ typedef IncrementOptions = {
 	?transaction:Transaction
 }
 
-extern class Instance
-implements npm.Package.RequireNamespace < "sequelize", "*" > {
+extern class Instance {
 	
 	var isNewRecord:Bool;
 	

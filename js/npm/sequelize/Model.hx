@@ -59,13 +59,11 @@ typedef BelongsToManyOptions = {
 	constrains:Bool
 }
 
-
 /**
  * Sequelize
  * @author TiagoLr
  */
-extern class Model
-implements npm.Package.Require<"sequelize","*"> {
+extern class Model {
 	
 	
 	function hasOne(target:Model, ?options: { } ):Void;

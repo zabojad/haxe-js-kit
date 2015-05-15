@@ -1,7 +1,6 @@
 package js.npm.sequelize;
 
-extern class Promise
-implements npm.Package.RequireNamespace < "sequelize", "*" > {
+extern class Promise {
 	function then(cb:Dynamic):Void;
 	function done(cb:Dynamic):Void;
 	function error(cb:Dynamic):Void;

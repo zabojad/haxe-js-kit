@@ -12,8 +12,7 @@ private class C_LOCKS {
 	var SHARE:String;
 }
 
-extern class Transaction
-implements npm.Package.RequireNamespace < "sequelize", "*" > {
+extern class Transaction {
 	var LOCK:C_LOCKS;
 	
 	function commit():Transaction;
