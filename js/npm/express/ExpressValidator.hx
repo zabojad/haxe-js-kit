@@ -17,21 +17,20 @@ implements Middleware.IMiddleware
 	 * Check url params.
 	 */
 	public inline static function checkParams( req:Request , param:String, ?errorMsg:String ) : ValidationMethods {
-		return untyped req.checkBody(param,errorMsg);
+		return untyped req.checkParams(param,errorMsg);
 	}
 	/**
 	 * Check query string params.
 	 */
 	public inline static function checkQuery( req:Request , param:String, ?errorMsg:String ) : ValidationMethods {
-		return untyped req.checkBody(param,errorMsg);
+		return untyped req.checkQuery(param,errorMsg);
 	}
 	/**
 	 * Checks query string, body and url params.
 	 */
 	public inline static function assert( req:Request , param:String, ?errorMsg:String ) : ValidationMethods {
-		return untyped req.checkBody(param,errorMsg);
+		return untyped req.assert(param,errorMsg);
 	}
-	
 	/**
 	 * Returns null if request has no validation errors, 
 	 * otherwise returns a structure containing the errors and their respective message, parameter name and value.
