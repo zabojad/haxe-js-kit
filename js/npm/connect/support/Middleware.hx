@@ -2,6 +2,7 @@ package js.npm.connect.support;
 
 import js.node.http.ClientRequest;
 import js.node.http.ServerResponse;
+import js.npm.express.Response;
 
 typedef MiddlewareNext = ?Dynamic->Void;
 
