@@ -1,6 +1,7 @@
 package js.npm.sequelize;
 import atomshell.Package;
 import haxe.Constraints.Function;
+import js.npm.sequelize.Promise;
 
 typedef SequelizeOptions = {
 	?dialect:String,
@@ -166,5 +167,5 @@ implements npm.Package.Require < "sequelize", "^2.1.3" > {
 	
 	function drop(options: { } ):Promise;
 	function authenticate():Promise;
-	function transaction(f:Transaction->Void, ?options: TransactionOptions ):Promise;
+	function transaction(?f:Transaction->Promise, ?options: TransactionOptions ):Promise;
 }
