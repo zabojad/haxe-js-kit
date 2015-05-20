@@ -8,7 +8,8 @@ typedef Console = {
   function error(s:Dynamic,?a1:Dynamic,?a2:Dynamic,?a3:Dynamic):Void;
   function time(label:String):Void;
   function timeEnd(label:String):Void;
-  function dir(obj:Dynamic):Void;
+  @:overload(function(obj:Dynamic) : Void {})
+  function dir(obj:Dynamic,options:{}):Void;
   function trace(label: String):Void;
   function assert(expression: Dynamic, ?message: String):Void;
 }
