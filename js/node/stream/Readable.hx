@@ -1,5 +1,6 @@
 package js.node.stream;
 
+import js.node.Buffer;
 import js.node.events.EventEmitter;
 import js.node.events.IEventEmitter;
 import js.node.stream.Writable;
@@ -26,6 +27,9 @@ implements npm.Package.RequireNamespace<"stream","*">
   function pipe(dest:IWritable,?opts:{end:Bool}):Void;
   function new(?opt:Dynamic):Void;
 
+  @:overload(function(chunk:Buffer) : Bool {})
+  @:overload(function(chunk:Null<String>) : Bool {})
+  function push(chunk:String, encoding:String):Bool;
 }
 
 interface IReadable 
