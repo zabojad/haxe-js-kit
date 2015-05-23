@@ -15,7 +15,7 @@ private class C_LOCKS {
 extern class Transaction {
 	var LOCK:C_LOCKS;
 	
-	function commit():Transaction;
-	function rollback():Transaction;
+	function commit():Promise;
+	function rollback():Promise;
 }
 

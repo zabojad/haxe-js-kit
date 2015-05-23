@@ -28,14 +28,14 @@ class DataTypes {
 	}
 	/**
 	 * A 32 bit integer. 
-	 * Available properties: `length`, `unsigned:Bool`, `zerofill:Bool`
+	 * Available properties: `length:Int`, `unsigned:Bool`, `zerofill:Bool`
 	 */
 	static public inline function INTEGER(?options:{}):DataTypes {
 		return untyped Sequelize['INTEGER'](options);
 	}
 	/**
 	 * A 64 bit integer. 
-	 * Available properties: `length`, `unsigned:Bool`, `zerofill:Bool`
+	 * Available properties: `length:Int`, `unsigned:Bool`, `zerofill:Bool`
 	 */
 	static public inline function BIGINT(?options:{}):DataTypes {
 		return untyped Sequelize['BIGINT'](options);
@@ -43,7 +43,7 @@ class DataTypes {
 	/**
 	 * Floating point number. 
 	 * Accepts one or two arguments for precision.
-	 * Available properties: `unsigned:Bool`, `zerofill:Bool`
+	 * Available properties: `length:Int` `unsigned:Bool`, `zerofill:Bool`
 	 */
 	static public inline function FLOAT(?length:Int, ?decimals:Int, ?options:{}):DataTypes {
 		return untyped Sequelize['FLOAT'](length, decimals, options);
@@ -51,7 +51,7 @@ class DataTypes {
 	/**
 	 * Decimal number. 
 	 * Accepts one or two arguments for precision. 
-	 * Available properties: `unsigned:Bool`, `zerofill:Bool`
+	 * Available properties: `length:Int`, `unsigned:Bool`, `zerofill:Bool`
 	 */
 	static public inline function DECIMAL(precision:Int, scale:Int, ?options:{}):DataTypes {
 		return untyped Sequelize['DECIMAL'](precision, scale, options);
