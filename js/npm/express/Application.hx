@@ -8,6 +8,7 @@ import js.npm.express.Middleware;
 
 extern class Application 
 extends MiddlewareHttp
+implements js.node.Http.IHttpServerListener
 {
 
 	public var locals : Dynamic;
