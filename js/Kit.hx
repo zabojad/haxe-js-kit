@@ -21,7 +21,7 @@
  */
 package js;
 
-class Lib {
+class Kit {
 
 	public static var arguments (get,null) : Array<Dynamic>;
 	public static var self (get,null) : Dynamic;
