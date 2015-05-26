@@ -1,6 +1,5 @@
 package js.npm.express;
 
-import js.support.RegExp;
 import js.support.Callback;
 
 //typedef ApplicationMethod = Request->Response->Void;
