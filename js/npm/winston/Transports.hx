@@ -43,7 +43,7 @@ implements npm.Package.RequireNamespace<"winston-loggly", "^1.0.0">
 }
 
 extern class Mail
-implements npm.Package.RequireNamespace<"winston-mail", "^1.0.0">
+implements npm.Package.RequireNamespace<"winston-mail", "^0.4.0">
 {
 	public static inline function construct(?options : {}) : Mail {
 		return untyped __new__( Mail, options );
