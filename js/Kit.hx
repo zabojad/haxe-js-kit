@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2005-2014 Haxe Foundation
+ * Copyright (C)2005-2012 Haxe Foundation
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -19,29 +19,30 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
- package js;
+package js;
 
-/**
-    Native JavaScript regular expressions.
+class Kit {
 
-    For cross-platform regular expressions, use haxe `EReg` class or regexp literals.
-**/
-@:native("RegExp")
-extern class RegExp {
-    var global(default,null):Bool;
-    var ignoreCase(default,null):Bool;
-    var multiline(default,null):Bool;
-    var source(default,null):String;
-    var lastIndex:Int;
-    function new(pattern:String, ?flags:String);
-    function exec(str:String):Null<RegExpMatch>;
-    function test(str:String):Bool;
-    function toString():String;
-}
+	public static var arguments (get,null) : Array<Dynamic>;
+	public static var self (get,null) : Dynamic;
 
-extern class RegExpMatch 
-implements ArrayAccess<String> {
-    var index:Int;
-    var input:String;
-    var length:Int;
+	/**
+		Inserts a 'debugger' statement that will make a breakpoint if a debugger is available.
+	**/
+	public static inline function debug() {
+		untyped __js__("debugger");
+	}
+
+	public static inline function eval( code : String ) : Dynamic {
+		return untyped __js__("eval")(code);
+	}
+
+	static inline function get_arguments(){
+		return untyped __js__("arguments");
+	}
+
+	static inline function get_self(){
+		return untyped __js__("this");
+	}
+
 }

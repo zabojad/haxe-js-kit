@@ -40,6 +40,13 @@ extends EventEmitter
   function pause():Void;  
 }
 
+typedef HttpServerListenerMethod = HttpServerReq->ServerResponse->Void;
+interface IHttpServerListener {}
+
+abstract HttpServerListener( Dynamic ) 
+  from HttpServerListenerMethod to HttpServerListenerMethod
+  from IHttpServerListener to IHttpServerListener
+{}
 
 extern class HttpClient 
 extends EventEmitter 
@@ -67,7 +74,7 @@ typedef HttpReqOpt = {
 extern class Http 
 implements npm.Package.Require<"http","*"> 
 {
-  static function createServer(?listener:HttpServerReq->ServerResponse->Void):Server;
+  static function createServer(?listener:HttpServerListener):Server;
   static function createClient(port:Int,host:String):HttpClient;
   @:overload(function(parsedUrl:UrlObj,res:HttpClientResp->Void):ClientRequest {})
   static function request(options:HttpReqOpt,res:HttpClientResp->Void):ClientRequest;

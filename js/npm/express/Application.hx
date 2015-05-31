@@ -1,6 +1,5 @@
 package js.npm.express;
 
-import js.support.RegExp;
 import js.support.Callback;
 
 //typedef ApplicationMethod = Request->Response->Void;
@@ -8,6 +7,7 @@ import js.npm.express.Middleware;
 
 extern class Application 
 extends MiddlewareHttp
+implements js.node.Http.IHttpServerListener
 {
 
 	public var locals : Dynamic;
