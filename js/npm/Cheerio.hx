@@ -1,13 +1,13 @@
 package js.npm;
 
-import js.html.Element;
+typedef CheerioQuery = Dynamic -> ?Dynamic -> ?String -> Cheerio;
 
 extern class Cheerio
 implements npm.Package.Require<"cheerio", "^0.19.0">
 {
-	public static function load(html : String, ?options : {}) : Dynamic -> ?Dynamic -> ?String -> Cheerio;
+	public static function load(html : String, ?options : {}) : CheerioQuery;
 	
-	public static inline function cheerio() : Dynamic -> ?Dynamic -> ?String -> Cheerio {
+	public static inline function cheerio() : CheerioQuery {
 		return untyped __js__('require("cheerio")');
 	}
 
@@ -90,11 +90,11 @@ implements npm.Package.Require<"cheerio", "^0.19.0">
 	public function children(selector : String) : Cheerio;
 	public function contents() : Cheerio;
 	
-	@:overload(function(func : Int -> Bool) : Cheerio {})
+	@:overload(function(func : Int -> Cheerio -> Void) : Cheerio {})
 	public function each(func : Int -> Cheerio -> Bool) : Cheerio;
 
 	@:overload(function(func : Int -> Bool) : Cheerio {})
-	public function map<T>(func : Int -> Element -> T) : Cheerio;
+	public function map<T, T2>(func : Int -> T -> T2) : Cheerio;
 	
 	@:overload(function(selector : String) : Cheerio {})
 	@:overload(function(func : Int -> Bool) : Cheerio {})
@@ -110,8 +110,8 @@ implements npm.Package.Require<"cheerio", "^0.19.0">
 	public function last() : Cheerio;
 	public function eq(i : Int) : Cheerio;
 
-	@:overload(function() : Array<Element> {})
-	public function get(i : Int) : Element;
+	@:overload(function<T>() : Array<T> {})
+	public function get<T>(i : Int) : T;
 
 	@:overload(function() : Int {})
 	public function index(selector : String) : Int;
