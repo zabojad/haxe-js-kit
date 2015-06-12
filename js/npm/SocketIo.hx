@@ -8,6 +8,6 @@ package js.npm;
 extern class SocketIo
 implements npm.Package.Require<"socket.io","*">
 {
-	@:override( function( port : Int ) : js.npm.socketIo.Manager {} )
-	public static function listen(?server : Dynamic, ?options : Dynamic, ?fn : Dynamic) : js.npm.socketio.Manager;
+	@:override( function( port : Int ) : js.npm.socketio.Server {} )
+	public static function listen(?server : Dynamic, ?options : Dynamic, ?fn : Dynamic) : js.npm.socketio.Server;
 }
