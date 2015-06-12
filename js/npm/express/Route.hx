@@ -4,5 +4,8 @@ import EReg;
 
 abstract Route(Dynamic)
  from String to String
- from EReg to EReg {
+  {
+ 	@:from inline static function fromEReg( e : EReg ) : Route {
+ 		return untyped e.r;
+ 	}
 }

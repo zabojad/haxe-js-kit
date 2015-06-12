@@ -2,25 +2,20 @@ package js.npm.express;
 
 import js.support.Callback;
 
-abstract TMiddleware( Middleware ) {
-	@:from static inline public function fromIMiddleware( m : IMiddleware ) : TMiddleware {
-		return untyped cast m;
-	}
-	@:from static inline public function fromResponder( m : MiddlewareResponder ) : TMiddleware {
-		return untyped cast m;
-	}
-	@:from static inline public function fromMiddleware( m : Middleware ) : TMiddleware {
-		return untyped cast m;
-	}
-}
+abstract AbstractMiddleware( Dynamic ) 
+from MiddlewareErrorHandler to MiddlewareErrorHandler 
+from MiddlewareResponder to MiddlewareResponder 
+from MiddlewareHandler to MiddlewareHandler
+from Middleware to Middleware {}
 
 typedef MiddlewareNext = ?Dynamic -> Void ;
-typedef Middleware = Request->Response->MiddlewareNext->Void;
+typedef MiddlewareHandler = Request->Response->MiddlewareNext->Void;
 typedef MiddlewareResponder = Request->Response->Void;
 typedef MiddlewareErrorHandler = Dynamic -> Request -> Response -> Callback0 -> Void;
 typedef MiddlewareParam<P> = Request -> Response -> MiddlewareNext -> P -> Void;
+typedef MiddlewareMethod = Route->Middleware->Void;
 
-typedef MiddlewareMethod = Route->TMiddleware->Void;
+extern interface Middleware {}
 
 @:build( util.CopyMethods.build([
 	'post', 
@@ -50,21 +45,11 @@ typedef MiddlewareMethod = Route->TMiddleware->Void;
 	'connect',
 	'all'
 ], 
-function( path : Route, f : MiddlewareResponder ) : Application {},
-[
-	function<Req:Request,Res:Response>(path : Route , f : Array<TMiddleware> ) : Application {},
-	function<Req:Request,Res:Response>(path : Route , f : TMiddleware ) : Application {}
-]) )
+function(path : Route , f : haxe.extern.Rest<AbstractMiddleware> ) : Application {} , [] ) )
 extern class MiddlewareHttp 
 {
-	@:overload( function<Req:Request,Res:Response> ( path : Route , f : Array<TMiddleware> ) : Application {} )
-	@:overload( function<Req:Request,Res:Response> ( path : Route , TMiddleware : TMiddleware ) : Application {} )
-	@:overload( function<Req:Request,Res:Response> ( errorHandler : MiddlewareErrorHandler ) : Application {} )
-	@:overload( function<Req:Request,Res:Response> ( middleware : TMiddleware ) : Application {} )
-	public function use ( middleware : MiddlewareResponder ) : Application ;
+	@:overload( function ( path : Route , middleware : haxe.extern.Rest<AbstractMiddleware> ) : Application {} )
+	public function use ( middleware : haxe.extern.Rest<AbstractMiddleware> ) : Application ;
 
 	function param<P>( name : String , callback : MiddlewareParam<P> ) : Application;
 }
-
-extern interface IMiddleware {}
-

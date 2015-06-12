@@ -2,7 +2,6 @@ package js.npm.express;
 
 import js.support.Callback;
 
-//typedef ApplicationMethod = Request->Response->Void;
 import js.npm.express.Middleware;
 
 extern class Application 
@@ -21,8 +20,7 @@ implements js.node.Http.IHttpServerListener
 	function engine( ext : String , engine : ViewEngine ) : Application;
 	function set( setting : String , value : Dynamic ) : Application;
 
-	@:overload(function(path : Route , f : Array<TMiddleware> ) : Application {})
-	@:overload(function(path : Route , f : TMiddleware ) : Application {})
-	@:overload(function ( setting : String ): Dynamic { } )
-	function get( path : Route, f : MiddlewareResponder ) : Application;
+	@:overload( function ( f : haxe.extern.Rest<AbstractMiddleware> ) : Application {} )
+	@:overload(function ( setting : String ): Dynamic {} )
+	function get( path : Route, f : haxe.extern.Rest<AbstractMiddleware> ) : Application;
 }

@@ -4,7 +4,7 @@ import js.npm.express.Request;
 
 extern class ExpressFlash 
 implements npm.Package.Require<"express-flash","">
-implements js.npm.connect.Middleware
+implements js.npm.express.Middleware
 {
 	public function new() : Void;
 	public static inline function getFlash( req : Request , type : String ) : Dynamic {

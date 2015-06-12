@@ -7,7 +7,7 @@ import js.node.stream.Readable;
 import js.node.stream.Writable;
 import js.Node;
 import js.support.Callback;
-import js.support.Either;
+//import js.support.Either;
 import js.support.Error;
 
 extern class Fs 
