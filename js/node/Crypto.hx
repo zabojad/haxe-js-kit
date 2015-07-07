@@ -1,6 +1,7 @@
 package js.node;
 
 import js.node.Buffer;
+import js.node.stream.Duplex;
 import js.support.Callback;
 
 /* CRYPTO ..................................... */
@@ -76,6 +77,8 @@ implements npm.Package.Require<"crypto","*">
   static function createCipheriv(algo:String,key:String,iv:String):CryptoCipher;
   static function createDecipher(algo:String,key:String):CryptoDecipher;
   static function createDecipheriv(algo:String,key:String,iv:String):CryptoDecipher;
+  @:overload(function(algo:String,key:Buffer):Duplex {})
+  static function createHmac(algo:String,key:String):Duplex;
   static function createSign(algo:String):CryptoSigner;
   static function createVerify(algo:String):CryptoVerify;
   @:overload(function(prime_length:Int):CryptoDiffieHellman {})
