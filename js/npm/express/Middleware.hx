@@ -49,7 +49,7 @@ extern interface Middleware {}
 function(path : Route , f : haxe.extern.Rest<AbstractMiddleware> ) : Application {} , [] ) )
 extern class MiddlewareHttp 
 {
-	//@:overload( function ( path : Route , middleware : Rest<AbstractMiddleware> ) : Application {} )
+	@:overload( function ( path : Route , middleware : Rest<AbstractMiddleware> ) : Application {} )
 	public function use ( middleware : Rest<AbstractMiddleware> ) : Application ;
 
 	function param<P>( name : String , callback : MiddlewareParam<P> ) : Application;
