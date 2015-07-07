@@ -1,6 +1,7 @@
 package js.npm.mongoose;
 
 import js.support.Callback;
+import js.support.Error;
 
 @:native("Model")
 extern class TModel<T>
@@ -13,6 +14,7 @@ implements npm.Package.RequireNamespace<"mongoose","*">
 	public var modelName : String;
 	
 	@:overload(function(): Void {})
+	@:overload(function(fn: Callback2<TModel<T>, Int>): Void {})
 	public function save( fn : Callback<TModel<T>> ) : Void;
 	public function increment() : TModel<T>;
 	public function remove( ?fn : Callback<TModel<T>> ) : TModel<T>;
