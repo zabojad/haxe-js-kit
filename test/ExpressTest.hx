@@ -6,6 +6,7 @@ import js.npm.express.Response;
 
 using js.npm.express.Session;
 
+
 class ExpressTest {
 	static function main(){
 		var PORT = 9000;
@@ -19,7 +20,7 @@ class ExpressTest {
 		app.use( new Session({ secret : secret , store : store }) );
 
 		/** custom middleware **/
-		app.use( function(req:Request,_,next:MiddlewareNext){
+		app.use( function(req,_,next:MiddlewareNext){
 			trace("got request",req.originalUrl,req.session());
 			next();
 		});

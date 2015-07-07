@@ -1,7 +1,5 @@
 package js.npm;
 
-import js.support.Either;
-
 extern class Minimist implements Dynamic
 implements npm.Package.Require<"minimist", "^1.1.1">
 {
