@@ -1,6 +1,6 @@
 package test;
 
-import js.npm.express.Middleware.MiddlewareNext;
+import js.npm.express.Middleware;
 import js.npm.express.Request;
 import js.npm.express.Response;
 
@@ -21,9 +21,10 @@ class ExpressTest {
 
 		/** custom middleware **/
 		app.use( function(req,_,next:MiddlewareNext){
-			trace("got request",req.originalUrl,req.session());
+
+			trace("got request",req.originalUrl);
 			next();
-		});
+		} );
 
 		/** all verbs route on / **/
 		app.all('/', function(req:Request,res:Response){

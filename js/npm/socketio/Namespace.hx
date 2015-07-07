@@ -1,7 +1,7 @@
 package js.npm.socketio;
 
 import js.npm.socketio.Listener;
-import js.npm.connect.support.Middleware.MiddlewareNext;
+import js.npm.express.Middleware.MiddlewareNext;
 import js.support.Callback.Callback0;
 import js.support.DynamicObject;
 

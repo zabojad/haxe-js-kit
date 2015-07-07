@@ -4,7 +4,8 @@ import js.npm.nodemailer.Transport;
 import js.npm.nodemailer.Transporter;
 
 // https://github.com/andris9/nodemailer-smtp-transport
-typedef NodemailerSmtpOptions = {
+typedef NodemailerOptions = {
+	?service: String,
 	?port : Int, // is the port to connect to (defaults to 25 or 465)
 	?host : String, // is the hostname or IP address to connect to (defaults to 'localhost')
 	?secure : Bool, // defines if the connection should use SSL (if true) or not (if false)
@@ -27,6 +28,6 @@ typedef NodemailerSmtpOptions = {
 extern class Nodemailer
 implements npm.Package.Require<"nodemailer", "^1.3.4">
 {
-	@:overload(function(transport : Transport) : Transporter {})
-	public static function createTransport(?options : NodemailerSmtpOptions) : Transporter;
+	//@:overload(function(transport : Transport) : Transporter {})
+	public static function createTransport(?options : NodemailerOptions) : Transporter;
 }

@@ -1,9 +1,12 @@
 package js.npm.socketio;
 
-import js.npm.connect.support.Middleware.MiddlewareNext;
+import js.npm.express.Middleware.MiddlewareNext;
 import js.npm.socketio.Namespace;
 
-extern class Server {
+extern class Server 
+extends Channel 
+implements npm.Package.Require<"socket.io","1.0">
+{
 
 	function new(?srv: js.node.http.Server, ?port: Int, ?opts: ServerOpts);
 
@@ -15,7 +18,6 @@ extern class Server {
 	function listen(port: Int, ?opts: ServerOpts): Server;
 	function onconnection(socket: Socket): Server;
 	function of(nsp: String): Namespace;
-	function emit(event: String): Void;
 	function use(fn: Socket -> MiddlewareNext -> Void): Namespace;
 }
 

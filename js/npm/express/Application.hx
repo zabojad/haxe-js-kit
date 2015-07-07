@@ -8,7 +8,6 @@ extern class Application
 extends MiddlewareHttp
 implements js.node.Http.IHttpServerListener
 {
-
 	public var locals : Dynamic;
 	public var router : Router;
 
@@ -20,7 +19,7 @@ implements js.node.Http.IHttpServerListener
 	function engine( ext : String , engine : ViewEngine ) : Application;
 	function set( setting : String , value : Dynamic ) : Application;
 
+	@:overload(function ( path : Route, f : haxe.extern.Rest<AbstractMiddleware> ) : Application {} )
 	@:overload( function ( f : haxe.extern.Rest<AbstractMiddleware> ) : Application {} )
-	@:overload(function ( setting : String ): Dynamic {} )
-	function get( path : Route, f : haxe.extern.Rest<AbstractMiddleware> ) : Application;
+	function get( setting : String ): Dynamic;
 }

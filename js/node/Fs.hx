@@ -71,11 +71,11 @@ implements npm.Package.Require<"fs","*">
   
   static function openSync(path:String,flags:String,?mode:Int):Int;
   
-  static function write(fd:Int,bufOrStr:Either<String, Buffer>,offset:Int,length:Int,position:Null<Int>,?cb:Callback<Int>):Void;
+  static function write(fd:Int,bufOrStr:EitherType<String, Buffer>,offset:Int,length:Int,position:Null<Int>,?cb:Callback<Int>):Void;
   
-  @:overload(function(fd:Int,bufOrStr:Either<String, Buffer>):Int {})
-  @:overload(function(fd:Int,bufOrStr:Either<String, Buffer>,position:Null<Int>):Int {})
-  static function writeSync(fd:Int,bufOrStr:Either<String, Buffer>,position:Null<Int>,encoding:String):Int;
+  @:overload(function(fd:Int,bufOrStr:EitherType<String, Buffer>):Int {})
+  @:overload(function(fd:Int,bufOrStr:EitherType<String, Buffer>,position:Null<Int>):Int {})
+  static function writeSync(fd:Int,bufOrStr:EitherType<String, Buffer>,position:Null<Int>,encoding:String):Int;
   
   static function read(fd:Int,buffer:Buffer,offset:Int,length:Int,position:Int,cb:Callback2<Int,Buffer>):Void;
   static function readSync(fd:Int,buffer:Buffer,offset:Int,length:Int,position:Int):Int;

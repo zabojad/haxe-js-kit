@@ -3,7 +3,7 @@ package test;
 class SocketIoTest {
 	#if client
 	static function main(){
-		var socket = new js.browser.SocketIo('http://localhost');
+		var socket = js.browser.SocketIo.connect('http://localhost');
 		socket.on('news', function (data) {
 		    trace(data);
 		    socket.emit('my other event', { my: 'data' });
