@@ -1,5 +1,3 @@
-package;
-
 import buddy.Buddy;
 import buddy.BuddySuite;
 import js.npm.sequelize.DataTypes;
@@ -10,9 +8,8 @@ using buddy.Should;
 /**
  * @author TiagoLr
  */
-class Main implements Buddy {}
+class TestSequelize extends BuddySuite {
 	
-class AsyncTest extends BuddySuite {
     public function new() {
         describe("Testing Sequelize", {
             timeoutMs = 200;

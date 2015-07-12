@@ -125,7 +125,7 @@ typedef Index = {
  * @author TiagoLr
  */
 extern class Sequelize
-implements npm.Package.Require < "sequelize", "^2.1.3" > {
+implements npm.Package.Require < "sequelize", "^3.0.0" > {
 	
 	// DATATYPES
 	static var STRING:String;		

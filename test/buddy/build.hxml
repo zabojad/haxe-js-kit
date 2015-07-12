@@ -4,4 +4,5 @@
 -lib js-kit
 -lib buddy
 -main Main
--js www/app.js
+--macro npm.Package.export("bin/package.json")
+-js bin/test.js
