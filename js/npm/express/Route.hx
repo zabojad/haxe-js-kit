@@ -1,9 +1,11 @@
 package js.npm.express;
 
-import js.support.RegExp;
+import EReg;
 
-abstract Route(RegExp) {
-	@:from public static inline function fromString( r : String ) {
-		return untyped cast r;
-	}
+abstract Route(Dynamic)
+ from String to String
+  {
+ 	@:from inline static function fromEReg( e : EReg ) : Route {
+ 		return untyped e.r;
+ 	}
 }

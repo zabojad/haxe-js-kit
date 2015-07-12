@@ -7,7 +7,7 @@ typedef CookieParserOptions = {
 @:native('cookieParser')
 extern class CookieParser 
 implements npm.Package.Require<"cookie-parser","~1.3.3"> #if !haxe3,#end
-implements Middleware.IMiddleware
+implements Middleware
 {
 	public function new(?secret:String , ?options: CookieParserOptions ) : Void;
 	public inline static function cookies( req : Request ) : Dynamic {

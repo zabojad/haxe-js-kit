@@ -1,6 +1,17 @@
 package js.npm.mongoose;
 
 import js.support.Callback;
+import js.support.Error;
+
+typedef ModelUpdateOptions = {
+	?safe: Bool,
+	?upsert: Bool,
+	?multi: Bool,
+	?strict: Bool,
+	?overwrite: Bool
+}
+
+typedef ModelUpdateCallback = Callback2<Int,Dynamic>;
 
 @:native("Model")
 extern class TModel<T>
@@ -13,6 +24,7 @@ implements npm.Package.RequireNamespace<"mongoose","*">
 	public var modelName : String;
 	
 	@:overload(function(): Void {})
+	@:overload(function(fn: Callback2<TModel<T>, Int>): Void {})
 	public function save( fn : Callback<TModel<T>> ) : Void;
 	public function increment() : TModel<T>;
 	public function remove( ?fn : Callback<TModel<T>> ) : TModel<T>;
@@ -94,10 +106,10 @@ extern class TModels<T,M:TModel<T>> {
 	@:overload( function( doc : Array<T> , fn : Callback<Array<M>> ) : Void {} )
 	public function create( doc:T , fn : Callback<M> /* TODO : maybe there's a solution for multiple arguments... */  ) : Void;
 
-	@:overload( function( conditions : {} , update : {} , options : {} , callback : Callback<Array<M>> ) : Query<Array<M>> {} )
-	@:overload( function( conditions : {} , update : {} , options : {} ) : Query<Array<M>> {} )
+	@:overload( function( conditions : {} , update : {} , callback : ModelUpdateCallback ) : Query<Array<M>> {} )
+	@:overload( function( conditions : {} , update : {} , options : ModelUpdateOptions ) : Query<Array<M>> {} )
 	@:overload( function( conditions : {} , update : {} ) : Query<Array<M>> {} )
-	public function update( conditions : {} , update : {} , callback : Callback<Array<M>> ) : Query<Array<M>>;
+	public function update( conditions : {} , update : {} , options : ModelUpdateOptions , callback : ModelUpdateCallback ) : Query<Array<M>>;
 
 	public function mapReduce( o : ModelMapReduce , callback : Callback2<Array<M>,{}> ) : Void;
 

@@ -1,15 +1,13 @@
 package js.npm.express;
 
-import js.support.RegExp;
 import js.support.Callback;
 
-//typedef ApplicationMethod = Request->Response->Void;
 import js.npm.express.Middleware;
 
 extern class Application 
 extends MiddlewareHttp
+implements js.node.Http.IHttpServerListener
 {
-
 	public var locals : Dynamic;
 	public var router : Router;
 
@@ -21,8 +19,7 @@ extends MiddlewareHttp
 	function engine( ext : String , engine : ViewEngine ) : Application;
 	function set( setting : String , value : Dynamic ) : Application;
 
-	@:overload(function(path : Route , f : Array<TMiddleware> ) : Application {})
-	@:overload(function(path : Route , f : TMiddleware ) : Application {})
-	@:overload(function ( setting : String ): Dynamic { } )
-	function get( path : Route, f : MiddlewareResponder ) : Application;
+	@:overload( function ( path : Route, f : haxe.extern.Rest<AbstractMiddleware> ) : Application {} )
+	@:overload( function ( f : haxe.extern.Rest<AbstractMiddleware> ) : Application {} )
+	function get( setting : String ): Dynamic;
 }

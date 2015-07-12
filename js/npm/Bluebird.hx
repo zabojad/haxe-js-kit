@@ -1,7 +1,7 @@
 package js.npm;
 
 import haxe.Constraints;
-import js.support.Either;
+import haxe.extern.EitherType;
 
 extern class Bluebird<T, T2> 
 implements npm.Package.Require<"bluebird", "^2.9.24">
@@ -54,7 +54,7 @@ implements npm.Package.Require<"bluebird", "^2.9.24">
 
 	// Utils
 	public function tap<T3>(fulfilledHandler : T -> T3) : Bluebird<T3, T2>;
-	public function get<T3>(index : Either<String, Int>) : Bluebird<T3, T2>;
+	public function get<T3>(index : EitherType<String, Int>) : Bluebird<T3, T2>;
 	public function thenReturn<T3>(value : T3) : Bluebird<T3, T2>;
 	public function thenThrow<T3>(value : T3) : Bluebird<T3, T2>;
 }

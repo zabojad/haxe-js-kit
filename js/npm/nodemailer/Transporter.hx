@@ -23,7 +23,8 @@ typedef MailData = {
 	?envelope : Dynamic,
 	?messageId : String,
 	?date : Date,
-	?encoding : String	
+	?encoding : String,
+	?generateTextFromHtml : Bool	
 }
 
 typedef MailResult = {

@@ -6,7 +6,7 @@ package js.npm.express;
  */
 extern
 class Favicon implements npm.Package.Require < "serve-favicon", "*" > #if !haxe3,#end
-implements js.npm.connect.Middleware {
+implements Middleware {
 
 	public function new(path:String) : Void;
 	

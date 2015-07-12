@@ -2,7 +2,7 @@ package js.npm;
 
 import js.npm.express.Request;
 import js.npm.express.Response;
-import js.npm.express.Middleware.IMiddleware;
+import js.npm.express.Middleware;
 
 typedef ConnectBundleBundle = {
 	file: String,
@@ -12,7 +12,7 @@ typedef ConnectBundleBundle = {
 
 extern class ConnectBundle
 implements npm.Package.Require<"connect-bundle", "^0.0.5"> #if !haxe3,#end
-implements IMiddleware
+implements Middleware
 {
 	public function new(options : {}) : Void;
 }
