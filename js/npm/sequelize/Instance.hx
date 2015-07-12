@@ -53,11 +53,11 @@ extern class Instance {
 	function reload(options:Dynamic):Promise;
 	function validate(options:Dynamic):Promise;
 	
-	function update(updates:Dynamic, options:Dynamic):Promise;
-	function destroy(options: DestroyOptions ):Promise;
-	function restore(options: RestoreOptions ):Promise;
-	function increment(options: IncrementOptions):Promise;
-	function decrement(options: IncrementOptions):Promise;
+	function update(updates:Dynamic, ?options:Dynamic):Promise;
+	function destroy(?options: DestroyOptions ):Promise;
+	function restore(?options: RestoreOptions ):Promise;
+	function increment(?options: IncrementOptions):Promise;
+	function decrement(?options: IncrementOptions):Promise;
 	function equals(other:Instance):Bool;
 	function equalsOneOf(others:Array<Instance>):Bool;
 	function toJSON():Dynamic;

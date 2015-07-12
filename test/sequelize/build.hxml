@@ -1,0 +1,7 @@
+-cp src
+-debug
+-D nodejs
+-lib js-kit
+-lib buddy
+-main Main
+-js www/app.js

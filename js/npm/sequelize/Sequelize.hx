@@ -67,7 +67,7 @@ typedef ModelAttributes = {
 	?onDelete:OnAction,		// What should happen when the referenced key is deleted. 
 	?get:Void->Dynamic,		// Provide a custom getter for this column. Use this.getDataValue(String) to manipulate the underlying values.
 	?set:Dynamic->Void,		// Provide a custom setter for this column. Use this.setDataValue(String, Value) to manipulate the underlying values.
-	?validation:{},
+	?validate:{},
 	?states: {
 		type:String,
 		values:Array<String>
