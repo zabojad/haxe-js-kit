@@ -1,0 +1,16 @@
+{
+	"main": "test.js",
+	"name": "bin",
+	"license": "ISC",
+	"description": "",
+	"author": "",
+	"version": "1.0.0",
+	"devDependencies": {},
+	"dependencies": {
+		"sqlite3": "^3.0.8",
+		"sequelize": "^3.0.0"
+	},
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	}
+}
