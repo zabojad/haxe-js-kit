@@ -10,4 +10,5 @@ class Main implements Buddy <
 [
 	TestSequelize,
 	TestMongoose,
+	TestAsync
 ]> {}
