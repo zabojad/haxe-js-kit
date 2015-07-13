@@ -1,11 +1,15 @@
-import buddy.Buddy;
 import buddy.BuddySuite;
 import js.npm.sequelize.DataTypes;
 import js.npm.sequelize.Instance;
 import js.npm.sequelize.Model;
 import js.npm.sequelize.Sequelize;
 using buddy.Should;
+
+
 /**
+ * Tests sequelize externs.
+ * Needs Sqlite3 installed to run these tests.
+ * 
  * @author TiagoLr
  */
 class TestSequelize extends BuddySuite {
@@ -27,6 +31,7 @@ class TestSequelize extends BuddySuite {
 				
 				now = Date.now();
 				sequelize = new Sequelize( {
+					logging: false,
 					pool: {
 						max: 5,
 						min: 0,

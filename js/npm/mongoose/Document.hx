@@ -12,7 +12,7 @@ typedef DocumentToObjectOptions<T> = {
 
 extern class Document<T>
 extends js.node.events.EventEmitter #if !haxe3 , #end
-implements npm.Package.RequireNamespace<"mongoose","*">
+implements npm.Package.RequireNamespace<"mongoose","^4.0.0">
 implements Dynamic {
 	//public static var schema : Schema<Dynamic>;
 	public var isNew : Bool;

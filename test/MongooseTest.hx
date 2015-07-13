@@ -25,13 +25,9 @@ class MongooseTest implements util.Async {
 	static function main(){
 		// connect
 		var db = mongoose.connect("mongodb://localhost/test_mongoose");
-
 		// build the model
-		var stuff = StuffManager.build(db,"Stuff");
-
-		// will expand to `new stuff({...})`
-		var something = stuff.construct({test:"hello",foo:1});
-
+		var stuff = StuffManager.build(db, "Stuff");
+		
 		// use the model
 		trace("running test");
 		var err = @async stuff.remove({});

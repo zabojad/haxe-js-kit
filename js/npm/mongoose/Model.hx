@@ -8,15 +8,20 @@ typedef ModelUpdateOptions = {
 	?upsert: Bool,
 	?multi: Bool,
 	?strict: Bool,
-	?overwrite: Bool
+	?overwrite: Bool,
+	?runValidators:Bool
 }
 
-typedef ModelUpdateCallback = Callback2<Int,Dynamic>;
+typedef ModelUpdateCallback = Callback1<{
+	ok:Int,
+	nModified:Int,
+	n:Int
+}>;
 
 @:native("Model")
 extern class TModel<T>
 extends Document<T>
-implements npm.Package.RequireNamespace<"mongoose","*"> 
+implements npm.Package.RequireNamespace<"mongoose","^4.0.0"> 
 {
 
 	public var db : Connection;
@@ -103,9 +108,9 @@ extern class TModels<T,M:TModel<T>> {
 	@:overload( function( ?id : Dynamic ) : Query<M> {} )
 	public function findByIdAndRemove( id : Dynamic , callback : Callback<Null<M>> ) : Query<M>;
 
-	@:overload( function( doc : Array<T> , fn : Callback<Array<M>> ) : Void {} )
+	//@:overload( function( doc : Array<T> , fn : Callback<Array<M>> ) : Void {} )
 	public function create( doc:T , fn : Callback<M> /* TODO : maybe there's a solution for multiple arguments... */  ) : Void;
-
+	
 	@:overload( function( conditions : {} , update : {} , callback : ModelUpdateCallback ) : Query<Array<M>> {} )
 	@:overload( function( conditions : {} , update : {} , options : ModelUpdateOptions ) : Query<Array<M>> {} )
 	@:overload( function( conditions : {} , update : {} ) : Query<Array<M>> {} )
