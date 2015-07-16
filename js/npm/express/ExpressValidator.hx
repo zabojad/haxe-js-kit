@@ -3,7 +3,7 @@ package js.npm.express;
 @:native('express-validator')
 extern class ExpressValidator
 implements npm.Package.Require<"express-validator", "^2.10.0"> #if !haxe3,#end
-implements Middleware.IMiddleware
+implements Middleware
 {
 	public function new(?options: { } ) : Void;
 	

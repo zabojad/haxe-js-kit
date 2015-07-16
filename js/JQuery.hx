@@ -21,6 +21,7 @@
  */
 package js;
 
+import js.html.Document;
 import js.html.DOMWindow;
 import js.html.Element;
 
@@ -73,6 +74,7 @@ implements npm.Package.Require<"jquery","*"> {
 
 	@:overload(function(j:JQuery):Void{})
 	@:overload(function(j:DOMWindow):Void{})
+	@:overload(function(j:Document):Void{})
 	@:overload(function(j:Element):Void{})
 	function new( html : String ) : Void;
 
@@ -102,6 +104,7 @@ implements npm.Package.Require<"jquery","*"> {
 	function val() : String;
 
 	@:overload(function(text:String):JQuery{})
+	@:overload(function(fn: Int -> String -> String):JQuery{})
 	function text() : String;
 
 	// Size & Position
@@ -138,7 +141,7 @@ implements npm.Package.Require<"jquery","*"> {
 	function add( selector : String, ?context : JQuery ) : JQuery;
 	function andSelf() : JQuery;
 	function children( ?selector : String ) : JQuery;
-	function clone( ?withDataAndEvents : Bool ) : JQuery;
+	function clone( ?withDataAndEvents : Bool, ?deepWithDataAndEvents: Bool ) : JQuery;
 	function closest( selector : String, ?context : JQuery ) : JQuery;
 	function contents() : JQuery;
 
@@ -153,6 +156,9 @@ implements npm.Package.Require<"jquery","*"> {
 	function filter( selector : String ) : JQuery;
 	function find( selector : String ) : JQuery;
 	function first() : JQuery;
+
+	@:overload(function(elem: Element): Int{})
+	@:overload(function(query: JQuery): Int{})
 	function index( ?selector : String ) : Int;
 	function last( ?selector : String ) : JQuery;
 	function has( selector : String ) : JQuery;
@@ -162,11 +168,13 @@ implements npm.Package.Require<"jquery","*"> {
 	function parent( ?selector : String ) : JQuery;
 	function parents( ?selector : String ) : JQuery;
 	function parentsUntil( ?selector : String ) : JQuery;
+
 	@:overload(function(value:Element):JQuery{})
 	function not( selector : String ) : JQuery;
 	function prev( ?selector : String ) : JQuery;
 	function prevAll( ?selector : String ) : JQuery;
 	function prevUntil( ?selector : String ) : JQuery;
+	function promise(?type: String, ?target: Dynamic) : Promise;
 	function pushStack( elements : Array<Element> ) : JQuery;
 	function siblings( ?selector : String ) : JQuery;
 	function size() : Int;
@@ -184,10 +192,12 @@ implements npm.Package.Require<"jquery","*"> {
 
 	@:overload(function(value:JQuery):JQuery{})
 	@:overload(function(value:Element):JQuery{})
+	@:overload(function(value:Array<Element>):JQuery{})
 	function append( html : String ) : JQuery;
 
 	@:overload(function(value:JQuery):JQuery{})
 	@:overload(function(value:Element):JQuery{})
+	@:overload(function(value:Array<Element>):JQuery{})
 	function appendTo( html : String ) : JQuery;
 
 	function detach( ?selector : String ) : JQuery;
@@ -387,4 +397,15 @@ implements npm.Package.Require<"jquery","*"> {
 			js.JQuery.fn.iterator = function() return { pos : 0, j : __this__, hasNext : function() return __this__.pos < __this__.j.length, next : function() return new js.JQuery(__this__.j[__this__.pos++]) }
 		);
 	}
+}
+
+
+extern class Promise
+{
+	function then(doneFilter: Void->Void): Promise;
+	function done(doneFilter: Void->Void): Promise;
+	function fail(doneFilter: Void->Void): Promise;
+	function always(doneFilter: Void->Void): Promise;
+	function pipe(doneFilter: Void->Void): Promise;
+	function state(doneFilter: Void->Void): Promise;
 }

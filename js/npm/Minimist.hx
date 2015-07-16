@@ -2,7 +2,7 @@ package js.npm;
 
 import js.support.Either;
 
-typedef Options = {
+typedef MinimistOptions = {
 	// a string or array of strings argument names to always treat as strings
 	?string : Array<String>,
 
@@ -29,15 +29,13 @@ extern class Minimist implements Dynamic
 implements npm.Package.Require<"minimist", "^1.1.1">
 {
 	@:overload(function(args : Array<String>) : Minimist {})
-	@:overload(function(args : Array<String>, opts : {}) : Minimist {})
-	public static inline function parseArgs(args : Array<String>, opts : Options) : Minimist {
-		untyped return require('minimist')(args, opts || {});
+	public static inline function parseArgs(args : Array<String>, opts : MinimistOptions) : Minimist {
+		untyped return Minimist(args, opts || {});
 	}
 
 	@:overload(function() : Minimist {})
-	@:overload(function(opts : {}) : Minimist {})
-	public static inline function parseNodeArgs(opts : Options) : Minimist {
-		untyped return require('minimist')(Node.process.argv.slice(2), opts || {});
+	public static inline function parseNodeArgs(opts : MinimistOptions) : Minimist {
+		untyped return Minimist(Node.process.argv.slice(2), opts || {});
 	}
 
 	public static inline function argsWithoutOptions(m : Minimist) : Array<String> {

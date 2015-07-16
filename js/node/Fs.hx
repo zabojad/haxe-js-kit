@@ -7,7 +7,7 @@ import js.node.stream.Readable;
 import js.node.stream.Writable;
 import js.Node;
 import js.support.Callback;
-import js.support.Either;
+import haxe.extern.EitherType;
 import js.support.Error;
 
 extern class Fs 
@@ -71,11 +71,11 @@ implements npm.Package.Require<"fs","*">
   
   static function openSync(path:String,flags:String,?mode:Int):Int;
   
-  static function write(fd:Int,bufOrStr:Either<String, Buffer>,offset:Int,length:Int,position:Null<Int>,?cb:Callback<Int>):Void;
+  static function write(fd:Int,bufOrStr:EitherType<String, Buffer>,offset:Int,length:Int,position:Null<Int>,?cb:Callback<Int>):Void;
   
-  @:overload(function(fd:Int,bufOrStr:Either<String, Buffer>):Int {})
-  @:overload(function(fd:Int,bufOrStr:Either<String, Buffer>,position:Null<Int>):Int {})
-  static function writeSync(fd:Int,bufOrStr:Either<String, Buffer>,position:Null<Int>,encoding:String):Int;
+  @:overload(function(fd:Int,bufOrStr:EitherType<String, Buffer>):Int {})
+  @:overload(function(fd:Int,bufOrStr:EitherType<String, Buffer>,position:Null<Int>):Int {})
+  static function writeSync(fd:Int,bufOrStr:EitherType<String, Buffer>,position:Null<Int>,encoding:String):Int;
   
   static function read(fd:Int,buffer:Buffer,offset:Int,length:Int,position:Int,cb:Callback2<Int,Buffer>):Void;
   static function readSync(fd:Int,buffer:Buffer,offset:Int,length:Int,position:Int):Int;
@@ -89,18 +89,18 @@ implements npm.Package.Require<"fs","*">
   @:overload(function(path:String,options:FsReadFileOpt):String {})
   static function readFileSync(path:String):Buffer;
 
-  @:overload(function(fileName:String,data:Either<String, Buffer>):Void {})
-  @:overload(function(fileName:String,data:Either<String, Buffer>,options:FsWriteFileOpt):Void {})
-  static function writeFile(fileName:String,data:Either<String, Buffer>,options:FsWriteFileOpt,cb:Callback0):Void;
+  @:overload(function(fileName:String,data:EitherType<String, Buffer>):Void {})
+  @:overload(function(fileName:String,data:EitherType<String, Buffer>,options:FsWriteFileOpt):Void {})
+  static function writeFile(fileName:String,data:EitherType<String, Buffer>,options:FsWriteFileOpt,cb:Callback0):Void;
   @:overload(function(fileName:String,data:Buffer,options:FsWriteFileOpt):Void {})
   @:overload(function(fileName:String,data:Buffer):Void {})
   @:overload(function(fileName:String,contents:String,options:FsWriteFileOpt):Void {})
   static function writeFileSync(fileName:String,contents:String):Void;
 
-  @:overload(function(fileName:String,data:Either<String, Buffer>,cb:Callback0):Void {})
-  static function appendFile(fileName:String,data:Either<String, Buffer>,options:FsWriteFileOpt,cb:Callback0):Void;
-  @:overload(function(fileName:String,data:Either<String, Buffer>):Void {})
-  static function appendFileSync(fileName:String,data:Either<String, Buffer>,options:FsWriteFileOpt):Void;
+  @:overload(function(fileName:String,data:EitherType<String, Buffer>,cb:Callback0):Void {})
+  static function appendFile(fileName:String,data:EitherType<String, Buffer>,options:FsWriteFileOpt,cb:Callback0):Void;
+  @:overload(function(fileName:String,data:EitherType<String, Buffer>):Void {})
+  static function appendFileSync(fileName:String,data:EitherType<String, Buffer>,options:FsWriteFileOpt):Void;
 
   static function utimes(path:String,atime:Dynamic,mtime:Dynamic,cb:Callback0):Void;
   static function utimeSync(path:String,atime:Dynamic,mtime:Dynamic):Void;

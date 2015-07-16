@@ -43,6 +43,14 @@ class MongooseTest implements util.Async {
 		};
 
 		var err,doc = @async stuff.create( d );
+		trace("CREATE 1", err,doc);
+		var err,doc = @async stuff.create( { test : "test", foo : 13 } );
+		trace("CREATE 2", err,doc);
+
+		stuff.update( {test:"test"}, {foo:2} , {multi:true}, function(err,affected,rawResponse){
+			js.Node.console.log(js.Kit.arguments);
+		});
+		
 
 		trace("foo", doc.foo);
 		trace("test",doc.test);

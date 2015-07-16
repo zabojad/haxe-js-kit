@@ -41,7 +41,8 @@ extends ServerResponse {
 
 	function attachment( ?filename : String ) : Response;
 
-	function sendfile( path : String , ?options : {maxAge:Int,root:String} , ?fn : ?Dynamic->Void ) : Response;
+	@:overload( function( path : String , ?options : { ?maxAge:Int , ?root:String } , ?fn : ?Dynamic->Void ) : Response {} )
+	function sendfile( path : String ) : Response;
 	function download( path : String , ?filename : String , ?fn : ?Dynamic->Void ) : Response;
 
 	function links( links : Dynamic<String> ) : Response;

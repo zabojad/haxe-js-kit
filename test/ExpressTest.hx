@@ -1,9 +1,11 @@
 package test;
 
+import js.npm.express.Middleware;
 import js.npm.express.Request;
 import js.npm.express.Response;
 
 using js.npm.express.Session;
+
 
 class ExpressTest {
 	static function main(){
@@ -18,13 +20,14 @@ class ExpressTest {
 		app.use( new Session({ secret : secret , store : store }) );
 
 		/** custom middleware **/
-		app.use( function(req,_,next){
-			trace("got request",req.originalUrl,req.session());
+		app.use( function(req,_,next:MiddlewareNext){
+
+			trace("got request",req.originalUrl);
 			next();
-		});
+		} );
 
 		/** all verbs route on / **/
-		app.all('/', function(req,res){
+		app.all('/', function(req:Request,res:Response){
 			var session = req.session();
 			if( session.n == null ){
 				session.n = 1;
@@ -33,7 +36,7 @@ class ExpressTest {
 		});
 
 		/** custom verb route **/
-		app.head('/',function(req,res,next){
+		app.head('/',function(req:Request,res:Response,next:MiddlewareNext){
 			trace('HEAD REQUEST');
 			next();
 		});

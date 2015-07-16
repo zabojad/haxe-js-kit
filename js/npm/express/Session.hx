@@ -1,6 +1,7 @@
 package js.npm.express;
 
 import js.support.Callback;
+import js.npm.express.Middleware;
 
 typedef SessionCookieOptions = {
 	?path : String,
@@ -47,7 +48,7 @@ interface SessionStore {
 
 extern class Session 
 implements npm.Package.Require<"express-session","~1.9.3"> #if !haxe3,#end
-implements Middleware.IMiddleware
+implements Middleware
 {
 	public function new( opts : SessionOptions ) : Void;
 

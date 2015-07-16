@@ -1,34 +1,27 @@
 package js.npm.socketio;
 
-import js.support.Callback;
+import js.npm.express.Middleware.MiddlewareNext;
+import js.npm.socketio.Namespace;
 
-typedef ServerOptions = { > js.npm.engineio.Server.ServerOptions,
-	?serverClient : Bool,
-	?path : String
-}
-
-extern class Server
-extends Channel
+extern class Server 
+extends Channel 
 implements npm.Package.Require<"socket.io","1.0">
 {
-	@:overload( function( port : Int , ?opts : ServerOptions ) : Void {} )
-	@:overload( function( ?opts : ServerOptions ) : Void {} )
-	public function new( srv : js.node.http.Server , ?opts : ServerOptions ) : Void;
 
-	public function serveClient( v : Bool ) : Server;
-	public function path( v : String ) : Server;
-	public function adapter( v : Adapter ) : Server;
+	function new(?srv: js.node.http.Server, ?port: Int, ?opts: ServerOpts);
 
-	@:overload( function( fn : String -> Callback<Bool> -> Void ) : Void {} )
-	public function origins( v : String ) : Server;
+	var sockets: Namespace;
 
-	public var sockets (default,null) : Namespace;
+	function adapter(v: Adapter): Server;
+	function origins(v: String): Server;
+	function attach(port: Int, ?opts: ServerOpts): Server;
+	function listen(port: Int, ?opts: ServerOpts): Server;
+	function onconnection(socket: Socket): Server;
+	function of(nsp: String): Namespace;
+	function use(fn: Socket -> MiddlewareNext -> Void): Namespace;
+}
 
-	@:overload( function( port : Int , opts : ServerOptions ) : Server {} )
-	public function attach( srv : js.node.http.Server , ?opts : ServerOptions ) : Server;
-	public function listen( srv : js.node.http.Server , ?opts : ServerOptions ) : Server;
-	public function bind( srv : js.npm.engineio.Server , ?opts : ServerOptions ) : Server;
-	public function onconnection( socket : js.npm.engineio.Socket ) : Server;
-	public function of( nsp: String ) : Namespace;
-
+typedef ServerOpts = {
+	?serveClient: Bool,
+	?path: String
 }

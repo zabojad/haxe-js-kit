@@ -9,8 +9,8 @@ implements npm.Package.RequireNamespace<"http","*">
     public static inline var EVENT_CLOSE  = "close";
 	public static inline var EVENT_FINISH = "finish";
 
-	public var statusCode(default, null) : Int;
-	public var statusMessage(default, null) : Int;
+	public var statusCode : Int;
+	public var statusMessage : String;
 	public var headersSent(default, null) : Bool;
 
 	function writeContinue():Void;

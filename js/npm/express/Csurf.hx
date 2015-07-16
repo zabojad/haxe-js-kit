@@ -11,7 +11,7 @@ typedef CsurfOptions = {
  */
 extern class Csurf
 implements npm.Package.Require<"csurf", "^1.6.5"> #if !haxe3,#end
-implements Middleware.IMiddleware
+implements Middleware
 {
 	// Use in error handlers
 	public inline static var errorCode = 'EBADCSRFTOKEN';
