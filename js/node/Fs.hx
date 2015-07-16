@@ -87,7 +87,7 @@ implements npm.Package.Require<"fs","*">
   @:overload(function(path:String,options:FsReadFileOpt,cb:Callback<String>):Void {})
   static function readFile(path:String,cb:Callback<Buffer>):Void;
   @:overload(function(path:String,options:FsReadFileOpt):String {})
-  static function readFileSync(path:String):String;
+  static function readFileSync(path:String):Buffer;
 
   @:overload(function(fileName:String,data:Either<String, Buffer>):Void {})
   @:overload(function(fileName:String,data:Either<String, Buffer>,options:FsWriteFileOpt):Void {})
