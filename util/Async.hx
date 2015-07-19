@@ -3,6 +3,7 @@ package util;
 #if macro
 import haxe.macro.Context;
 import haxe.macro.Expr;
+using haxe.macro.ExprTools;
 #end
 
 @:autoBuild(util.AsyncBuilder.build())
@@ -24,9 +25,13 @@ class AsyncBuilder {
 
 			for( f in fields ){
 				switch( f.kind ){
-					case FieldType.FFun(fun) :
+					case FFun(fun) :
 						fun.expr = transform(fun.expr).expr;
-					default:
+					case FVar(t, e) if (e != null): 
+						f.kind = FVar(t, transform(e).expr);
+					case FProp(get, set, t, e) if (e != null):
+						f.kind = FProp(get, set, t, transform(e).expr);
+					case _:
 				}
 			}
 			return fields;
@@ -128,11 +133,9 @@ class AsyncBuilder {
 					e.expr = EIf( cond , transform( eif , block ).expr , (eelse==null) ? null : transform( eelse , block ).expr );
 				
 				
-				default :
-					if( block != null )
-						block.push( e );
-
-			
+				default :					
+					if ( block != null ) block.push( e );
+					e.iter(transform.bind(_, block));			
 			}
 
 			var r = { expr : e , block : block };
