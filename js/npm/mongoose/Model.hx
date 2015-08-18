@@ -14,7 +14,7 @@ typedef ModelUpdateOptions = {
 
 typedef ModelUpdateCallback = Callback1<{
 	ok:Int,
-	nModified:Int,
+	?nModified:Int,
 	n:Int
 }>;
 
