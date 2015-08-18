@@ -2,8 +2,6 @@
 
 A collection of externs and tools to quickly get started with [Haxe](http://www.haxe.org)/JS, including [Node.js](http://nodejs.org)
 
-**Warning : This is a work in progress and is definitely not stable nor complete !**
-
 ## Installation
 
 Using haxelib :
@@ -155,7 +153,7 @@ The `@:native` metadata is supported with `RequireNamespace`
 ## Todo
 
 * Continue integrating / cleaning / completing externs, mainly from [nodejs_externs](https://github.com/dionjwa/nodejs_externs)
-* Complete the node API
-* RequireJS & Bower integration (WIP)
+* Remove the core Node API in favor of [hxnodejs](https://github.com/HaxeFoundation/hxnodejs)
+* Better browserify integration (?)
 * Improve NPM integration (SemVer, less intrusive dependency export)
-* Publish to haxelib
+* Publish to haxelib (see also https://github.com/HaxeFoundation/haxelib/issues/238)
