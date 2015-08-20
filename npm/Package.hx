@@ -103,7 +103,7 @@ class Package {
 	static inline var JS_NODE_PACKAGE  = 'js.node';
 	static inline var SEP = "__";
 	static inline var INIT = "__init__";
-	static inline var USE_JS_REQUIRE = "useJsRequire";
+	static inline var NO_JS_REQUIRE = "noJsRequire";
 	#end
 
 	#if haxe3 macro #else @:macro #end public static function build() : Array<Field>{
@@ -166,7 +166,7 @@ class Package {
 				}
 			}
 
-			if( Context.defined(USE_JS_REQUIRE) ) {
+			if( !Context.defined(NO_JS_REQUIRE) ) {
 
 				var params = [macro $v{required.name}];
 				if( requireNS ) {
