@@ -2,6 +2,8 @@
 
 A collection of externs and tools to quickly get started with [Haxe](http://www.haxe.org)/JS, including [Node.js](http://nodejs.org)
 
+A full step-by-step tutorial is [available here](http://matthijskamstra.github.io/haxenode/index.html), thanks to [@MatthijsKamstra](https://github.com/matthijskamstra) :)
+
 ## Installation
 
 Using haxelib :
