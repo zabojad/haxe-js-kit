@@ -399,13 +399,3 @@ implements npm.Package.Require<"jquery","*"> {
 	}
 }
 
-
-extern class Promise
-{
-	function then(doneFilter: Void->Void): Promise;
-	function done(doneFilter: Void->Void): Promise;
-	function fail(doneFilter: Void->Void): Promise;
-	function always(doneFilter: Void->Void): Promise;
-	function pipe(doneFilter: Void->Void): Promise;
-	function state(doneFilter: Void->Void): Promise;
-}
