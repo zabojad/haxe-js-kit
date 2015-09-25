@@ -246,8 +246,16 @@ class Package {
 }
 
 @:autoBuild(npm.Include.build())
+#if (haxe_ver > 3.2)
+extern interface Require<@:const P,@:const V> {}
+#else
 extern interface Require<Const,Const> {}
+#end
 
 @:autoBuild(npm.Include.build())
+#if (haxe_ver > 3.2)
+extern interface RequireNamespace<@:const P,@:const V> {}
+#else
 extern interface RequireNamespace<Const,Const> {}
+#end
 
