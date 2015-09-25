@@ -246,8 +246,8 @@ class Package {
 }
 
 @:autoBuild(npm.Include.build())
-extern interface Require<P,V> {}
+extern interface Require<Const,Const> {}
 
 @:autoBuild(npm.Include.build())
-extern interface RequireNamespace<P,V> {}
+extern interface RequireNamespace<Const,Const> {}
 
