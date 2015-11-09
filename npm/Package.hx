@@ -261,4 +261,3 @@ extern interface RequireNamespace<@:const P,@:const V> {}
 #else
 extern interface RequireNamespace<Const,Const> {}
 #end
-
