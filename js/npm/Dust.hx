@@ -2,7 +2,7 @@ package js.npm;
 
 import js.support.Callback;
 
-extern class Dust 
+extern class Dust
 implements npm.Package.Require<"dustjs-linkedin","">
 {
 	public static var optimizers (default,null) : {};
@@ -14,13 +14,13 @@ implements npm.Package.Require<"dustjs-linkedin","">
 	public static function compile(source:String,name:String) : Dust;
 	public static function compileFn(source:String,?name:String) : Dust;
 	public static function render(name:String,context:{},cb:Callback<String>) : Void;
-	public static function stream(name:String,context:{}) : js.node.events.EventEmitter;
+	public static function stream(name:String,context:{}) : js.node.events.EventEmitter<Dynamic>;
 	public static function makeBase(context:{}) : DustBase;
 	public static function register(name:String,fn : Dynamic) : Void;
 	public static function onLoad(name:String,cb:Callback<String>) : Void;
 	public static function loadSource(source:String,?filename:String) : Dust;
 	public static function renderSource(source:String,context:{},?cb:Callback<String>) : Void;
-} 
+}
 
 typedef DustBase = {
 	function push( context : {} , ?index: Int, ?length: Int ) : Void;
@@ -37,7 +37,7 @@ typedef DustChunk = {
 	function render( body: String, context : DustBase ) : String;
 	function setError( error : String ) : Void;
 
-	// TODO 
+	// TODO
 	// chunk.reference(elem, context, auto, filters)
 	// chunk.section(elem, context, bodies, params)
 	// chunk.exists(elem, context, bodies)

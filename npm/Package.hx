@@ -255,9 +255,11 @@ extern interface Require<@:const P,@:const V> {}
 extern interface Require<Const,Const> {}
 #end
 
+
 @:autoBuild(npm.Include.build())
 #if (haxe_ver >= 3.3)
 extern interface RequireNamespace<@:const P,@:const V> {}
 #else
 extern interface RequireNamespace<Const,Const> {}
+
 #end

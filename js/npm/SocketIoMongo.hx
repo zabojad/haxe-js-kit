@@ -15,8 +15,8 @@ typedef SocketIoMongoConfig = {
   ,?db: String
 }
 
-extern class SocketIoMongo 
+extern class SocketIoMongo
 implements npm.Package.Require<"socket.io-mongo","*">
-extends EventEmitter {
+extends EventEmitter<SocketIoMongo> {
 	public function new( options : SocketIoMongoConfig ) : Void;
 }

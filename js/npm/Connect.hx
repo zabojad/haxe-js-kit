@@ -3,11 +3,11 @@ package js.npm;
 import js.node.Http;
 import js.node.http.*;
 
-import js.npm.connect.support.Middleware;
+import js.npm.connect.Middleware in TMiddleware;
 
 //private typedef MiddlewareFunction = ClientRequest->ServerResponse->Null<(Void->Void)>->Void;
 
-extern class Connect 
+extern class Connect
 implements npm.Package.Require<"connect","*">
 {
 	public function new() : Void;

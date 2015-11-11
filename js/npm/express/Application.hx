@@ -4,9 +4,9 @@ import js.support.Callback;
 
 import js.npm.express.Middleware;
 
-extern class Application 
+extern class Application
 extends MiddlewareHttp
-implements js.node.Http.IHttpServerListener
+/*implements js.node.Http.IHttpServerListener*/
 {
 	public var locals : Dynamic;
 	public var router : Router;
