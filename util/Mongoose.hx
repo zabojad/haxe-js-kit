@@ -176,7 +176,7 @@ class Mongoose {
             }
         }
         
-        var typeKey = "$type";
+        var typeKey = "__type__";
         switch(schemaOptions.expr) {
             case EObjectDecl(fields): 
                 var typeKeyField = Lambda.find(fields, function(f) return f.field == 'typeKey');
@@ -331,9 +331,7 @@ class Mongoose {
 			pos : f.pos,
 			expr : typeToSchemaType(f.type, typeKey)
 		};
-        
-        if(typeKey.substr(0, 1) == "$")
-            typeKey = "@$__hx__" + typeKey; 
+
 		var expr = macro { $typeKey: $type };
 
 		var fields = switch(expr.expr){
