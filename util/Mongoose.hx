@@ -176,7 +176,7 @@ class Mongoose {
             }
         }
         
-        var typeKey = "__type__";
+        var typeKey = "type";
         switch(schemaOptions.expr) {
             case EObjectDecl(fields): 
                 var typeKeyField = Lambda.find(fields, function(f) return f.field == 'typeKey');
