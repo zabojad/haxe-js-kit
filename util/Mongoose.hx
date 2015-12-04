@@ -533,7 +533,7 @@ class Mongoose {
 					case "Bool" :
 						macro untyped __js__('Boolean');
 					default :
-						{pos: Context.currentPos(), expr:typeToSchemaType( i.type , typeKey )};
+						return typeToSchemaType( i.type , typeKey );
 				}
 				return expr.expr;
 
