@@ -533,7 +533,7 @@ class Mongoose {
 					case "Bool" :
 						macro untyped __js__('Boolean');
 					default :
-						macro js.npm.mongoose.schema.types.Mixed;
+						return typeToSchemaType( i.type , typeKey );
 				}
 				return expr.expr;
 
