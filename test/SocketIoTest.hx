@@ -23,7 +23,7 @@ class SocketIoTest {
 	static function main(){
 		var PORT = 9000;
 		var app = new js.npm.Express();
-		var server = js.node.Http.createServer(app);
+		var server = js.node.Http.createServer( cast app );
 		var io = new js.npm.socketio.Server(server);
 
 		app.get('/',index);
