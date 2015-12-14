@@ -52,10 +52,6 @@ class Package {
 
 	#if haxe3 macro #else @:macro #end public static function require( name : String , ?version : String = "*" , ?isNpm : Bool = true , ?native : String = null ) {
 
-		if( dependencies == null ){
-			dependencies = new #if haxe3 Map #else Hash #end();
-		}
-
 		var nameExpr = Context.makeExpr( name , Context.currentPos() );
 
 		if( isNpm )
@@ -76,6 +72,10 @@ class Package {
 	}
 
 	public static function addDependency( name : String , version : String ) : Void {
+		if( dependencies == null ){
+			dependencies = new #if haxe3 Map #else Hash #end();
+		}
+		
 		dependencies.set( name , version );
 	}
 
@@ -175,6 +175,9 @@ class Package {
 				cl.meta.add(":jsRequire", params, pos);
 				cl.meta.remove(":native");
 
+				if( isNpm ) 
+					npm.Package.addDependency('${required.name}','${required.version}');
+
 			}else{
 
 				if( requireNS )
@@ -246,14 +249,14 @@ class Package {
 }
 
 @:autoBuild(npm.Include.build())
-#if (haxe_ver == 3.2)
+#if (haxe_ver >= 3.3)
 extern interface Require<@:const P,@:const V> {}
 #else
 extern interface Require<Const,Const> {}
 #end
 
 @:autoBuild(npm.Include.build())
-#if (haxe_ver == 3.2)
+#if (haxe_ver >= 3.3)
 extern interface RequireNamespace<@:const P,@:const V> {}
 #else
 extern interface RequireNamespace<Const,Const> {}
