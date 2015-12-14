@@ -8,6 +8,7 @@
 
 --next
 # test.ExpressTest (js:test.express.js)
+-D hxnodejs_no_version_warning
 -main test.ExpressTest
 -js test.express.js
 -lib hxnodejs
@@ -15,6 +16,7 @@
 
 --next
 # test.SocketIoTest (js:test.socketio.js)
+-D hxnodejs_no_version_warning
 -main test.SocketIoTest
 -js test.socketio.server.js
 -D server
@@ -23,6 +25,7 @@
 
 --next
 # test.SocketIoTest (js:test/test.socketio.js)
+-D hxnodejs_no_version_warning
 -main test.SocketIoTest
 -js test/test.socketio.client.js
 -D client
