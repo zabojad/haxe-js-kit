@@ -15,7 +15,7 @@ typedef YaCsvOptions = {
 }
 
 extern class YaCsv
-extends Readable
+extends Readable<YaCsv>
 implements npm.Package.Require<"ya-csv", "^0.9.4">
 {
 	// Read

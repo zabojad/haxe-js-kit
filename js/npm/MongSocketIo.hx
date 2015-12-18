@@ -17,6 +17,6 @@ typedef MongSocketIoConfig = {
 
 extern class MongSocketIo
 implements npm.Package.Require<"mong.socket.io","*">
-extends EventEmitter {
+extends EventEmitter<MongSocketIo> {
 	public function new( conf : MongSocketIoConfig ) : Void;
 }

@@ -6,5 +6,8 @@
     "releasenote": "Initial release",
     "contributors": ["clemos","cloudshift","async-cl","dionjwa","Peekmo","andyli","slerdoze","nesbox","ccapndave","labe-me"],
     "version": "0.0.3",
-    "tags": ["node", "nodejs", "js","express","mongoose","connect","socket","mongodb","mean"]
+    "tags": ["node", "nodejs", "js","express","mongoose","connect","socket","mongodb","mean"],
+    "dependencies": {
+        "hxnodejs":""
+    }
 }

@@ -4,7 +4,7 @@ import haxe.web.Request;
 import js.node.events.EventEmitter;
 import js.support.Callback.Callback0;
 
-extern class Socket implements Dynamic extends EventEmitter
+extern class Socket implements Dynamic extends EventEmitter<Socket>
 {
 	var rooms: Array<String>;
 	var client: Client;

@@ -1,8 +1,8 @@
 package js.npm.socketio;
 import js.npm.socketio.IAdapter;
 
-extern class Adapter 
-extends js.node.events.EventEmitter
+extern class Adapter
+extends js.node.events.EventEmitter<Adapter>
 implements IAdapter
 implements npm.Package.Require<"socket.io-adapter","0.3.1">
 {
