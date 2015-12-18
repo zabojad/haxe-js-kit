@@ -2,7 +2,7 @@ package js.npm.engineio;
 
 import js.support.Callback;
 
-@:enum 
+@:enum
 abstract SocketReadyState(String) {
 	var Opening = "opening";
 	var Open = "open";
@@ -12,8 +12,8 @@ abstract SocketReadyState(String) {
 
 typedef SocketMessage = Dynamic;
 
-extern class Socket 
-extends js.node.events.EventEmitter
+extern class Socket
+extends js.node.events.EventEmitter<Socket>
 implements npm.Package.RequireNamespace<"engine.io","1.4.3">
 {
 	public var id (default,null) : String;

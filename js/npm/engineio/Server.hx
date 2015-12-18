@@ -20,8 +20,8 @@ typedef ServerAttachOptions = {
 	?destroyUpgradeTimeout : Int
 }
 
-extern class Server 
-extends js.node.events.EventEmitter
+extern class Server
+extends js.node.events.EventEmitter<Server>
 implements npm.Package.RequireNamespace<"engine.io","1.4.3">
 {
 	public static var protocol (default,null) : Int;
@@ -37,5 +37,5 @@ implements npm.Package.RequireNamespace<"engine.io","1.4.3">
 	public function close() : Server;
 	public function handleRequest(req:ClientRequest, res:ServerResponse) : Server;
 	public function handleUpgrade(req:ClientRequest, stream:js.node.net.Socket, buffer:js.node.Buffer ) : Server;
-	
+
 }

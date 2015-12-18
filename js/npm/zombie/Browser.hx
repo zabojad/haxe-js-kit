@@ -40,10 +40,10 @@ extern class BrowserResources implements ArrayAccess<{request: Dynamic, response
 	public function request<T, T2>(method : String, url : String, ?options : {}, ?callback : Void -> Void) : Null<Promise<T, T2>>;
 }
 
-extern class Browser extends EventEmitter
+extern class Browser extends EventEmitter<Browser>
 {
 	public static function localhost(source : Either<String, Int>, target : Int) : Void;
-	
+
 	public function new(?options : BrowserOptions) : Void;
 
 	public var activeElement(default, null) : Element;
@@ -54,14 +54,14 @@ extern class Browser extends EventEmitter
 	public var location(default, default) : Location;
 	public var url(default, null) : String;
 	public var window(default, null) : Window;
-	
+
 	public var assert : Assert;
 	public var cookies : {dump: Dynamic -> Void};
 	public var console : Dynamic;
 	public var referrer : Null<String>;
 	public var tabs : Array<Window>; // TODO
 	public var pipeline : Dynamic;
-	
+
 	// Returns all resources loaded by currently open window.
 	public var resources(default, null) : BrowserResources;
 	// Get Request associated with currently open window
@@ -77,14 +77,14 @@ extern class Browser extends EventEmitter
 	public var redirected(default, null) : Bool;
 	// Get the source HTML for the last response
 	public var source(default, null) : String;
-	
+
 	public function debug() : Void;
 	public function dump() : Void;
-	
+
 	@:overload(function(o1 : Dynamic, o2 : Dynamic, o3 : Dynamic, o4 : Dynamic, o5 : Dynamic) : Void { } )
-	@:overload(function(o1 : Dynamic, o2 : Dynamic, o3 : Dynamic, o4 : Dynamic) : Void { } )	
+	@:overload(function(o1 : Dynamic, o2 : Dynamic, o3 : Dynamic, o4 : Dynamic) : Void { } )
 	@:overload(function(o1 : Dynamic, o2 : Dynamic, o3 : Dynamic) : Void { } )
-	@:overload(function(o1 : Dynamic, o2 : Dynamic) : Void { } )	
+	@:overload(function(o1 : Dynamic, o2 : Dynamic) : Void { } )
 	@:overload(function(o1 : Dynamic, o2 : Dynamic) : Void { } )
 	public function log(o1 : Dynamic) : Void;
 
@@ -99,7 +99,7 @@ extern class Browser extends EventEmitter
 	public function sessionStorage(host : String) : Dynamic;
 	public function saveStorage() : String;
 	public function loadStorage(serialized : String) : Void;
-	
+
 	public function attach(selector : String, filename : String) : Browser;
 	public function back<T, T2>(?callback : Void -> Void) : Null<Promise<T, T2>>;
 	public function button<T : Element>(selector : String) : Null<T>;
@@ -108,7 +108,7 @@ extern class Browser extends EventEmitter
 	public function check(selector : String) : Browser;
 	public function choose(selector : String) : Browser;
 	public function destroy() : Void;
-	public function dispatchEvent(selector : String, event : Event) : Bool;
+	public function dispatchEvent(selector : String, event : Event<Dynamic>) : Bool;//TODO
 	public function evaluate<T>(code : String, ?filename : String) : T;
 	public function fetch<T, T2>(input : Dynamic, ?init : Dynamic) : Null<Promise<T, T2>>;
 	public function field<T : Element>(selector : String) : Null<T>;

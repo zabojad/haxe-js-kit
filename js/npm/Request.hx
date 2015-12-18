@@ -8,8 +8,8 @@ import js.support.Either.Either3;
 /*
 extern class RestlerResponse
 {
-	@:overload(function(event : String, callback : Void -> Void) : RestlerResponse {})	
-	@:overload(function(event : String, callback : Dynamic -> Void) : RestlerResponse {})	
+	@:overload(function(event : String, callback : Void -> Void) : RestlerResponse {})
+	@:overload(function(event : String, callback : Dynamic -> Void) : RestlerResponse {})
 	public function on(event : String, callback : Dynamic -> ServerResponse -> Void) : RestlerResponse;
 }
 */
@@ -20,7 +20,7 @@ typedef RequestCallback = Null<Dynamic> -> ServerResponse -> String -> Void;
 
 typedef EitherCallback = Either3<RequestCallback, RequestCallback1, RequestCallback2>;
 
-extern class Request extends Readable
+extern class Request extends Readable<Request>
 implements npm.Package.Require<"request", "^2.55.0">
 {
 	public static inline function construct() : Request {

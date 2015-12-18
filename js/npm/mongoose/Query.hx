@@ -35,9 +35,9 @@ extern class Query<Q> {
 			untyped this["in"](val);
 		else
 			untyped this["in"](path,val);
-		
+
 	}
-		
+
 	public function nin( ?path : String , val : Dynamic ) : Query<Q>;
 	public function all( ?path : String , val : Dynamic ) : Query<Q>;
 	public function size( ?path : String , val : Dynamic ) : Query<Q>;
@@ -101,7 +101,7 @@ extern class Query<Q> {
 
 	public function populate<M:Model<Dynamic>>( path : Dynamic , ?select : Dynamic , ?model : Model.Models<M> , ?match : {} , ?options : {} ) : Query<Q>;
 
-	public function stream<M:Model<Dynamic>>( ?opts : { ?transform : M->M } ) : js.node.stream.Readable;
+	public function stream<M:Model<Dynamic>>( ?opts : { ?transform : M->M } ) : js.node.stream.Readable<Dynamic>;
 
 
 }
@@ -111,11 +111,11 @@ typedef QueryOptions = {
 	?sort : Dynamic,
 	?limit : Int,
 	?skip : Int,
-	?maxscan : Int, 
-	?batchSize : Int, 
-	?comment : String, 
-	?snapshot : Bool, 
-	?hint : {}, 
+	?maxscan : Int,
+	?batchSize : Int,
+	?comment : String,
+	?snapshot : Bool,
+	?hint : {},
 	?slaveOk : Bool,
 	?lean : Bool,
 	?safe : Bool
