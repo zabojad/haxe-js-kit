@@ -3,6 +3,8 @@ package js.npm.express;
 import haxe.extern.Rest;
 import js.support.Callback;
 
+extern interface Middleware {}
+
 abstract AbstractMiddleware( Dynamic ) 
 from MiddlewareErrorHandler to MiddlewareErrorHandler 
 from MiddlewareResponder to MiddlewareResponder 
@@ -15,8 +17,6 @@ typedef MiddlewareResponder = Request->Response->Void;
 typedef MiddlewareErrorHandler = Dynamic -> Request -> Response -> Callback0 -> Void;
 typedef MiddlewareParam<P> = Request -> Response -> MiddlewareNext -> P -> Void;
 typedef MiddlewareMethod = Route->Middleware->Void;
-
-extern interface Middleware {}
 
 @:build( util.CopyMethods.build([
 	'post', 
