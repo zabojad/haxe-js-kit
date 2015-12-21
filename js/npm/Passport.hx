@@ -21,6 +21,7 @@ extern class Passport
 implements npm.Package.Require<"passport","*">
 {
 	public static function authenticate(mode:String , ?options : PassportAuthenticateOptions , ?cb : Null<Dynamic> -> Null<PassportUser> -> Null<PassportInfo> -> Void ) : Middleware;
+	@:overload(function( name : String, strategy : js.npm.passport.Strategy ) : Void {})
 	public static function use( strategy : js.npm.passport.Strategy ) : Void;
 	public static function initialize() : Middleware;
 	public static function session() : Middleware;
