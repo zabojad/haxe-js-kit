@@ -22,6 +22,4 @@ extends MiddlewareHttp
 	@:overload( function ( path : Route, f : haxe.extern.Rest<AbstractMiddleware> ) : Application {} )
 	@:overload( function ( f : haxe.extern.Rest<AbstractMiddleware> ) : Application {} )
 	function get( setting : String ): Dynamic;
-
-	public function Router(? option : { ? caseSensitive : Bool, ? mergeParams : Bool, ? strict : Bool }) : Router;
 }
