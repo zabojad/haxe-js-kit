@@ -35,7 +35,6 @@ implements npm.Package.RequireNamespace<"mongoose","^4.0.0">
 	public function remove( ?fn : Callback<TModel<T>> ) : TModel<T>;
 
 	public function model<T,M:TModel<T>>( name : String ) : TModels<T,M>;
-	
 }
 
 // just add a helper to type models a minimum
@@ -54,6 +53,8 @@ extern class TModels<T,M:TModel<T>> {
 	public var modelName : String;
 	public var schema : Schema<T>;
 	public var base : Mongoose;
+
+	public function discriminator<U,N:TModel<U>>(name : String, schema : Schema<U>) : TModels<U,N>;
 	
 	public function ensureIndexes( ?fn : Callback0 ) : Void;
 	public function remove( conditions : {} , callback : Callback0 ) : Void;

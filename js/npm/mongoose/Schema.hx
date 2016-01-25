@@ -16,8 +16,8 @@ implements npm.Package.RequireNamespace<"mongoose","^4.0.0"> {
 	public function eachPath( fn : String->Dynamic->Void ) : Schema<T>;
 	public function requiredPaths() : Array<String>;
 	public function pathType( path : String ) : String;
-	public function pre( method : String , fn : ( Void->Void )->Void ) : Schema<T>;
-	public function post( method : String , fn : ( Void->Void )->Void ) : Schema<T>;
+	public function pre( method : String , fn : ( ? js.Error->Void )->Void ) : Schema<T>;
+	public function post( method : String , fn : ( ? js.Error->Void )->Void ) : Schema<T>;
 	public function plugin( fn : Schema<T>->?{}->Void , ?opts : {} ) : Schema<T>;
 	@:overload( function( methods : Dynamic<Dynamic<Dynamic->Dynamic>> ) : Schema<T> {} )
 	public function method( name : String , fn : Dynamic->Dynamic ) : Schema<T>;
@@ -49,4 +49,5 @@ typedef SchemaOptions = {
 	?toObject : Dynamic,
 	?versionKey : Bool,
 	?typeKey : String,
+	?discriminatorKey : String
 }
