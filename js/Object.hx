@@ -3,7 +3,7 @@ package js;
 @:native("Object")
 extern class Object {
 
-	static public function assign(obj1 : Dynamic, obj2 : Dynamic, ? obj3 : Dynamic) : Dynamic;
+	static public function assign(obj1 : Dynamic, obj2 : haxe.extern.Rest<Dynamic>) : Dynamic;
 
 	static public function create() : Dynamic;
 
